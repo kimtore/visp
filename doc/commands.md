@@ -343,7 +343,8 @@ the `tracklist` context will always be attempted before `global`.
   Force a screen redraw. Useful if rendering has gone wrong.
 
 * `show logs`  
-  `show music`
+  `show library`
+  `show keybindings`
+  `show windows`
 
-  Switch between different views. `music` will enable you to cycle between song lists,
-  while `logs` shows an event log of what's happened so far in your session.
+  Switch between different views.

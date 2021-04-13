@@ -48,6 +48,20 @@ All tag names are in lowercase.
 
   Log timestamps
 
+### Key bindings
+
+* `context`
+
+  Window context of keybinding.
+
+* `keyBinding`
+
+  Keybinding sequence that triggers the command.
+
+* `command`
+
+  Actual command run when completing the keybinding.
+
 ### Top bar
 
 See [below](#top-bar-variables) for corresponding variables.

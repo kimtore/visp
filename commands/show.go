@@ -2,6 +2,7 @@ package commands
 
 import (
 	"fmt"
+
 	"github.com/ambientsound/pms/api"
 	"github.com/ambientsound/pms/db"
 	"github.com/ambientsound/pms/input/lexer"
@@ -52,6 +53,8 @@ func (cmd *Show) Parse() error {
 		cmd.list = cmd.api.Library()
 	case "logs":
 		cmd.list = log.List(log.InfoLevel)
+	case "keybindings":
+		cmd.list = cmd.api.Sequencer().List()
 	default:
 		return fmt.Errorf("can't show '%s'; no such window", lit)
 	}
@@ -73,6 +76,7 @@ func (cmd *Show) Exec() error {
 // setTabCompleteVerbs sets the tab complete list to the list of available sub-commands.
 func (cmd *Show) setTabCompleteVerbs(lit string) {
 	cmd.setTabComplete(lit, []string{
+		"keybindings",
 		"library",
 		"logs",
 		"selected",

@@ -106,6 +106,11 @@ style cursor black white
 style header teal bold
 style selection white blue
 
+# Key binding styles
+style context teal
+style keyBinding white
+style command yellow dim
+
 # Topbar styles
 style deviceName teal
 style deviceType teal
@@ -193,6 +198,7 @@ bind global S single
 # Special windows
 bind global c show library
 bind global w show windows
+bind global <F1> show keybindings
 bind windows <Enter> show selected
 bind library <Enter> show selected
 bind devices <Enter> device activate

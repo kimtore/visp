@@ -70,5 +70,5 @@ func initSongTags(data *commands.TestData) {
 		"artist": "foo",
 		"title":  "bar",
 	})
-	data.Api.Songlist().Add(s)
+	//data.Api.Songlist().Add(s)
 }
