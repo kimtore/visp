@@ -22,6 +22,10 @@ Among currently implemented features are:
 * Many forms of tracklist manipulation, such as select, cut, copy, paste, filter, sort, etc.
 * Text configuration files, tab completion, history, and much more!
 
+## Screenshot
+
+![Screenshot of Visp](doc/screenshot.png)
+
 
 ## Documentation
 
