@@ -6,17 +6,17 @@
 
 Visp is an interactive console client for [Spotify](https://www.spotify.com), written in Go. Its interface is similar to Vim, and aims to be fast, configurable, and practical.
 
-This project is a fork of the [Practical Music Search](https://github.com/ambientsound/pms) project and contains a lot of the same functionality,
-and is geared towards Spotify instead of Music Player Daemon. Due to signififact differences between the Spotify and MPD APIs, a new client was created
-instead of modularizing the former. Also, the fork is a convenient opportunity to depart from the unfortunate acronym _PMS_.
+This interface has many features that involve sorting, searching, and navigating. It’s designed to let you navigate your music collection effectively and efficiently.
 
-Visp has many features that involve sorting, searching, and navigating. It’s designed to let you navigate your music collection effectively and efficiently.
+This project is a fork of [Practical Music Search](https://github.com/ambientsound/pms) and contains a lot of the same functionality,
+but is geared towards Spotify instead of Music Player Daemon. Visp was born due to significant differences between the Spotify and MPD APIs.
+Also, forking the project is a convenient opportunity to depart from the unfortunate acronym _PMS_.
 
 Among currently implemented features are:
 
 * Looks and feels like Vim!
 * Can be configured to consume a very small amount of screen space.
-* MPD player controls: play, add, pause, stop, next, prev, volume.
+* Control playback by playing or adding tracks or sets of tracks.
 * A fully customizable layout, including player status, tag headers, text styles, colors, and keyboard bindings.
 * Full access to all your private and public Spotify playlists and liked songs.
 * Many forms of tracklist manipulation, such as select, cut, copy, paste, filter, sort, etc.
@@ -37,9 +37,23 @@ Among currently implemented features are:
 Visp is _beta software_ and is a work in progress. Testers are welcome.
 
 
+## Limitations
+
+Visp requires a Spotify Premium account and will not work with free accounts.
+
+Visp is not a player, but a controller, and is thus not capable of outputting sound.
+You can run the official Spotify client in the background, play back on Spotify enabled devices,
+and if you want a headless/server setup I can recommend the excellent
+[librespot](https://github.com/librespot-org/librespot) or
+[spotifyd](https://github.com/Spotifyd/spotifyd) projects.
+
+As Visp is still beta, there are bugs and unimplemented features. These can be
+reported in the [issue tracker](https://github.com/ambientsound/visp/issues).
+
+
 ## Developing
 
-You’re assumed to have a working [Go development environment](https://golang.org/doc/install). Building PMS requires Go 1.16 or higher.
+You’re assumed to have a working [Go development environment](https://golang.org/doc/install). Building Visp requires Go 1.16 or higher.
 
 Assuming you have the `go` binary in your path, you can build Visp using:
 
@@ -56,16 +70,9 @@ If Visp crashes, and you want to report a bug, please include relevant sections 
 located in the directory where you started Visp.
 
 
-## Requirements
-
-Visp requires a Spotify Premium account and will not work with free accounts.
-
-PMS is multithreaded and benefits from multicore CPUs.
-
-
 ## Contributing
 
-See [how to contribute to PMS](CONTRIBUTING.md).
+See [how to contribute to Visp](CONTRIBUTING.md).
 
 
 ## Authors
