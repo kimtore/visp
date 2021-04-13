@@ -1,22 +1,26 @@
-# Practical Music Search
+# Visp
 
-[![Build Status](https://travis-ci.org/ambientsound/pms.svg?branch=go)](https://travis-ci.org/ambientsound/pms)
-[![Go Report Card](https://goreportcard.com/badge/github.com/ambientsound/pms)](https://goreportcard.com/report/github.com/ambientsound/pms)
-[![codecov](https://codecov.io/gh/ambientsound/pms/branch/master/graph/badge.svg)](https://codecov.io/gh/ambientsound/pms/branch/master)
-[![License](https://img.shields.io/github/license/ambientsound/pms.svg)](LICENSE)
+[![Go Report Card](https://goreportcard.com/badge/github.com/ambientsound/pms)](https://goreportcard.com/report/github.com/ambientsound/visp)
+[![codecov](https://codecov.io/gh/ambientsound/visp/branch/master/graph/badge.svg)](https://codecov.io/gh/ambientsound/visp/branch/master)
+[![License](https://img.shields.io/github/license/ambientsound/visp.svg)](LICENSE)
 
-Practical Music Search is an interactive console client for the [Music Player Daemon](https://www.musicpd.org/), written in Go. Its interface is similar to Vim, and aims to be fast, configurable, and practical.
+Visp is an interactive console client for [Spotify](https://www.spotify.com), written in Go. Its interface is similar to Vim, and aims to be fast, configurable, and practical.
 
-PMS has many features that involve sorting, searching, and navigating. It’s designed to let you navigate your music collection in an effective way. Some of the currently implemented features are:
+This project is a fork of the [Practical Music Search](https://github.com/ambientsound/pms) project and contains a lot of the same functionality,
+and is geared towards Spotify instead of Music Player Daemon. Due to signififact differences between the Spotify and MPD APIs, a new client was created
+instead of modularizing the former. Also, the fork is a convenient opportunity to depart from the unfortunate acronym _PMS_.
 
-* Vim-style look and feel!
+Visp has many features that involve sorting, searching, and navigating. It’s designed to let you navigate your music collection effectively and efficiently.
+
+Among currently implemented features are:
+
+* Looks and feels like Vim!
 * Can be configured to consume a very small amount of screen space.
 * MPD player controls: play, add, pause, stop, next, prev, volume.
-* Highly customizable top bar, tag headers, text styles, colors, and keyboard bindings.
-* Fast library search, featuring UTF-8 normalization, fuzzy search, and scoring.
-* Selecting songs, by _visual mode_, manual selection, and specific tags.
-* Many forms of tracklist manipulation, such as cut, copy, paste, filter, and sort.
-* Config files, tab completion, history, and much more!
+* A fully customizable layout, including player status, tag headers, text styles, colors, and keyboard bindings.
+* Full access to all your private and public Spotify playlists and liked songs.
+* Many forms of tracklist manipulation, such as select, cut, copy, paste, filter, sort, etc.
+* Text configuration files, tab completion, history, and much more!
 
 
 ## Documentation
@@ -26,45 +30,31 @@ PMS has many features that involve sorting, searching, and navigating. It’s de
 
 ## Project status
 
-PMS is in _alpha_ stage, and is a work in progress. A more feature complete, but older, version can be found in the `0.42.x` branch.
-
-This software was previously written in C++. The master branch now contains a rewrite, currently implemented in Go.
-The current goal of the Go implementation is to implement most of the features found in the 0.42 branch.
-
-This functionality is present in the `0.42.x` branch, but missing in master:
-
-* Automatically add songs to the queue when it is nearing end.
-* Remote playlist management.
-* ...and probably more.
+Visp is _beta software_ and is a work in progress. Testers are welcome.
 
 
-## Getting started
+## Developing
 
-You’re assumed to have a working [Go development environment](https://golang.org/doc/install). Building PMS requires Go version 1.13 or higher.
+You’re assumed to have a working [Go development environment](https://golang.org/doc/install). Building PMS requires Go 1.16 or higher.
 
-Assuming you have the `go` binary in your path, you can install PMS using:
+Assuming you have the `go` binary in your path, you can build Visp using:
 
 ```
-git clone https://github.com/ambientsound/pms
+git clone https://github.com/ambientsound/visp
 cd pms
-make install
+make
 ```
 
-This will put the binary in `$GOBIN/pms`, usually at `~/go/bin/pms`.
-You need to run PMS in a regular terminal with a TTY.
+This will put the binary in `./visp`.
+You need to run Visp in a regular terminal with a TTY.
 
-If PMS crashes, and you want to report a bug, please include the debug log:
-
-```
-pms --debug /tmp/pms.log 2>>/tmp/pms.log
-```
+If Visp crashes, and you want to report a bug, please include relevant sections of the `debug.log` file,
+located in the directory where you started Visp.
 
 
 ## Requirements
 
-PMS wants to build a search index from MPD's database. To be truly practical, PMS must support fuzzy matching, scoring, and sub-millisecond full-text searches. This is accomplished by using [Bleve](https://github.com/blevesearch/bleve), a full-text search and indexing library.
-
-A full-text search index takes up both space and memory. For a library of about 30 000 songs, you should expect using about 500 MB of disk space and around 1 GB of RAM.
+Visp requires a Spotify Premium account and will not work with free accounts.
 
 PMS is multithreaded and benefits from multicore CPUs.
 
@@ -76,10 +66,9 @@ See [how to contribute to PMS](CONTRIBUTING.md).
 
 ## Authors
 
-Copyright (c) 2006-2019 Kim Tore Jensen <<kimtjen@gmail.com>>.
+Forked from [Practical Music Search](https://github.com/ambientsound/pms), written by Kim Tore Jensen <<kimtjen@gmail.com>>, Bart Nagel <<bart@tremby.net>>, and others.
 
-* Kim Tore Jensen <<kimtjen@gmail.com>>
-* Bart Nagel <<bart@tremby.net>>
+Visp is written by Kim Tore Jensen <<kimtjen@gmail.com>>.
 
 The source code and latest version can be found at Github:
-<https://github.com/ambientsound/pms>.
+<https://github.com/ambientsound/visp>.
