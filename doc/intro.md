@@ -2,12 +2,12 @@
 
 ## Configuration
 
-By default, PMS tries to read your configuration from
-`$HOME/.config/pms/pms.conf`.
-If you defined paths in either `$XDG_CONFIG_DIRS` or `$XDG_CONFIG_HOME`, PMS will look for `pms.conf` there.
+By default, Visp tries to read your configuration from
+`$HOME/.config/visp/visp.conf`.
+If you defined paths in either `$XDG_CONFIG_DIRS` or `$XDG_CONFIG_HOME`, Visp will look for `visp.conf` there.
 
 ```
-# Sample PMS configuration file.
+# Sample Visp configuration file.
 # All whitespace, newlines, and text after a hash sign will be ignored.
 
 # The 'center' option will make sure the cursor is always centered on screen.
@@ -44,17 +44,16 @@ which are examples of [`cursor prevOf` and `cursor nextOf` commands](commands.md
 
 ## Adding tracks to the playlist
 
-A highlighted track (or selection of tracks) can be added to the current list with `a`,
-or added and played with `<Enter>`.
-(When the current playlist is focused, `<Enter>` will just play, rather than also adding a duplicate.)
+A highlighted track (or selection of tracks) can be added to the playback queue with `a`,
+or played with `<Enter>`.
 
-`x`, meanwhile, will delete the highlighted track from the list.
+`x`, meanwhile, will delete the highlighted track from the list. Note that changes aren't persisted to your Spotify library (yet).
 
 
 ## Searching for tracks
 
-PMS employs a very fast and powerful search engine called _Bleve_.
-The following is an example on how to do a search in PMS:
+Visp employs a very fast and powerful search engine called _Bleve_.
+The following is an example on how to do a search in Visp:
 
 To start a search, type `/` (or `:inputmode search`).
 The tracklist will be cleared, and a slash will appear in the statusline.
@@ -78,4 +77,4 @@ or `<Enter>` (`:play selection`) to play them immediately.
 ## Known issues
 
 If having connection problems, you might be hitting a buffer limit in MPD.
-It may help to configure your MPD server according to [configuring PMS and MPD](mpd.md).
+It may help to configure your MPD server according to [configuring Visp and MPD](mpd.md).

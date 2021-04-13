@@ -47,6 +47,8 @@ and if you want a headless/server setup I can recommend the excellent
 [librespot](https://github.com/librespot-org/librespot) or
 [spotifyd](https://github.com/Spotifyd/spotifyd) projects.
 
+Visp does not write any changes to your Spotify library yet.
+
 As Visp is still beta, there are bugs and unimplemented features. These can be
 reported in the [issue tracker](https://github.com/ambientsound/visp/issues).
 

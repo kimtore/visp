@@ -1,11 +1,11 @@
 # Commands
 
-Practical Music Search is driven by _commands_.
+Visp is driven by _commands_.
 Commands are strings of text, and can be entered in the [_multibar_](#switching-input-modes) or in configuration files.
 
-Below is a list of commands recognized by PMS, along with their parameters and description.
+Below is a list of commands recognized by Visp, along with their parameters and description.
 
-Literal text is spelled out normally. Placeholders are enclosed in `<angle brackets>`, and optional parameters are enclosed in `[square brackets]`.
+Literal text spells out normally, Placeholders enclosed in `<angle brackets>`, and optional parameters enclosed in `[square brackets]`.
 
 
 ## Move the cursor and viewport
@@ -15,7 +15,7 @@ These commands are split into `cursor` and `viewport` namespaces.
 
 * `cursor current`
 
-  Move the cursor to MPD's current track.
+  Move the cursor to the currently playing track.
 
 * `cursor up`  
   `cursor down`
@@ -196,7 +196,7 @@ The `select` commands allow the tracklist selection to be manipulated.
 
 * `play`
 
-  Play MPD's current song, or start from the beginning of the queue if there is none.
+  Start playing the queue, or resume playing the current song.
 
 * `play cursor`
 
@@ -261,7 +261,7 @@ These commands control the volume. The volume range is from 0 to 100.
   When `<Enter>` is pressed from search mode, the result is a new list containing the current search results.
 
 
-## Customizing PMS
+## Customizing Visp
 
 ### Setting global options
 
@@ -305,7 +305,7 @@ Regular keys such as letters, numbers, symbols, unicode characters, etc. will ne
 Generally, terminal applications have far less insight into keyboard activity than graphical applications,
 and therefore you should avoid depending too much on availability of modifiers or any specific keys.
 
-Contexts are a way to make key bindings context sensitive. Choose between `global`, `library`, `tracklist`, and `windows`.
+_Contexts_ are a way to make keybindings context sensitive. Choose between `global`, `library`, `tracklist`, `devices`, and `windows`.
 You can bind a key sequence to multiple contexts. The local context takes precedence, so a sequence bound to
 the `tracklist` context will always be attempted before `global`.
 
