@@ -1,5 +1,6 @@
 # Visp
 
+[![Build status](https://github.com/ambientsound/visp/actions/workflows/build.yml/badge.svg)](https://github.com/ambientsound/visp/actions)
 [![Go Report Card](https://goreportcard.com/badge/github.com/ambientsound/pms)](https://goreportcard.com/report/github.com/ambientsound/visp)
 [![codecov](https://codecov.io/gh/ambientsound/visp/branch/master/graph/badge.svg)](https://codecov.io/gh/ambientsound/visp/branch/master)
 [![License](https://img.shields.io/github/license/ambientsound/visp.svg)](LICENSE)
