@@ -14,13 +14,24 @@ and password, but works best for web applications because the Spotify App also h
 to distribute these credentials, thus you are left with two options:
 
   1) Authenticate through the official Visp Spotify App:
-     This is the default, and easiest option. (FIXME: set up as a public service)
+     This is the default option, with no setup required.
 
   2) Create your own Spotify App and run your own authentication server:
      The server code is part of this repository, is small enough to understand fairly quickly, and
      guarantees that yours truly will not be able to access your Spotify data.
      [See entry point for the server code](../cmd/visp-authproxy/main.go).
-     (FIXME: document how to run it)
+
+     To set it up, you can compile and run the visp-authproxy code, or use the
+     Docker container `ghcr.io/ambientsound/visp-authproxy`.
+
+     Configure the auth proxy with the following environment variables:
+
+     ```
+     VISP_OAUTH_CLIENT_ID=<acquired at Spotify>
+     VISP_OAUTH_CLIENT_SECRET=<acquired at Spotify>
+     VISP_OAUTH_REDIRECT_URL=http(s)://your-server/oauth/callback
+     VISP_OAUTH_LISTEN_ADDR=<IP:PORT>
+     ```
 
 The OAuth flow is as follows:
 
