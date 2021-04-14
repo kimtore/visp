@@ -78,9 +78,11 @@ func TestCommand(data *TestData) {
 		assert.NotNil(data.T, err, "Expected error when parsing '%s'", data.Test.Input)
 	}
 
-	// Test tab completes
-	completes := data.Cmd.TabComplete()
-	assert.Equal(data.T, data.Test.TabComplete, completes)
+	// Test tab completes if not skipped by nil
+	if data.Test.TabComplete != nil {
+		completes := data.Cmd.TabComplete()
+		assert.Equal(data.T, data.Test.TabComplete, completes)
+	}
 
 	// Test callback function
 	if data.Test.Callback != nil {

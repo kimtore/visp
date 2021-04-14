@@ -10,7 +10,7 @@ import (
 
 var setTests = []commands.Test{
 	// Valid forms
-	{``, true, testSetInit, nil, []string{`bar`, `baz`, `bool`, `foo`, `int`}},
+	{``, true, testSetInit, nil, nil},
 	{`foo=bar`, true, testSetInit, testFooSet(`foo`, `bar`, true), []string{}},
 	{`foo="bar baz"`, true, testSetInit, testFooSet(`foo`, `bar baz`, true), []string{}},
 	{`foo=${}|;#`, true, testSetInit, testFooSet(`foo`, `${}|;`, true), []string{}},

@@ -26,6 +26,7 @@ type testAPI struct {
 	song      *song.Song
 	songlist  songlist.Songlist
 	clipboard songlist.Songlist
+	tracklist *spotify_tracklist.List
 }
 
 func createTestSong() *song.Song {
@@ -44,6 +45,7 @@ func NewTestAPI() API {
 		messages:  make(chan message.Message, 1024),
 		song:      createTestSong(),
 		songlist:  songlist.New(),
+		tracklist: spotify_tracklist.NewFromTracks([]spotify.FullTrack{}),
 	}
 }
 
@@ -112,6 +114,7 @@ func (api *testAPI) Sequencer() *keys.Sequencer {
 }
 
 func (api *testAPI) SetList(lst list.List) {
+	api.list = lst
 }
 
 func (api *testAPI) Spotify() (*spotify.Client, error) {
@@ -135,7 +138,7 @@ func (api *testAPI) Styles() style.Stylesheet {
 }
 
 func (api *testAPI) Tracklist() *spotify_tracklist.List {
-	return nil // FIXME
+	return api.tracklist
 }
 
 func (api *testAPI) UI() UI {

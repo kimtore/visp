@@ -17,16 +17,6 @@ var selectTests = []commands.Test{
 	{`visual 1`, false, nil, nil, []string{}},
 	{`toggle 1`, false, nil, nil, []string{}},
 	{`nearby`, false, nil, nil, []string{}},
-
-	// Tab completion
-	{``, false, nil, nil, []string{
-		"nearby",
-		"toggle",
-		"visual",
-	}},
-	{`t`, false, nil, nil, []string{
-		"toggle",
-	}},
 }
 
 func TestSelect(t *testing.T) {

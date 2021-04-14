@@ -3,9 +3,8 @@ package commands_test
 import (
 	"testing"
 
-	"github.com/ambientsound/gompd/mpd"
 	"github.com/ambientsound/pms/commands"
-	"github.com/ambientsound/pms/song"
+	"github.com/ambientsound/pms/list"
 )
 
 var cursorTests = []commands.Test{
@@ -16,9 +15,9 @@ var cursorTests = []commands.Test{
 	{`up`, true, nil, nil, []string{}},
 	{`down`, true, nil, nil, []string{}},
 	// FIXME: depends on TableWidget, which is not mocked
-	//{`high`, true},
-	//{`middle`, true},
-	//{`low`, true},
+	// {`high`, true},
+	// {`middle`, true},
+	// {`low`, true},
 	{`home`, true, nil, nil, []string{}},
 	{`end`, true, nil, nil, []string{}},
 	{`current`, true, nil, nil, []string{}},
@@ -30,9 +29,9 @@ var cursorTests = []commands.Test{
 	{`up 1`, false, nil, nil, []string{}},
 	{`down 1`, false, nil, nil, []string{}},
 	// FIXME: depends on TableWidget, which is not mocked
-	//{`high 1`, false},
-	//{`middle 1`, false},
-	//{`low 1`, false},
+	// {`high 1`, false},
+	// {`middle 1`, false},
+	// {`low 1`, false},
 	{`home 1`, false, nil, nil, []string{}},
 	{`end 1`, false, nil, nil, []string{}},
 	{`current 1`, false, nil, nil, []string{}},
@@ -65,10 +64,9 @@ func TestCursor(t *testing.T) {
 }
 
 func initSongTags(data *commands.TestData) {
-	s := song.New()
-	s.SetTags(mpd.Attrs{
+	data.Api.Tracklist().Add(list.Row{
 		"artist": "foo",
 		"title":  "bar",
 	})
-	//data.Api.Songlist().Add(s)
+	data.Api.SetList(data.Api.Tracklist())
 }
