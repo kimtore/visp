@@ -3,11 +3,11 @@ package spotify_aggregator
 import (
 	"fmt"
 
-	"github.com/ambientsound/pms/options"
-	spotify_albums "github.com/ambientsound/pms/spotify/albums"
-	"github.com/ambientsound/pms/spotify/library"
-	"github.com/ambientsound/pms/spotify/playlists"
-	"github.com/ambientsound/pms/spotify/tracklist"
+	"github.com/ambientsound/visp/options"
+	spotify_albums "github.com/ambientsound/visp/spotify/albums"
+	"github.com/ambientsound/visp/spotify/library"
+	"github.com/ambientsound/visp/spotify/playlists"
+	"github.com/ambientsound/visp/spotify/tracklist"
 	"github.com/zmb3/spotify"
 )
 

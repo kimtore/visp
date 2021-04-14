@@ -1,7 +1,7 @@
 package multibar
 
 import (
-	"github.com/ambientsound/pms/log"
+	"github.com/ambientsound/visp/log"
 )
 
 // history represents a text history that can be navigated through.

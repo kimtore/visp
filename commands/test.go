@@ -4,8 +4,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ambientsound/pms/api"
-	"github.com/ambientsound/pms/input/lexer"
+	"github.com/ambientsound/visp/api"
+	"github.com/ambientsound/visp/input/lexer"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

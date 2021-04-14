@@ -1,7 +1,7 @@
 package db
 
 import (
-	"github.com/ambientsound/pms/list"
+	"github.com/ambientsound/visp/list"
 	"strconv"
 )
 

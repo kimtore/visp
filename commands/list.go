@@ -5,15 +5,15 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/ambientsound/pms/list"
-	"github.com/ambientsound/pms/log"
-	"github.com/ambientsound/pms/spotify/aggregator"
-	"github.com/ambientsound/pms/spotify/devices"
-	"github.com/ambientsound/pms/spotify/library"
+	"github.com/ambientsound/visp/list"
+	"github.com/ambientsound/visp/log"
+	"github.com/ambientsound/visp/spotify/aggregator"
+	"github.com/ambientsound/visp/spotify/devices"
+	"github.com/ambientsound/visp/spotify/library"
 	"github.com/zmb3/spotify"
 
-	"github.com/ambientsound/pms/api"
-	"github.com/ambientsound/pms/input/lexer"
+	"github.com/ambientsound/visp/api"
+	"github.com/ambientsound/visp/input/lexer"
 )
 
 // List navigates and manipulates songlists.

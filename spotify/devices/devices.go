@@ -2,8 +2,8 @@ package spotify_devices
 
 import (
 	"fmt"
-	"github.com/ambientsound/pms/list"
-	"github.com/ambientsound/pms/log"
+	"github.com/ambientsound/visp/list"
+	"github.com/ambientsound/visp/log"
 	"github.com/zmb3/spotify"
 	"strconv"
 )

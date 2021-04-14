@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/ambientsound/pms/utils"
+	"github.com/ambientsound/visp/utils"
 
 	"github.com/ambientsound/gompd/mpd"
 )

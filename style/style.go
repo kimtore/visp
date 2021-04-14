@@ -1,7 +1,7 @@
 package style
 
 import (
-	"github.com/ambientsound/pms/log"
+	"github.com/ambientsound/visp/log"
 	"github.com/gdamore/tcell"
 )
 

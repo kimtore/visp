@@ -9,7 +9,7 @@ import (
 	"net/url"
 	"time"
 
-	"github.com/ambientsound/pms/spotify/proxyserver"
+	"github.com/ambientsound/visp/spotify/proxyserver"
 	"golang.org/x/oauth2"
 )
 

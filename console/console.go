@@ -3,7 +3,7 @@
 package console
 
 import (
-	"github.com/ambientsound/pms/log"
+	"github.com/ambientsound/visp/log"
 )
 
 // Log writes a log line to the log file.

@@ -1,8 +1,8 @@
 package player
 
 import (
-	"github.com/ambientsound/pms/list"
-	"github.com/ambientsound/pms/spotify/tracklist"
+	"github.com/ambientsound/visp/list"
+	"github.com/ambientsound/visp/spotify/tracklist"
 	"github.com/zmb3/spotify"
 	"time"
 )

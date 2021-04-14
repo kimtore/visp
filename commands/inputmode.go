@@ -2,9 +2,9 @@ package commands
 
 import (
 	"fmt"
-	"github.com/ambientsound/pms/api"
-	"github.com/ambientsound/pms/input/lexer"
-	"github.com/ambientsound/pms/multibar"
+	"github.com/ambientsound/visp/api"
+	"github.com/ambientsound/visp/input/lexer"
+	"github.com/ambientsound/visp/multibar"
 )
 
 // InputMode changes the Multibar's input mode.

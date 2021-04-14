@@ -1,9 +1,9 @@
 package db
 
 import (
-	"github.com/ambientsound/pms/player"
-	"github.com/ambientsound/pms/song"
-	"github.com/ambientsound/pms/songlist"
+	"github.com/ambientsound/visp/player"
+	"github.com/ambientsound/visp/song"
+	"github.com/ambientsound/visp/songlist"
 )
 
 // Instance holds state related to mutable data within PMS, such as the current

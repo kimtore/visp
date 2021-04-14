@@ -1,7 +1,7 @@
 package widgets
 
 import (
-	"github.com/ambientsound/pms/list"
+	"github.com/ambientsound/visp/list"
 	"strings"
 	"unicode"
 )

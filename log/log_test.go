@@ -1,7 +1,7 @@
 package log_test
 
 import (
-	"github.com/ambientsound/pms/log"
+	"github.com/ambientsound/visp/log"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )

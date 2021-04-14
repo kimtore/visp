@@ -3,7 +3,7 @@ package song_test
 import (
 	"testing"
 
-	"github.com/ambientsound/pms/song"
+	"github.com/ambientsound/visp/song"
 	"github.com/stretchr/testify/assert"
 )
 

@@ -1,7 +1,7 @@
 package options_test
 
 import (
-	"github.com/ambientsound/pms/options"
+	"github.com/ambientsound/visp/options"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )

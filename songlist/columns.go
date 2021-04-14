@@ -1,8 +1,8 @@
 package songlist
 
 import (
-	"github.com/ambientsound/pms/song"
-	"github.com/ambientsound/pms/utils"
+	"github.com/ambientsound/visp/song"
+	"github.com/ambientsound/visp/utils"
 )
 
 type Column struct {

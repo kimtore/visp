@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/ambientsound/pms/list"
-	spotify_albums "github.com/ambientsound/pms/spotify/albums"
-	"github.com/ambientsound/pms/utils"
+	"github.com/ambientsound/visp/list"
+	spotify_albums "github.com/ambientsound/visp/spotify/albums"
+	"github.com/ambientsound/visp/utils"
 	"github.com/zmb3/spotify"
 )
 

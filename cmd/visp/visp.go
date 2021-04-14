@@ -8,12 +8,12 @@ import (
 	"runtime/debug"
 	"strings"
 
-	"github.com/ambientsound/pms/log"
-	"github.com/ambientsound/pms/prog"
-	"github.com/ambientsound/pms/tokencache"
-	"github.com/ambientsound/pms/version"
-	"github.com/ambientsound/pms/widgets"
-	"github.com/ambientsound/pms/xdg"
+	"github.com/ambientsound/visp/log"
+	"github.com/ambientsound/visp/prog"
+	"github.com/ambientsound/visp/tokencache"
+	"github.com/ambientsound/visp/version"
+	"github.com/ambientsound/visp/widgets"
+	"github.com/ambientsound/visp/xdg"
 )
 
 const (

@@ -2,17 +2,17 @@ package widgets
 
 import (
 	"fmt"
-	"github.com/ambientsound/pms/list"
-	"github.com/ambientsound/pms/log"
-	"github.com/ambientsound/pms/options"
-	"github.com/ambientsound/pms/spotify/devices"
-	"github.com/ambientsound/pms/spotify/tracklist"
+	"github.com/ambientsound/visp/list"
+	"github.com/ambientsound/visp/log"
+	"github.com/ambientsound/visp/options"
+	"github.com/ambientsound/visp/spotify/devices"
+	"github.com/ambientsound/visp/spotify/tracklist"
 	"math"
 	"time"
 
-	"github.com/ambientsound/pms/api"
-	"github.com/ambientsound/pms/style"
-	"github.com/ambientsound/pms/utils"
+	"github.com/ambientsound/visp/api"
+	"github.com/ambientsound/visp/style"
+	"github.com/ambientsound/visp/utils"
 
 	"github.com/gdamore/tcell"
 	"github.com/gdamore/tcell/views"

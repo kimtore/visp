@@ -1,7 +1,7 @@
 package commands
 
 import (
-	"github.com/ambientsound/pms/api"
+	"github.com/ambientsound/visp/api"
 )
 
 // Previous instructs the player to go to the previous song.

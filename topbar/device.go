@@ -3,7 +3,7 @@ package topbar
 import (
 	"strings"
 
-	"github.com/ambientsound/pms/api"
+	"github.com/ambientsound/visp/api"
 )
 
 // Device shows information about the currently playing music device.

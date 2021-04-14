@@ -3,8 +3,8 @@ package commands
 import (
 	"fmt"
 
-	"github.com/ambientsound/pms/api"
-	"github.com/ambientsound/pms/input/lexer"
+	"github.com/ambientsound/visp/api"
+	"github.com/ambientsound/visp/input/lexer"
 )
 
 // Paste inserts songs from the clipboard.

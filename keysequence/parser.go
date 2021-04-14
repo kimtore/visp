@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/ambientsound/pms/input/lexer"
-	"github.com/ambientsound/pms/parser"
+	"github.com/ambientsound/visp/input/lexer"
+	"github.com/ambientsound/visp/parser"
 	"github.com/gdamore/tcell"
 )
 

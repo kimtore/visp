@@ -8,15 +8,15 @@
 package multibar
 
 import (
-	"github.com/ambientsound/pms/log"
+	"github.com/ambientsound/visp/log"
 	"strings"
 	"unicode"
 	"unicode/utf8"
 
-	"github.com/ambientsound/pms/console"
-	"github.com/ambientsound/pms/input/lexer"
-	"github.com/ambientsound/pms/message"
-	"github.com/ambientsound/pms/utils"
+	"github.com/ambientsound/visp/console"
+	"github.com/ambientsound/visp/input/lexer"
+	"github.com/ambientsound/visp/message"
+	"github.com/ambientsound/visp/utils"
 
 	"github.com/gdamore/tcell"
 )

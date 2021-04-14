@@ -1,7 +1,7 @@
 package commands
 
 import (
-	"github.com/ambientsound/pms/api"
+	"github.com/ambientsound/visp/api"
 )
 
 // Redraw forcefully redraws the screen.

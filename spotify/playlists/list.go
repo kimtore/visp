@@ -2,7 +2,7 @@ package spotify_playlists
 
 import (
 	"fmt"
-	"github.com/ambientsound/pms/list"
+	"github.com/ambientsound/visp/list"
 	"github.com/zmb3/spotify"
 	"strconv"
 )

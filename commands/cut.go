@@ -2,9 +2,9 @@ package commands
 
 import (
 	"fmt"
-	"github.com/ambientsound/pms/log"
+	"github.com/ambientsound/visp/log"
 
-	"github.com/ambientsound/pms/api"
+	"github.com/ambientsound/visp/api"
 )
 
 // Cut removes songs from songlists.

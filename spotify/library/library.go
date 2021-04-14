@@ -5,7 +5,7 @@
 package spotify_library
 
 import (
-	"github.com/ambientsound/pms/list"
+	"github.com/ambientsound/visp/list"
 )
 
 type List struct {

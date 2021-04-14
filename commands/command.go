@@ -7,15 +7,15 @@ import (
 	"fmt"
 	"sort"
 
-	"github.com/ambientsound/pms/api"
-	"github.com/ambientsound/pms/db"
-	"github.com/ambientsound/pms/input/lexer"
-	"github.com/ambientsound/pms/parser"
-	"github.com/ambientsound/pms/spotify/devices"
-	"github.com/ambientsound/pms/spotify/library"
-	"github.com/ambientsound/pms/spotify/playlists"
-	"github.com/ambientsound/pms/spotify/tracklist"
-	"github.com/ambientsound/pms/utils"
+	"github.com/ambientsound/visp/api"
+	"github.com/ambientsound/visp/db"
+	"github.com/ambientsound/visp/input/lexer"
+	"github.com/ambientsound/visp/parser"
+	"github.com/ambientsound/visp/spotify/devices"
+	"github.com/ambientsound/visp/spotify/library"
+	"github.com/ambientsound/visp/spotify/playlists"
+	"github.com/ambientsound/visp/spotify/tracklist"
+	"github.com/ambientsound/visp/utils"
 )
 
 const (

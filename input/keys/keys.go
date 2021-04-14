@@ -2,9 +2,9 @@ package keys
 
 import (
 	"fmt"
-	"github.com/ambientsound/pms/log"
+	"github.com/ambientsound/visp/log"
 
-	"github.com/ambientsound/pms/keysequence"
+	"github.com/ambientsound/visp/keysequence"
 	"github.com/gdamore/tcell"
 )
 

@@ -3,7 +3,7 @@ package topbar
 import (
 	"fmt"
 
-	"github.com/ambientsound/pms/api"
+	"github.com/ambientsound/visp/api"
 )
 
 // List draws information about the current songlist.

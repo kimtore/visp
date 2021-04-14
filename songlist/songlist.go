@@ -8,8 +8,8 @@ import (
 
 	"github.com/ambientsound/gompd/mpd"
 
-	"github.com/ambientsound/pms/console"
-	"github.com/ambientsound/pms/song"
+	"github.com/ambientsound/visp/console"
+	"github.com/ambientsound/visp/song"
 )
 
 type Songlist interface {

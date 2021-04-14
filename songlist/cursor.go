@@ -1,7 +1,7 @@
 package songlist
 
 import (
-	"github.com/ambientsound/pms/song"
+	"github.com/ambientsound/visp/song"
 )
 
 // CursorSong returns the song currently selected by the cursor.

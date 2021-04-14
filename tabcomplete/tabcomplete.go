@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/ambientsound/pms/api"
-	"github.com/ambientsound/pms/commands"
-	"github.com/ambientsound/pms/input/lexer"
-	"github.com/ambientsound/pms/parser"
-	"github.com/ambientsound/pms/utils"
+	"github.com/ambientsound/visp/api"
+	"github.com/ambientsound/visp/commands"
+	"github.com/ambientsound/visp/input/lexer"
+	"github.com/ambientsound/visp/parser"
+	"github.com/ambientsound/visp/utils"
 )
 
 // TabComplete provides tab-complete functionality. It takes a string, which is

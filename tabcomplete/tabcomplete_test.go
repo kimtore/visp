@@ -3,9 +3,9 @@ package tabcomplete_test
 import (
 	"testing"
 
-	"github.com/ambientsound/pms/api"
-	"github.com/ambientsound/pms/commands"
-	"github.com/ambientsound/pms/tabcomplete"
+	"github.com/ambientsound/visp/api"
+	"github.com/ambientsound/visp/commands"
+	"github.com/ambientsound/visp/tabcomplete"
 	"github.com/stretchr/testify/assert"
 )
 

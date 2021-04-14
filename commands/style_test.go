@@ -3,7 +3,7 @@ package commands_test
 import (
 	"testing"
 
-	"github.com/ambientsound/pms/commands"
+	"github.com/ambientsound/visp/commands"
 )
 
 var styleTests = []commands.Test{

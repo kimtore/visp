@@ -1,4 +1,4 @@
-module github.com/ambientsound/pms
+module github.com/ambientsound/visp
 
 require (
 	github.com/ambientsound/gompd v0.0.0-20170427084842-b065d40b8238

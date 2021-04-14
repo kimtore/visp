@@ -1,8 +1,8 @@
 package api
 
 import (
-	"github.com/ambientsound/pms/list"
-	"github.com/ambientsound/pms/songlist"
+	"github.com/ambientsound/visp/list"
+	"github.com/ambientsound/visp/songlist"
 	"github.com/spf13/viper"
 )
 

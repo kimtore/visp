@@ -3,9 +3,9 @@ package commands
 import (
 	"fmt"
 
-	"github.com/ambientsound/pms/api"
-	"github.com/ambientsound/pms/input/lexer"
-	spotify_proxyclient "github.com/ambientsound/pms/spotify/proxyclient"
+	"github.com/ambientsound/visp/api"
+	"github.com/ambientsound/visp/input/lexer"
+	spotify_proxyclient "github.com/ambientsound/visp/spotify/proxyclient"
 )
 
 // Auth runs OAuth2 authentication flow against Spotify.

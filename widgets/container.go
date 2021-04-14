@@ -1,10 +1,10 @@
 package widgets
 
 import (
-	"github.com/ambientsound/pms/api"
-	"github.com/ambientsound/pms/log"
-	"github.com/ambientsound/pms/multibar"
-	"github.com/ambientsound/pms/style"
+	"github.com/ambientsound/visp/api"
+	"github.com/ambientsound/visp/log"
+	"github.com/ambientsound/visp/multibar"
+	"github.com/ambientsound/visp/style"
 	"github.com/gdamore/tcell"
 	"github.com/gdamore/tcell/views"
 )

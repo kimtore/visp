@@ -1,7 +1,7 @@
 package topbar
 
 import (
-	"github.com/ambientsound/pms/api"
+	"github.com/ambientsound/visp/api"
 )
 
 // Time draws the current song's length.

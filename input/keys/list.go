@@ -1,7 +1,7 @@
 package keys
 
 import (
-	"github.com/ambientsound/pms/list"
+	"github.com/ambientsound/visp/list"
 )
 
 func (s *Sequencer) List() list.List {

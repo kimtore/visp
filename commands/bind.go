@@ -2,12 +2,12 @@ package commands
 
 import (
 	"fmt"
-	"github.com/ambientsound/pms/input/keys"
+	"github.com/ambientsound/visp/input/keys"
 	"strings"
 
-	"github.com/ambientsound/pms/api"
-	"github.com/ambientsound/pms/input/lexer"
-	"github.com/ambientsound/pms/keysequence"
+	"github.com/ambientsound/visp/api"
+	"github.com/ambientsound/visp/input/lexer"
+	"github.com/ambientsound/visp/keysequence"
 )
 
 // Bind maps a key sequence to the execution of a command.

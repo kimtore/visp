@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/ambientsound/pms/input/lexer"
+	"github.com/ambientsound/visp/input/lexer"
 )
 
 // Token represent a token: classification and literal text

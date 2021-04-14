@@ -4,8 +4,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ambientsound/pms/input/lexer"
-	"github.com/ambientsound/pms/keysequence"
+	"github.com/ambientsound/visp/input/lexer"
+	"github.com/ambientsound/visp/keysequence"
 	"github.com/gdamore/tcell"
 	"github.com/stretchr/testify/assert"
 )

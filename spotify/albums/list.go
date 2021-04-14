@@ -3,7 +3,7 @@ package spotify_albums
 import (
 	"strings"
 
-	"github.com/ambientsound/pms/list"
+	"github.com/ambientsound/visp/list"
 	"github.com/zmb3/spotify"
 )
 

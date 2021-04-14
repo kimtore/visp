@@ -1,8 +1,8 @@
 package topbar
 
 import (
-	"github.com/ambientsound/pms/api"
-	"github.com/ambientsound/pms/player"
+	"github.com/ambientsound/visp/api"
+	"github.com/ambientsound/visp/player"
 )
 
 var stateStrings = map[string]string{

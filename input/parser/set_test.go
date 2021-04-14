@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/ambientsound/pms/input/parser"
+	"github.com/ambientsound/visp/input/parser"
 	"github.com/stretchr/testify/assert"
 )
 

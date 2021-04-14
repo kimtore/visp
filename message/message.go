@@ -4,7 +4,7 @@ package message
 import (
 	"fmt"
 
-	"github.com/ambientsound/pms/console"
+	"github.com/ambientsound/visp/console"
 )
 
 // Message is a message passed from anywhere inside PMS, relayed to the user

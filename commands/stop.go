@@ -3,7 +3,7 @@ package commands
 import (
 	"fmt"
 
-	"github.com/ambientsound/pms/api"
+	"github.com/ambientsound/visp/api"
 )
 
 // Stop stops song playback in MPD.

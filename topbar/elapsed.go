@@ -3,8 +3,8 @@ package topbar
 import (
 	"fmt"
 
-	"github.com/ambientsound/pms/api"
-	"github.com/ambientsound/pms/utils"
+	"github.com/ambientsound/visp/api"
+	"github.com/ambientsound/visp/utils"
 )
 
 // Elapsed draws the current song's elapsed time.

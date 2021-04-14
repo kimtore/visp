@@ -1,9 +1,9 @@
 package commands
 
 import (
-	"github.com/ambientsound/pms/player"
+	"github.com/ambientsound/visp/player"
 
-	"github.com/ambientsound/pms/api"
+	"github.com/ambientsound/visp/api"
 )
 
 // Seek seeks forwards or backwards in the currently playing track.

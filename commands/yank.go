@@ -3,7 +3,7 @@ package commands
 import (
 	"fmt"
 
-	"github.com/ambientsound/pms/api"
+	"github.com/ambientsound/visp/api"
 )
 
 // Yank copies tracks from the songlist into the clipboard.

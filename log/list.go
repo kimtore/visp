@@ -1,7 +1,7 @@
 package log
 
 import (
-	"github.com/ambientsound/pms/list"
+	"github.com/ambientsound/visp/list"
 )
 
 var logLineList map[Level]list.List

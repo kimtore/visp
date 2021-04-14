@@ -1,9 +1,9 @@
 package keys_test
 
 import (
-	"github.com/ambientsound/pms/commands"
-	"github.com/ambientsound/pms/input/keys"
-	"github.com/ambientsound/pms/keysequence"
+	"github.com/ambientsound/visp/commands"
+	"github.com/ambientsound/visp/input/keys"
+	"github.com/ambientsound/visp/keysequence"
 	"github.com/gdamore/tcell"
 	"github.com/stretchr/testify/assert"
 	"testing"

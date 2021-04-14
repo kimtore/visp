@@ -1,7 +1,7 @@
 package commands
 
 import (
-	"github.com/ambientsound/pms/api"
+	"github.com/ambientsound/visp/api"
 )
 
 // Pause toggles play/paused state.

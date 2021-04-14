@@ -1,9 +1,9 @@
 package commands
 
 import (
-	"github.com/ambientsound/pms/api"
-	"github.com/ambientsound/pms/input/lexer"
-	"github.com/ambientsound/pms/list"
+	"github.com/ambientsound/visp/api"
+	"github.com/ambientsound/visp/input/lexer"
+	"github.com/ambientsound/visp/list"
 	"strings"
 )
 

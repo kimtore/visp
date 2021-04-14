@@ -3,8 +3,8 @@ package commands_test
 import (
 	"testing"
 
-	"github.com/ambientsound/pms/commands"
-	"github.com/ambientsound/pms/list"
+	"github.com/ambientsound/visp/commands"
+	"github.com/ambientsound/visp/list"
 )
 
 var cursorTests = []commands.Test{

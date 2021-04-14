@@ -3,10 +3,10 @@ package commands
 import (
 	"fmt"
 
-	"github.com/ambientsound/pms/spotify/tracklist"
+	"github.com/ambientsound/visp/spotify/tracklist"
 	"github.com/zmb3/spotify"
 
-	"github.com/ambientsound/pms/api"
+	"github.com/ambientsound/visp/api"
 )
 
 // Add plays songs in the MPD playlist.

@@ -1,8 +1,8 @@
 package commands
 
 import (
-	"github.com/ambientsound/pms/api"
-	"github.com/ambientsound/pms/keysequence"
+	"github.com/ambientsound/visp/api"
+	"github.com/ambientsound/visp/keysequence"
 )
 
 // Unbind unmaps a key sequence.

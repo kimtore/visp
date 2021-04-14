@@ -4,8 +4,8 @@ import (
 	"fmt"
 
 	"github.com/ambientsound/gompd/mpd"
-	"github.com/ambientsound/pms/console"
-	"github.com/ambientsound/pms/song"
+	"github.com/ambientsound/visp/console"
+	"github.com/ambientsound/visp/song"
 )
 
 // Queue is a Songlist which represents the MPD play queue.

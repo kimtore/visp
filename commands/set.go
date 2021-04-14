@@ -2,13 +2,13 @@ package commands
 
 import (
 	"fmt"
-	"github.com/ambientsound/pms/log"
+	"github.com/ambientsound/visp/log"
 	"strings"
 
-	"github.com/ambientsound/pms/api"
-	"github.com/ambientsound/pms/input/lexer"
-	"github.com/ambientsound/pms/input/parser"
-	"github.com/ambientsound/pms/options"
+	"github.com/ambientsound/visp/api"
+	"github.com/ambientsound/visp/input/lexer"
+	"github.com/ambientsound/visp/input/parser"
+	"github.com/ambientsound/visp/options"
 )
 
 // Set manipulates a Options table by parsing input tokens from the "set" command.

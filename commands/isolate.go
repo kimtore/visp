@@ -2,14 +2,14 @@ package commands
 
 import (
 	"fmt"
-	"github.com/ambientsound/pms/log"
-	"github.com/ambientsound/pms/options"
-	"github.com/ambientsound/pms/spotify/aggregator"
+	"github.com/ambientsound/visp/log"
+	"github.com/ambientsound/visp/options"
+	"github.com/ambientsound/visp/spotify/aggregator"
 	"github.com/google/uuid"
 	"strconv"
 	"strings"
 
-	"github.com/ambientsound/pms/api"
+	"github.com/ambientsound/visp/api"
 )
 
 var (

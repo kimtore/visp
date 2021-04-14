@@ -1,7 +1,7 @@
 package widgets_test
 
 import (
-	"github.com/ambientsound/pms/widgets"
+	"github.com/ambientsound/visp/widgets"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )

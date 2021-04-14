@@ -1,7 +1,7 @@
 package topbar
 
 import (
-	"github.com/ambientsound/pms/api"
+	"github.com/ambientsound/visp/api"
 )
 
 // Tag draws song tags from the currently playing song.

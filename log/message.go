@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/ambientsound/pms/list"
+	"github.com/ambientsound/visp/list"
 )
 
 // Message is a message passed from anywhere inside PMS, relayed to the user

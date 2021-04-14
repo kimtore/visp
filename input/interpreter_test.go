@@ -4,8 +4,8 @@ import (
 	"github.com/spf13/viper"
 	"testing"
 
-	"github.com/ambientsound/pms/api"
-	"github.com/ambientsound/pms/input"
+	"github.com/ambientsound/visp/api"
+	"github.com/ambientsound/visp/input"
 	"github.com/stretchr/testify/assert"
 )
 

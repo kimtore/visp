@@ -2,10 +2,10 @@ package commands
 
 import (
 	"fmt"
-	"github.com/ambientsound/pms/api"
-	"github.com/ambientsound/pms/input/lexer"
-	"github.com/ambientsound/pms/log"
-	"github.com/ambientsound/pms/spotify/devices"
+	"github.com/ambientsound/visp/api"
+	"github.com/ambientsound/visp/input/lexer"
+	"github.com/ambientsound/visp/log"
+	"github.com/ambientsound/visp/spotify/devices"
 	"github.com/zmb3/spotify"
 )
 

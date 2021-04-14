@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/ambientsound/pms/api"
-	"github.com/ambientsound/pms/commands"
-	"github.com/ambientsound/pms/input/lexer"
+	"github.com/ambientsound/visp/api"
+	"github.com/ambientsound/visp/commands"
+	"github.com/ambientsound/visp/input/lexer"
 )
 
 // Interpreter reads user input, tokenizes it, and dispatches the tokens to their respective commands.

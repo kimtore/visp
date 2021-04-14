@@ -1,8 +1,8 @@
 package topbar
 
 import (
-	"github.com/ambientsound/pms/api"
-	"github.com/ambientsound/pms/version"
+	"github.com/ambientsound/visp/api"
+	"github.com/ambientsound/visp/version"
 )
 
 // Shortname draws the short name of this application, as defined in the version module.

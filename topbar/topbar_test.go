@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ambientsound/pms/topbar"
+	"github.com/ambientsound/visp/topbar"
 	"github.com/stretchr/testify/assert"
 )
 

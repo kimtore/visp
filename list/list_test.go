@@ -1,7 +1,7 @@
 package list_test
 
 import (
-	"github.com/ambientsound/pms/list"
+	"github.com/ambientsound/visp/list"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )

@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/ambientsound/pms/spotify/proxyserver"
+	"github.com/ambientsound/visp/spotify/proxyserver"
 	log "github.com/sirupsen/logrus"
 )
 
