@@ -24,6 +24,7 @@ jobs:
           make test-coverage
           bash <(curl -s https://codecov.io/bash)
   build:
+    if: ${{ github.ref == 'refs/heads/master' }}
     needs:
       - test
     runs-on: ubuntu-latest
@@ -44,7 +45,7 @@ jobs:
         uses: actions/create-release@v1
         with:
           tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          release_name: Visp ${{ github.sha }}
           draft: false
           prerelease: false
       - name: Upload linux-amd64 binary
