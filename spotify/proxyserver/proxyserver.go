@@ -130,6 +130,8 @@ func Router(handler *Handler) chi.Router {
 	router := chi.NewRouter()
 
 	router.Use(middleware.Logger)
+	router.Use(middleware.NoCache)
+
 	router.Get(loginURL, handler.ServeLogin)
 	router.Get(callbackURL, handler.ServeCallback)
 	router.Post(RefreshURL, handler.RefreshCallback)
