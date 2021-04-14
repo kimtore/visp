@@ -1,3 +1,5 @@
 coverage.txt
 go.sum
-visp
+bin/
+.idea
+debug.log
