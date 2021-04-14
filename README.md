@@ -1,7 +1,7 @@
 # Visp
 
 [![Build status](https://github.com/ambientsound/visp/actions/workflows/build.yml/badge.svg)](https://github.com/ambientsound/visp/actions)
-[![Go Report Card](https://goreportcard.com/badge/github.com/ambientsound/pms)](https://goreportcard.com/report/github.com/ambientsound/visp)
+[![Go Report Card](https://goreportcard.com/badge/github.com/ambientsound/visp)](https://goreportcard.com/report/github.com/ambientsound/visp)
 [![codecov](https://codecov.io/gh/ambientsound/visp/branch/master/graph/badge.svg)](https://codecov.io/gh/ambientsound/visp/branch/master)
 [![License](https://img.shields.io/github/license/ambientsound/visp.svg)](LICENSE)
 
@@ -62,11 +62,11 @@ Assuming you have the `go` binary in your path, you can build Visp using:
 
 ```
 git clone https://github.com/ambientsound/visp
-cd pms
+cd visp
 make
 ```
 
-This will put the binary in `./visp`.
+This will put the binary in `./bin/visp`.
 You need to run Visp in a regular terminal with a TTY.
 
 If Visp crashes, and you want to report a bug, please include relevant sections of the `debug.log` file,
@@ -80,7 +80,9 @@ See [how to contribute to Visp](CONTRIBUTING.md).
 
 ## Authors
 
-Forked from [Practical Music Search](https://github.com/ambientsound/pms), written by Kim Tore Jensen <<kimtjen@gmail.com>>, Bart Nagel <<bart@tremby.net>>, and others.
+Forked from [Practical Music Search](https://github.com/ambientsound/pms),
+written by Kim Tore Jensen <<kimtjen@gmail.com>>, Bart Nagel <<bart@tremby.net>>,
+and [others](https://github.com/ambientsound/pms/graphs/contributors).
 
 Visp is written by Kim Tore Jensen <<kimtjen@gmail.com>>.
 
