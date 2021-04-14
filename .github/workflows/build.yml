@@ -51,20 +51,20 @@ jobs:
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./bin/linux-amd64
-          asset_name: linux-amd64
+          asset_path: bin/visp-linux-amd64
+          asset_name: visp-linux-amd64
           asset_content_type: application/octet-stream
       - name: Upload darwin-amd64 binary
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./bin/darwin-amd64
-          asset_name: darwin-amd64
+          asset_path: bin/visp-darwin-amd64
+          asset_name: visp-darwin-amd64
           asset_content_type: application/octet-stream
       - name: Upload windows-amd64 binary
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./bin/windows-amd64
-          asset_name: windows-amd64
+          asset_path: bin/visp-windows-amd64
+          asset_name: visp-windows-amd64
           asset_content_type: application/octet-stream
