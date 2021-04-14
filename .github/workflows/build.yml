@@ -27,19 +27,44 @@ jobs:
     needs:
       - test
     runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-go@v2
         with:
           go-version: ${{ env.go_version }}
-      - name: download dependencies
+      - name: Download dependencies
         run: |
           go mod download
-      - name: build binaries
+      - name: Build binaries
         run: make linux-amd64 darwin-amd64 windows-amd64
-      - name: upload
-        uses: actions/upload-artifact@v2
+      - name: Create release
+        id: create_release
+        uses: actions/create-release@v1
         with:
-          name: latest
-          path: bin/*
-          if-no-files-found: error
+          tag_name: latest
+          release_name: latest
+          draft: false
+          prerelease: false
+      - name: Upload linux-amd64 binary
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./bin/linux-amd64
+          asset_name: linux-amd64
+          asset_content_type: application/octet-stream
+      - name: Upload darwin-amd64 binary
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./bin/darwin-amd64
+          asset_name: darwin-amd64
+          asset_content_type: application/octet-stream
+      - name: Upload windows-amd64 binary
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./bin/windows-amd64
+          asset_name: windows-amd64
+          asset_content_type: application/octet-stream
