@@ -1,0 +1,46 @@
+name: Test, build and release
+on:
+  push:
+    paths:
+      - 'Makefile'
+      - 'go.mod'
+      - '**.go'
+      - '.github/workflows/build.yml'
+env:
+  go_version: '1.16'
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-go@v2
+        with:
+          go-version: ${{ env.go_version }}
+      - name: run tests
+        run: |
+          #apt update
+          #apt install -y build-essential
+          go mod download
+          make test
+  build:
+    needs:
+      - test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-go@v2
+        with:
+          go-version: ${{ env.go_version }}
+      - name: download dependencies
+        run: |
+          #apt update
+          #apt install -y build-essential git
+          go mod download
+      - name: build binaries
+        run: make linux-amd64 darwin-amd64 windows-amd64
+      - name: upload
+        uses: actions/upload-artifact@v2
+        with:
+          name: latest
+          path: bin/*
+          if-no-files-found: error
