@@ -1,4 +1,4 @@
-coverage.txt
+cover.out
 go.sum
 bin/
 .idea

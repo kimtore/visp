@@ -17,11 +17,12 @@ jobs:
         with:
           go-version: ${{ env.go_version }}
       - name: run tests
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         run: |
-          #apt update
-          #apt install -y build-essential
           go mod download
-          make test
+          make test-coverage
+          bash <(curl -s https://codecov.io/bash)
   build:
     needs:
       - test
@@ -33,8 +34,6 @@ jobs:
           go-version: ${{ env.go_version }}
       - name: download dependencies
         run: |
-          #apt update
-          #apt install -y build-essential git
           go mod download
       - name: build binaries
         run: make linux-amd64 darwin-amd64 windows-amd64
