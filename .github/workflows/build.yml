@@ -9,7 +9,7 @@ on:
       - 'Dockerfile*'
 env:
   go_version: '1.16'
-  authproxy_image: docker.pkg.github.com/${{ github.repository }}/visp-authproxy
+  authproxy_image: ghcr.io/ambientsound/visp-authproxy
 
 jobs:
   test:
@@ -37,7 +37,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          docker login docker.pkg.github.com -u ${GITHUB_REPOSITORY} -p ${GITHUB_TOKEN}
+          docker login ghcr.io -u ${GITHUB_REPOSITORY} -p ${GITHUB_TOKEN}
           docker push ${authproxy_image}:latest
   build:
     if: ${{ github.ref == 'refs/heads/master' }}
