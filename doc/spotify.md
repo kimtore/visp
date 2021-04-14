@@ -19,7 +19,7 @@ to distribute these credentials, thus you are left with two options:
   2) Create your own Spotify App and run your own authentication server:
      The server code is part of this repository, is small enough to understand fairly quickly, and
      guarantees that yours truly will not be able to access your Spotify data.
-     [See entry point for the server code](../cmd/visp-oauth/main.go).
+     [See entry point for the server code](../cmd/visp-authproxy/main.go).
      (FIXME: document how to run it)
 
 The OAuth flow is as follows:
