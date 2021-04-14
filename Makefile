@@ -7,6 +7,9 @@ LDFLAGS := -ldflags="-X github.com/ambientsound/visp/version.Version=${VERSION} 
 visp:
 	go build ${LDFLAGS} -o bin/visp cmd/visp/visp.go
 
+visp-authproxy:
+	go build ${LDFLAGS} -o bin/visp-authproxy cmd/visp-authproxy/main.go
+
 test:
 	go test ./...
 
