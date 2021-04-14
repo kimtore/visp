@@ -7,6 +7,7 @@ ENV CGO_ENABLED=0
 ENV GO111MODULE=on
 COPY . /src
 WORKDIR /src
+RUN go mod download
 RUN go build -o bin/visp-authproxy cmd/visp-authproxy/main.go
 
 FROM alpine:3.13
