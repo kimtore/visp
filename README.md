@@ -23,19 +23,19 @@ Among currently implemented features are:
 * Many forms of tracklist manipulation, such as select, cut, copy, paste, filter, sort, etc.
 * Text configuration files, tab completion, history, and much more!
 
+
 ## Screenshot
 
 ![Screenshot of Visp](doc/screenshot.png)
 
 
-## Documentation
+## Getting started
 
-[Documentation](doc/README.md) is available in the project repository.
-
-
-## Project status
+Downloads for Linux, Mac OS X and Windows can be found on the [releases](https://github.com/ambientsound/visp/releases) page.
 
 Visp is _beta software_ and is a work in progress. Testers are welcome.
+
+[Documentation](doc/README.md) is available in the project repository.
 
 
 ## Limitations
