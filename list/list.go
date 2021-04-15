@@ -37,8 +37,10 @@ type List interface {
 	Metadata
 	Selectable
 	Add(Row)
+	All() []Row
 	Clear()
 	InRange(int) bool
+	InsertList(source List, position int) error
 	Keys() []string
 	Len() int
 	Lock()
@@ -129,6 +131,14 @@ func (s *Base) Add(row Row) {
 		}
 		s.columns[k].Add(v)
 	}
+}
+
+func (s *Base) All() []Row {
+	rows := make([]Row, len(s.rows))
+	for i := 0; i < len(rows); i++ {
+		rows[i] = s.rows[i]
+	}
+	return rows
 }
 
 func (s *Base) Row(n int) Row {
@@ -238,6 +248,25 @@ func (s *Base) Updated() time.Time {
 // SetUpdated sets the update timestamp of the songlist.
 func (s *Base) SetUpdated() {
 	s.updated = time.Now()
+}
+
+func (s *Base) InsertList(source List, position int) error {
+	sourceRows := source.All()
+	if s.Len() == 0 {
+		s.rows = sourceRows
+	} else if position == 0 {
+		s.rows = append(sourceRows, s.rows...)
+	} else if position == s.Len() {
+		s.rows = append(s.rows, sourceRows...)
+	} else if s.InRange(position) {
+		s.rows = append(s.rows[:position], append(sourceRows, s.rows[position:]...)...)
+	} else {
+		return fmt.Errorf("out of range")
+	}
+
+	s.SetUpdated()
+
+	return nil
 }
 
 // NextOf searches forwards or backwards for rows having different values in the specified tags.

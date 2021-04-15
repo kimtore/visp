@@ -58,3 +58,7 @@ func (clipboard *List) Current() list.List {
 func (clipboard *List) Get(id string) list.List {
 	return clipboard.lists[id]
 }
+
+func (clipboard *List) Active() list.List {
+	return clipboard.active
+}
