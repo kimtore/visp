@@ -41,7 +41,7 @@ func (cmd *Yank) Exec() error {
 
 	selection.SetVisibleColumns(cmd.list.ColumnNames())
 
-	cmd.api.Clipboards().Insert(&selection)
+	cmd.api.Clipboards().Insert(selection)
 	log.Infof("%d songs stored in %s", selection.Len(), selection.Name())
 
 	cmd.list.ClearSelection()

@@ -57,7 +57,7 @@ func (cmd *Cut) Exec() error {
 
 	selection.SetVisibleColumns(cmd.list.ColumnNames())
 
-	cmd.api.Clipboards().Insert(&selection)
+	cmd.api.Clipboards().Insert(selection)
 
 	log.Infof("%d fewer songs; stored in %s", ln, selection.Name())
 

@@ -23,25 +23,26 @@ func New() *List {
 	return this
 }
 
-func Row(lst list.List) list.Row {
-	return list.NewRow(lst.ID(), map[string]string{
-		"name": lst.Name(),
-		"size": strconv.Itoa(lst.Len()),
-	})
+func NewRow(lst list.List) list.Row {
+	return &Row{
+		BaseRow: list.NewRow(lst.ID(), map[string]string{
+			"name": lst.Name(),
+			"size": strconv.Itoa(lst.Len()),
+		}),
+		list: lst,
+	}
 }
 
 // Cache adds a list to the database. Returns the row number of the list.
 func (s *List) Cache(lst list.List) int {
-	existing, ok := s.lists[lst.ID()]
-	s.lists[lst.ID()] = lst
-	if !ok {
-		s.Add(Row(lst))
+	existing := s.RowByID(lst.ID())
+	if existing == nil {
+		s.Add(NewRow(lst))
 		return s.Len() - 1
+	} else {
+		n, _ := s.RowNum(lst.ID())
+		return n
 	}
-	rown, _ := s.RowNum(existing.ID())
-	row := s.Row(rown)
-	row.Fields()["size"] = Row(existing).Fields()["size"]
-	return rown
 }
 
 func (s *List) Current() list.List {
@@ -49,9 +50,13 @@ func (s *List) Current() list.List {
 	if row == nil {
 		return nil
 	}
-	return s.lists[row.ID()]
+	return row.(*Row).List()
 }
 
 func (s *List) List(id string) list.List {
-	return s.lists[id]
+	row := s.RowByID(id)
+	if row == nil {
+		return nil
+	}
+	return row.(*Row).List()
 }

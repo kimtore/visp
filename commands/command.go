@@ -80,6 +80,8 @@ var Verbs = map[string]func(api.API) Command{
 	"update":    NewUpdate,
 	"viewport":  NewViewport,
 	"volume":    NewVolume,
+	"w":         NewWrite,
+	"write":     NewWrite,
 	"yank":      NewYank,
 	// "list":      NewList,
 }

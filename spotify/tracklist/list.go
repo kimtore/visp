@@ -169,7 +169,7 @@ func (l *List) CursorTrack() *spotify.FullTrack {
 }
 
 // Selection returns all the selected songs as a new track list.
-func (l *List) Selection() List {
+func (l *List) Selection() *List {
 	indices := l.SelectionIndices()
 	tracks := make([]spotify.FullTrack, len(indices))
 
@@ -177,7 +177,17 @@ func (l *List) Selection() List {
 		tracks[i] = l.Row(index).(*Row).Track()
 	}
 
-	return *NewFromTracks(tracks)
+	return NewFromTracks(tracks)
+}
+
+func (l *List) Copy() *List {
+	this := &List{}
+	this.Clear()
+	this.SetVisibleColumns(l.VisibleColumns())
+	for _, row := range l.All() {
+		this.Add(row)
+	}
+	return this
 }
 
 func (l *List) Tracks() []spotify.FullTrack {

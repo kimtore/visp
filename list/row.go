@@ -8,6 +8,7 @@ const (
 
 type Row interface {
 	ID() string
+	SetID(string)
 	Fields() map[string]string
 	SetFields(map[string]string)
 	Keys() []string
