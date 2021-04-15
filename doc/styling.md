@@ -110,6 +110,10 @@ See [below](#top-bar-variables) for corresponding variables.
 
   Corresponds to `${mode}`.
 
+* `syncStatus`
+
+  Corresponds to `${syncStatus}`.
+  
 * `tagMissing`
 
   The color used for tag styling when the tag is missing.
@@ -208,6 +212,10 @@ Borders are added for emphasis, and are not part of the rendered text.
 
 #### Playback state
 
+* `${syncStatus}`
+
+  Shows a `[+]` sign if the visible tracklist represents a real Spotify playlist, and the local copy differs.
+  
 * `${state}`
 
   The current player state, represented as a two-character ASCII art.

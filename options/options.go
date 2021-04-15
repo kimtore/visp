@@ -78,7 +78,7 @@ const Defaults string = `
 set nocenter
 set columns=artist,title,track,album,year,time,popularity
 set sort=track,disc,album,year,albumArtist
-set topbar="${tag|artist} - ${tag|title}|$shortname $version|$elapsed $state $time;\\#${tag|track} ${tag|album}|${list|title} [${list|index}/${list|total}]|$device $mode $volume;;"
+set topbar="${tag|artist} - ${tag|title}|$shortname $version|$elapsed $state $time;\\#${tag|track} ${tag|album}|${list|title} [${list|index}/${list|total}] ${synced}|$device $mode $volume;;"
 set spotifyauthserver="https://visp.site"
 set limit=50
 set pollinterval=10
@@ -123,6 +123,7 @@ style mute red
 style shortName bold
 style state default
 style switches teal
+style syncStatus red dim
 style tagMissing red
 style topbar darkgray
 style version gray

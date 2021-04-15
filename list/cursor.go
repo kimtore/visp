@@ -19,7 +19,6 @@ func (s *Base) SetCursor(i int) {
 	s.cursor = i
 	s.ValidateCursor(0, s.Len()-1)
 	s.expandVisualSelection()
-	s.SetUpdated()
 }
 
 // SetCursor moves the cursor to the row with the specified ID.
@@ -45,10 +44,8 @@ func (s *Base) CursorRow() Row {
 func (s *Base) ValidateCursor(ymin, ymax int) {
 	if s.Cursor() < ymin {
 		s.cursor = ymin
-		s.SetUpdated()
 	}
 	if s.Cursor() > ymax {
 		s.cursor = ymax
-		s.SetUpdated()
 	}
 }

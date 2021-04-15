@@ -3,6 +3,7 @@ package spotify_tracklist
 import (
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/ambientsound/visp/list"
 	spotify_albums "github.com/ambientsound/visp/spotify/albums"
@@ -12,6 +13,8 @@ import (
 
 type List struct {
 	list.Base
+	remote   bool
+	syncTime time.Time
 }
 
 var _ list.List = &List{}

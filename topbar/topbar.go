@@ -28,6 +28,7 @@ var fragments = map[string]func(api.API, string) Fragment{
 	"time":      NewTime,
 	"version":   NewVersion,
 	"volume":    NewVolume,
+	"synced":    NewSyncStatus,
 }
 
 // NewFragment constructs a new Fragment based on a parsed topbar fragment statement.

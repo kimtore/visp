@@ -81,6 +81,7 @@ func (s *Base) Clear() {
 	s.visibleColumns = make([]string, 0)
 	s.columns = make(map[string]*Column)
 	s.ClearSelection()
+	s.SetUpdated()
 }
 
 func (s *Base) ID() string {
@@ -131,6 +132,7 @@ func (s *Base) Add(row Row) {
 		}
 		s.columns[k].Add(v)
 	}
+	s.SetUpdated()
 }
 
 func (s *Base) All() []Row {
@@ -215,6 +217,7 @@ func (s *Base) Sort(cols []string) error {
 	}
 
 	s.SetCursor(rowNum)
+	s.SetUpdated()
 
 	return nil
 }
@@ -311,6 +314,8 @@ func (s *Base) Remove(index int) error {
 		s.rows = append(s.rows[:index], s.rows[index+1:]...)
 	}
 
+	s.SetUpdated()
+
 	return nil
 }
 
@@ -319,10 +324,20 @@ func (s *Base) Remove(index int) error {
 func (s *Base) RemoveIndices(indices []int) error {
 	// Ensure that indices are removed in reverse order
 	sort.Sort(sort.Reverse(sort.IntSlice(indices)))
+
+	removed := 0
+	defer func() {
+		if removed > 0 {
+			s.SetUpdated()
+		}
+	}()
+
 	for _, i := range indices {
 		if err := s.Remove(i); err != nil {
 			return err
 		}
+		removed++
 	}
+
 	return nil
 }

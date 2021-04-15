@@ -66,6 +66,8 @@ func ListWithID(client spotify.Client, id string, limit int) (*spotify_tracklist
 
 	lst.SetName(fmt.Sprintf("%s by %s", playlist.Name, playlist.Owner.DisplayName))
 	lst.SetID(id)
+	lst.SetRemote(true)
+	lst.SetSyncedToRemote()
 	lst.SetVisibleColumns(options.GetList(options.Columns))
 
 	return lst, nil

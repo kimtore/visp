@@ -1,9 +1,9 @@
 package topbar
 
 import (
-"bytes"
+	"bytes"
 
-"github.com/ambientsound/visp/api"
+	"github.com/ambientsound/visp/api"
 )
 
 // Mode draws the four player modes as single characters.
