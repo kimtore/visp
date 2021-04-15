@@ -3,6 +3,7 @@ package api
 
 import (
 	"github.com/ambientsound/gompd/mpd"
+	"github.com/ambientsound/visp/clipboard"
 	"github.com/ambientsound/visp/db"
 	"github.com/ambientsound/visp/input/keys"
 	"github.com/ambientsound/visp/list"
@@ -22,6 +23,9 @@ import (
 type API interface {
 	// Authenticate starts OAuth authentication.
 	Authenticate(token *oauth2.Token) error
+
+	// Clipboards is a list of clipboards.
+	Clipboards() *clipboard.List
 
 	// Db returns the PMS database.
 	Db() *db.List

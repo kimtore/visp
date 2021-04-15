@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/ambientsound/visp/api"
+	"github.com/ambientsound/visp/clipboard"
 	"github.com/ambientsound/visp/commands"
 	"github.com/ambientsound/visp/db"
 	"github.com/ambientsound/visp/input"
@@ -19,7 +20,6 @@ import (
 	"github.com/ambientsound/visp/multibar"
 	"github.com/ambientsound/visp/options"
 	"github.com/ambientsound/visp/player"
-	"github.com/ambientsound/visp/songlist"
 	"github.com/ambientsound/visp/spotify/aggregator"
 	"github.com/ambientsound/visp/spotify/library"
 	spotify_proxyclient "github.com/ambientsound/visp/spotify/proxyclient"
@@ -42,7 +42,7 @@ type Visp struct {
 	Tokencache tokencache.Tokencache
 
 	client       *spotify.Client
-	clipboard    *songlist.BaseSonglist
+	clipboards    *clipboard.List
 	commands     chan string
 	db           *db.List
 	interpreter  *input.Interpreter
@@ -64,6 +64,7 @@ func (v *Visp) Init() {
 		return tabcomplete.New(in, v)
 	}
 	v.db = db.New()
+	v.clipboards = clipboard.New()
 	v.commands = make(chan string, 1024)
 	v.interpreter = input.NewCLI(v)
 	v.library = spotify_library.New()

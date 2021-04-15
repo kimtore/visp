@@ -1,8 +1,9 @@
 package db
 
 import (
-	"github.com/ambientsound/visp/list"
 	"strconv"
+
+	"github.com/ambientsound/visp/list"
 )
 
 type List struct {

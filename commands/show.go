@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/ambientsound/visp/api"
+	"github.com/ambientsound/visp/clipboard"
 	"github.com/ambientsound/visp/db"
 	"github.com/ambientsound/visp/input/lexer"
 	"github.com/ambientsound/visp/list"
@@ -42,10 +43,12 @@ func (cmd *Show) Parse() error {
 		switch lst := cmd.api.List().(type) {
 		case *db.List:
 			cmd.list = lst.Current()
+		case *clipboard.List:
+			cmd.list = lst.Current()
 		case *spotify_library.List:
 			cmd.text = lst.CursorRow().ID()
 		default:
-			return fmt.Errorf("`show selected` may only be used inside the windows and library views")
+			return fmt.Errorf("`show selected` may only be used inside the windows, library, and clipboard views")
 		}
 	case "windows":
 		cmd.list = cmd.api.Db()
@@ -55,6 +58,8 @@ func (cmd *Show) Parse() error {
 		cmd.list = log.List(log.InfoLevel)
 	case "keybindings":
 		cmd.list = cmd.api.Sequencer().List()
+	case "clipboards":
+		cmd.list = cmd.api.Clipboards()
 	default:
 		return fmt.Errorf("can't show '%s'; no such window", lit)
 	}
@@ -76,6 +81,7 @@ func (cmd *Show) Exec() error {
 // setTabCompleteVerbs sets the tab complete list to the list of available sub-commands.
 func (cmd *Show) setTabCompleteVerbs(lit string) {
 	cmd.setTabComplete(lit, []string{
+		"clipboards",
 		"keybindings",
 		"library",
 		"logs",

@@ -2,15 +2,17 @@ package commands
 
 import (
 	"fmt"
-	"github.com/ambientsound/visp/log"
 
 	"github.com/ambientsound/visp/api"
+	"github.com/ambientsound/visp/log"
+	spotify_tracklist "github.com/ambientsound/visp/spotify/tracklist"
 )
 
 // Cut removes songs from songlists.
 type Cut struct {
 	command
-	api api.API
+	api  api.API
+	list *spotify_tracklist.List
 }
 
 // NewCut returns Cut.
@@ -22,14 +24,19 @@ func NewCut(api api.API) Command {
 
 // Parse implements Command.
 func (cmd *Cut) Parse() error {
+	cmd.list = cmd.api.Tracklist()
+	if cmd.list == nil {
+		return fmt.Errorf("`cut` only works in tracklists")
+	}
+
 	return cmd.ParseEnd()
 }
 
 // Exec implements Command.
 func (cmd *Cut) Exec() error {
-	list := cmd.api.Tracklist()
-	// selection := list.Selection()
-	indices := list.SelectionIndices()
+
+	selection := cmd.list.Selection()
+	indices := cmd.list.SelectionIndices()
 	ln := len(indices)
 
 	if ln == 0 {
@@ -38,23 +45,21 @@ func (cmd *Cut) Exec() error {
 
 	// Remove songs from list
 	index := indices[0]
-	err := list.RemoveIndices(indices)
+	err := cmd.list.RemoveIndices(indices)
 	cmd.api.ListChanged()
 
 	if err != nil {
 		return err
 	}
 
-	log.Infof("%d fewer songs", ln)
+	cmd.list.ClearSelection()
+	cmd.list.SetCursor(index)
 
-	list.ClearSelection()
-	list.SetCursor(index)
+	selection.SetVisibleColumns(cmd.list.ColumnNames())
 
-	// Place songs in clipboard
-	// FIXME
-	// clipboard := cmd.api.Db().Clipboard("default")
-	// selection.Duplicate(clipboard)
-	// console.Log("Cut %d tracks into clipboard", clipboard.Len())
+	cmd.api.Clipboards().Insert(&selection)
+
+	log.Infof("%d fewer songs; stored in %s", ln, selection.Name())
 
 	return nil
 }

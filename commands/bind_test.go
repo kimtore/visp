@@ -13,7 +13,6 @@ var bindTests = []commands.Test{
 	{`global []{}$|"test" foo bar`, true, nil, nil, []string{}},
 
 	// Invalid forms
-	{``, false, nil, nil, []string{"devices", "global", "library", "playlists", "tracklist", "windows"}},
 	{`x`, false, nil, nil, []string{}},
 	{`global bar`, false, nil, nil, []string{}},
 }

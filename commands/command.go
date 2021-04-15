@@ -8,6 +8,7 @@ import (
 	"sort"
 
 	"github.com/ambientsound/visp/api"
+	"github.com/ambientsound/visp/clipboard"
 	"github.com/ambientsound/visp/db"
 	"github.com/ambientsound/visp/input/lexer"
 	"github.com/ambientsound/visp/parser"
@@ -19,17 +20,19 @@ import (
 )
 
 const (
-	DevicesContext   = "devices"
-	GlobalContext    = "global"
-	LibraryContext   = "library"
-	PlaylistsContext = "playlists"
-	TracklistContext = "tracklist"
-	WindowsContext   = "windows"
+	ClipboardsContext = "clipboards"
+	DevicesContext    = "devices"
+	GlobalContext     = "global"
+	LibraryContext    = "library"
+	PlaylistsContext  = "playlists"
+	TracklistContext  = "tracklist"
+	WindowsContext    = "windows"
 )
 
 // contexts are used to bind keyboard commands to a specific area of the program.
 // For instance, the <ENTER> key can be bound to `play` in track lists and `print _id` in other lists.
 var contexts = []string{
+	ClipboardsContext,
 	DevicesContext,
 	GlobalContext,
 	LibraryContext,
@@ -122,6 +125,8 @@ func Contexts(a api.API) []string {
 		ctx = append(ctx, PlaylistsContext)
 	case *spotify_devices.List:
 		ctx = append(ctx, DevicesContext)
+	case *clipboard.List:
+		ctx = append(ctx, ClipboardsContext)
 	}
 	ctx = append(ctx, GlobalContext)
 	return ctx

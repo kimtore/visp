@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/ambientsound/gompd/mpd"
+	"github.com/ambientsound/visp/clipboard"
 	"github.com/ambientsound/visp/db"
 	"github.com/ambientsound/visp/input/keys"
 	"github.com/ambientsound/visp/list"
@@ -21,12 +22,12 @@ import (
 )
 
 type testAPI struct {
-	messages  chan message.Message
-	list      list.List
-	song      *song.Song
-	songlist  songlist.Songlist
-	clipboard songlist.Songlist
-	tracklist *spotify_tracklist.List
+	messages   chan message.Message
+	list       list.List
+	song       *song.Song
+	songlist   songlist.Songlist
+	clipboards *clipboard.List
+	tracklist  *spotify_tracklist.List
 }
 
 func createTestSong() *song.Song {
@@ -40,12 +41,12 @@ func createTestSong() *song.Song {
 
 func NewTestAPI() API {
 	return &testAPI{
-		clipboard: songlist.New(),
-		list:      list.New(),
-		messages:  make(chan message.Message, 1024),
-		song:      createTestSong(),
-		songlist:  songlist.New(),
-		tracklist: spotify_tracklist.NewFromTracks([]spotify.FullTrack{}),
+		clipboards: clipboard.New(),
+		list:       list.New(),
+		messages:   make(chan message.Message, 1024),
+		song:       createTestSong(),
+		songlist:   songlist.New(),
+		tracklist:  spotify_tracklist.NewFromTracks([]spotify.FullTrack{}),
 	}
 }
 
@@ -53,8 +54,8 @@ func (api *testAPI) Authenticate(token *oauth2.Token) error {
 	return nil
 }
 
-func (api *testAPI) Clipboard() songlist.Songlist {
-	return api.clipboard
+func (api *testAPI) Clipboards() *clipboard.List {
+	return api.clipboards
 }
 
 func (api *testAPI) Db() *db.List {

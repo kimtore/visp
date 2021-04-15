@@ -7,6 +7,7 @@ import (
 
 	"github.com/ambientsound/gompd/mpd"
 	"github.com/ambientsound/visp/api"
+	"github.com/ambientsound/visp/clipboard"
 	"github.com/ambientsound/visp/db"
 	"github.com/ambientsound/visp/input/keys"
 	"github.com/ambientsound/visp/list"
@@ -46,8 +47,8 @@ func (v *Visp) Authenticate(token *oauth2.Token) error {
 	return nil
 }
 
-func (v *Visp) Clipboard() songlist.Songlist {
-	return v.clipboard
+func (v *Visp) Clipboards() *clipboard.List {
+	return v.clipboards
 }
 
 func (v *Visp) Db() *db.List {

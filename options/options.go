@@ -197,10 +197,12 @@ bind global S single
 
 # Special windows
 bind global c show library
+bind global C show clipboards
 bind global w show windows
 bind global <F1> show keybindings
 bind windows <Enter> show selected
 bind library <Enter> show selected
+bind clipboards <Enter> show selected
 bind devices <Enter> device activate
 bind playlists <Enter> list open
 
