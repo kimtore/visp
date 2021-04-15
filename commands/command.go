@@ -83,7 +83,6 @@ var Verbs = map[string]func(api.API) Command{
 	"w":         NewWrite,
 	"write":     NewWrite,
 	"yank":      NewYank,
-	// "list":      NewList,
 }
 
 // Command must be implemented by all commands.

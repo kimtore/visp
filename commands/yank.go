@@ -4,15 +4,18 @@ import (
 	"fmt"
 
 	"github.com/ambientsound/visp/api"
+	"github.com/ambientsound/visp/input/lexer"
+	"github.com/ambientsound/visp/list"
 	"github.com/ambientsound/visp/log"
-	spotify_tracklist "github.com/ambientsound/visp/spotify/tracklist"
+	"github.com/ambientsound/visp/options"
 )
 
 // Yank copies tracks from the songlist into the clipboard.
 type Yank struct {
 	command
-	api  api.API
-	list *spotify_tracklist.List
+	api     api.API
+	current bool
+	list    list.List
 }
 
 // NewYank returns Yank.
@@ -24,27 +27,57 @@ func NewYank(api api.API) Command {
 
 // Parse implements Command.
 func (cmd *Yank) Parse() error {
-	cmd.list = cmd.api.Tracklist()
-	if cmd.list == nil {
-		return fmt.Errorf("`yank` only works in tracklists")
+	tok, lit := cmd.ScanIgnoreWhitespace()
+
+	cmd.setTabCompleteVerbs(lit)
+
+	switch tok {
+	case lexer.TokenIdentifier:
+		if lit == "current" {
+			cmd.current = true
+		} else {
+			cmd.Unscan()
+		}
 	}
+
 	return cmd.ParseEnd()
 }
 
 // Exec implements Command.
 func (cmd *Yank) Exec() error {
-	selection := cmd.list.Selection()
+	switch {
+	case cmd.current == true:
+		row := cmd.api.PlayerStatus().TrackRow
+		if len(row.ID()) == 0 {
+			return fmt.Errorf("no track currently playing")
+		}
+		cmd.list = list.New()
+		cmd.list.Add(row)
+		cmd.list.SetVisibleColumns(options.GetList(options.Columns))
 
-	if selection.Len() == 0 {
-		return fmt.Errorf("no tracks selected")
+	default:
+		tracklist := cmd.api.Tracklist()
+		if tracklist == nil {
+			return fmt.Errorf("`yank` only works in tracklists")
+		}
+		cmd.list = tracklist.Selection()
+
+		if cmd.list.Len() == 0 {
+			return fmt.Errorf("no tracks selected")
+		}
+
+		cmd.list.SetVisibleColumns(tracklist.ColumnNames())
+		tracklist.ClearSelection()
 	}
 
-	selection.SetVisibleColumns(cmd.list.ColumnNames())
-
-	cmd.api.Clipboards().Insert(selection)
-	log.Infof("%d songs stored in %s", selection.Len(), selection.Name())
-
-	cmd.list.ClearSelection()
+	cmd.api.Clipboards().Insert(cmd.list)
+	log.Infof("%d songs stored in %s", cmd.list.Len(), cmd.list.Name())
 
 	return nil
+}
+
+func (cmd *Yank) setTabCompleteVerbs(lit string) {
+	cmd.setTabComplete(lit, []string{
+		"current",
+	})
 }
