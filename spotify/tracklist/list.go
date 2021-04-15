@@ -12,7 +12,6 @@ import (
 
 type List struct {
 	list.Base
-	tracks map[string]spotify.FullTrack
 }
 
 var _ list.List = &List{}
@@ -131,44 +130,38 @@ func NewFromSimpleAlbumPage(client spotify.Client, source *spotify.SimpleAlbumPa
 }
 
 func NewFromTracks(tracks []spotify.FullTrack) *List {
-	this := &List{
-		tracks: make(map[string]spotify.FullTrack, len(tracks)),
-	}
+	this := &List{}
 	this.Clear()
 	for _, track := range tracks {
-		this.tracks[track.ID.String()] = track
 		this.Add(FullTrackRow(track))
 	}
 	return this
 }
 
 func FullTrackRow(track spotify.FullTrack) list.Row {
-	return list.NewRow(track.ID.String(), map[string]string{
-		"album":       track.Album.Name,
-		"albumArtist": strings.Join(artistNames(track.Album.Artists), ", "),
-		"artist":      strings.Join(artistNames(track.Artists), ", "),
-		"date":        track.Album.ReleaseDateTime().Format("2006-01-02"),
-		"time":        utils.TimeString(track.Duration / 1000),
-		"title":       track.Name,
-		"track":       fmt.Sprintf("%02d", track.TrackNumber),
-		"disc":        fmt.Sprintf("%d", track.DiscNumber),
-		"popularity":  fmt.Sprintf("%1.2f", float64(track.Popularity)/100),
-		"year":        track.Album.ReleaseDateTime().Format("2006"),
-	})
+	return &Row{
+		track: track,
+		BaseRow: list.NewRow(track.ID.String(), map[string]string{
+			"album":       track.Album.Name,
+			"albumArtist": strings.Join(artistNames(track.Album.Artists), ", "),
+			"artist":      strings.Join(artistNames(track.Artists), ", "),
+			"date":        track.Album.ReleaseDateTime().Format("2006-01-02"),
+			"time":        utils.TimeString(track.Duration / 1000),
+			"title":       track.Name,
+			"track":       fmt.Sprintf("%02d", track.TrackNumber),
+			"disc":        fmt.Sprintf("%d", track.DiscNumber),
+			"popularity":  fmt.Sprintf("%1.2f", float64(track.Popularity)/100),
+			"year":        track.Album.ReleaseDateTime().Format("2006"),
+		}),
+	}
 }
 
-// CursorSong returns the song currently selected by the cursor.
-func (l *List) CursorSong() *spotify.FullTrack {
-	return l.Song(l.Cursor())
-}
-
-// Song returns the song at a specific index.
-func (l *List) Song(index int) *spotify.FullTrack {
-	row := l.Row(index)
+func (l *List) CursorTrack() *spotify.FullTrack {
+	row := l.CursorRow()
 	if row == nil {
 		return nil
 	}
-	track := l.tracks[row.ID()]
+	track := row.(*Row).track
 	return &track
 }
 
@@ -178,16 +171,16 @@ func (l *List) Selection() List {
 	tracks := make([]spotify.FullTrack, len(indices))
 
 	for i, index := range indices {
-		tracks[i] = *l.Song(index)
+		tracks[i] = l.Row(index).(*Row).Track()
 	}
 
 	return *NewFromTracks(tracks)
 }
 
 func (l *List) Tracks() []spotify.FullTrack {
-	tracks := make([]spotify.FullTrack, len(l.tracks))
+	tracks := make([]spotify.FullTrack, l.Len())
 	for i := 0; i < l.Len(); i++ {
-		tracks[i] = *l.Song(i)
+		tracks[i] = l.Row(i).(*Row).Track()
 	}
 	return tracks
 }

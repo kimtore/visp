@@ -2,6 +2,7 @@ package commands
 
 import (
 	"fmt"
+
 	"github.com/ambientsound/visp/spotify/tracklist"
 	"github.com/zmb3/spotify"
 
@@ -61,8 +62,8 @@ func (cmd *Play) Parse() error {
 func (cmd *Play) Exec() error {
 	var err error
 
-	cmd.tracklist = cmd.api.Tracklist()
 	cmd.client, err = cmd.api.Spotify()
+	cmd.tracklist = cmd.api.Tracklist()
 
 	if err != nil {
 		return err
@@ -75,29 +76,28 @@ func (cmd *Play) Exec() error {
 	case cmd.selection:
 		// Play selected songs.
 		return cmd.playSelection()
+	default:
+		// If a selection is not given, start playing with default parameters.
+		return cmd.client.Play()
 	}
-
-	// If a selection is not given, start playing with default parameters.
-	return cmd.client.Play()
 }
 
 // playCursor plays the song under the cursor.
 func (cmd *Play) playCursor() error {
-
 	if cmd.tracklist == nil {
 		return fmt.Errorf("cannot play cursor when not in a track list")
 	}
 
 	// Get the song under the cursor.
-	song := cmd.tracklist.CursorSong()
-	if song == nil {
-		return fmt.Errorf("Cannot play: no song under cursor")
+	track := cmd.tracklist.CursorTrack()
+	if track == nil {
+		return fmt.Errorf("cannot play: no track under cursor")
 	}
 
 	// Play the correct song.
 	return cmd.client.PlayOpt(&spotify.PlayOptions{
 		URIs: []spotify.URI{
-			song.URI,
+			track.URI,
 		},
 	})
 }
