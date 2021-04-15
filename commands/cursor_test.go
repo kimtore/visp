@@ -64,9 +64,9 @@ func TestCursor(t *testing.T) {
 }
 
 func initSongTags(data *commands.TestData) {
-	data.Api.Tracklist().Add(list.Row{
+	data.Api.Tracklist().Add(list.NewRow("foo", map[string]string{
 		"artist": "foo",
 		"title":  "bar",
-	})
+	}))
 	data.Api.SetList(data.Api.Tracklist())
 }

@@ -16,7 +16,6 @@ var selectTests = []commands.Test{
 	{`foo`, false, nil, nil, []string{}},
 	{`visual 1`, false, nil, nil, []string{}},
 	{`toggle 1`, false, nil, nil, []string{}},
-	{`nearby`, false, nil, nil, []string{}},
 }
 
 func TestSelect(t *testing.T) {

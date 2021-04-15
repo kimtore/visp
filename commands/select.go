@@ -100,6 +100,9 @@ func (cmd *Select) parseNearby() error {
 	// Data initialization and sanity checks
 	list := cmd.api.List()
 	row := list.CursorRow()
+	if row == nil {
+		return nil
+	}
 
 	// Retrieve a list of songs
 	tags, err := cmd.ParseTags(row.Keys())
