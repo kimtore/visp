@@ -55,7 +55,8 @@ func (cmd *Duplicate) Exec() error {
 	tracklist := cmd.tracklist.Copy()
 	tracklist.SetID(uuid.New().String())
 	tracklist.SetName(cmd.name)
-	cmd.api.Db().Cache(tracklist)
+
+	cmd.api.SetList(tracklist)
 
 	log.Infof("Created '%s' with %d tracks", tracklist.Name(), tracklist.Len())
 

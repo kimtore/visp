@@ -65,7 +65,6 @@ func (cmd *Write) Exec() error {
 	if len(cmd.name) > 0 {
 		tracklist = tracklist.Copy()
 		tracklist.SetName(cmd.name)
-		cmd.api.Db().Cache(tracklist)
 	}
 
 	row := cmd.api.Db().RowByID(tracklist.ID())
@@ -88,7 +87,10 @@ func (cmd *Write) Exec() error {
 		tracklist.SetName(remotelist.Name)
 		tracklist.SetRemote(true)
 
-		row.SetID(tracklist.ID())
+		// Re-index original list in database if working on the old copy
+		if len(cmd.name) == 0 {
+			row.SetID(tracklist.ID())
+		}
 
 		ids := make([]spotify.ID, 0, tracklist.Len())
 		for _, track := range tracklist.Tracks() {
