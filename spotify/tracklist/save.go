@@ -24,3 +24,14 @@ func AddTracksToPlaylist(client *spotify.Client, playlistID spotify.ID, ids []sp
 
 	return snapshot, err
 }
+
+// Replace more than 100 tracks in a Spotify playlist.
+func ReplacePlaylistTracks(client *spotify.Client, playlistID spotify.ID, ids []spotify.ID) error {
+	if len(ids) <= maxAddToPlaylist {
+		return client.ReplacePlaylistTracks(playlistID, ids...)
+	}
+
+	_, err := AddTracksToPlaylist(client, playlistID, ids[maxAddToPlaylist:])
+
+	return err
+}

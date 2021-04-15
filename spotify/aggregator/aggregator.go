@@ -1,8 +1,6 @@
 package spotify_aggregator
 
 import (
-	"fmt"
-
 	"github.com/ambientsound/visp/options"
 	spotify_albums "github.com/ambientsound/visp/spotify/albums"
 	"github.com/ambientsound/visp/spotify/library"
@@ -64,7 +62,7 @@ func ListWithID(client spotify.Client, id string, limit int) (*spotify_tracklist
 		return nil, err
 	}
 
-	lst.SetName(fmt.Sprintf("%s by %s", playlist.Name, playlist.Owner.DisplayName))
+	lst.SetName(playlist.Name)
 	lst.SetID(id)
 	lst.SetRemote(true)
 	lst.SetSyncedToRemote()
