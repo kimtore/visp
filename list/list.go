@@ -123,7 +123,7 @@ func (s *Base) Columns(names []string) []Column {
 
 func (s *Base) Add(row Row) {
 	s.rows = append(s.rows, row)
-	for k, v := range row {
+	for k, v := range row.Fields() {
 		if s.columns[k] == nil {
 			s.columns[k] = &Column{}
 		}
@@ -169,7 +169,7 @@ func (s *Base) Len() int {
 
 // Implements sort.Interface
 func (s *Base) Less(i, j int) bool {
-	return s.rows[i][s.sortKey] < s.rows[j][s.sortKey]
+	return s.rows[i].Fields()[s.sortKey] < s.rows[j].Fields()[s.sortKey]
 }
 
 // Implements sort.Interface
@@ -257,7 +257,7 @@ func (s *Base) NextOf(tags []string, index int, direction int) int {
 LOOP:
 	for ; index < ln && index >= 0; index += direction {
 		for _, tag := range tags {
-			if row[tag] != s.rows[index][tag] {
+			if row.Fields()[tag] != s.rows[index].Fields()[tag] {
 				break LOOP
 			}
 		}
@@ -272,7 +272,7 @@ func (s *Base) Remove(index int) error {
 		return fmt.Errorf("out of bounds")
 	}
 
-	for k, v := range row {
+	for k, v := range row.Fields() {
 		s.columns[k].Remove(v)
 	}
 

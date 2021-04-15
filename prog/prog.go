@@ -42,7 +42,7 @@ type Visp struct {
 	Tokencache tokencache.Tokencache
 
 	client       *spotify.Client
-	clipboards    *clipboard.List
+	clipboards   *clipboard.List
 	commands     chan string
 	db           *db.List
 	interpreter  *input.Interpreter
@@ -74,6 +74,7 @@ func (v *Visp) Init() {
 	v.stylesheet = make(style.Stylesheet)
 	v.ticker = time.NewTicker(time.Second)
 	v.tokenRefresh = make(chan time.Time)
+	v.player = player.NewState(spotify.PlayerState{})
 
 	v.SetList(log.List(log.InfoLevel))
 }

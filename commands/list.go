@@ -96,7 +96,7 @@ func (cmd *List) Exec() error {
 		if row == nil {
 			return fmt.Errorf("no playlist selected")
 		}
-		return cmd.Goto(row[list.RowIDKey])
+		return cmd.Goto(row.ID())
 
 	case cmd.relative != 0:
 		cmd.api.Db().MoveCursor(cmd.relative)

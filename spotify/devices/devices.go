@@ -2,10 +2,11 @@ package spotify_devices
 
 import (
 	"fmt"
+	"strconv"
+
 	"github.com/ambientsound/visp/list"
 	"github.com/ambientsound/visp/log"
 	"github.com/zmb3/spotify"
-	"strconv"
 )
 
 type List struct {
@@ -52,14 +53,13 @@ func New(client spotify.Client) (*List, error) {
 }
 
 func Row(device spotify.PlayerDevice) list.Row {
-	return list.Row{
-		list.RowIDKey: device.ID.String(),
-		"deviceName":  device.Name,
-		"deviceType":  device.Type,
-		"active":      strconv.FormatBool(device.Active),
-		"restricted":  strconv.FormatBool(device.Restricted),
-		"volume":      fmt.Sprintf("%d%%", device.Volume),
-	}
+	return list.NewRow(device.ID.String(), map[string]string{
+		"deviceName": device.Name,
+		"deviceType": device.Type,
+		"active":     strconv.FormatBool(device.Active),
+		"restricted": strconv.FormatBool(device.Restricted),
+		"volume":     fmt.Sprintf("%d%%", device.Volume),
+	})
 }
 
 // CursorDevice returns the device currently selected by the cursor.

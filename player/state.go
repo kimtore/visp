@@ -1,10 +1,11 @@
 package player
 
 import (
+	"time"
+
 	"github.com/ambientsound/visp/list"
 	"github.com/ambientsound/visp/spotify/tracklist"
 	"github.com/zmb3/spotify"
-	"time"
 )
 
 // State contains information about MPD's player status.
@@ -18,8 +19,10 @@ type State struct {
 }
 
 func NewState(state spotify.PlayerState) State {
-	row := list.Row{}
-	if state.Item != nil {
+	var row list.Row
+	if state.Item == nil {
+		row = list.NewRow("", nil)
+	} else {
 		row = spotify_tracklist.FullTrackRow(*state.Item)
 	}
 	return State{

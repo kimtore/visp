@@ -13,11 +13,12 @@ func (s *Sequencer) List() list.List {
 	this.SetVisibleColumns([]string{"context", "keySequence", "command"})
 
 	for _, bind := range s.binds {
-		this.Add(list.Row{
+		keySequence := bind.Sequence.String()
+		this.Add(list.NewRow(keySequence, map[string]string{
 			"context":     bind.Context,
-			"keySequence": bind.Sequence.String(),
+			"keySequence": keySequence,
 			"command":     bind.Command,
-		})
+		}))
 	}
 
 	this.Sort([]string{"keySequence", "context"})

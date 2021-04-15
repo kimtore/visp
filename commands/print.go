@@ -52,7 +52,7 @@ func (cmd *Print) Exec() error {
 
 	for _, tag := range cmd.tags {
 		msg := ""
-		value, ok := cmd.row[tag]
+		value, ok := cmd.row.Fields()[tag]
 		if ok {
 			msg = fmt.Sprintf("%s: '%s'", tag, value)
 		} else {

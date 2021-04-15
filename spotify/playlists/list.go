@@ -2,9 +2,10 @@ package spotify_playlists
 
 import (
 	"fmt"
+	"strconv"
+
 	"github.com/ambientsound/visp/list"
 	"github.com/zmb3/spotify"
-	"strconv"
 )
 
 type List struct {
@@ -44,14 +45,13 @@ func NewFromPlaylists(playlists []spotify.SimplePlaylist) *List {
 }
 
 func Row(playlist spotify.SimplePlaylist) list.Row {
-	return list.Row{
-		list.RowIDKey:   playlist.ID.String(),
+	return list.NewRow(playlist.ID.String(), map[string]string{
 		"name":          playlist.Name,
 		"tracks":        fmt.Sprintf("%d", playlist.Tracks.Total),
 		"owner":         playlist.Owner.DisplayName,
 		"public":        strconv.FormatBool(playlist.IsPublic),
 		"collaborative": strconv.FormatBool(playlist.Collaborative),
-	}
+	})
 }
 
 // CursorPlaylist returns the playlist currently selected by the cursor.

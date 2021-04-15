@@ -17,7 +17,7 @@ func NewTag(a api.API, param string) Fragment {
 
 // Text implements Fragment.
 func (w *Tag) Text() (string, string) {
-	if text, ok := w.api.PlayerStatus().TrackRow[w.tag]; ok {
+	if text, ok := w.api.PlayerStatus().TrackRow.Fields()[w.tag]; ok {
 		return text, w.tag
 	}
 	return `<unknown>`, `tagMissing`

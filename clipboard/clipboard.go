@@ -32,13 +32,16 @@ func (clipboard *List) Insert(l list.List) {
 	l.SetName(fmt.Sprintf("Clipboard %s", index))
 	l.SetID(fmt.Sprintf("clipboard_%s", index))
 
+	clipboard.Add(list.NewRow(
+		index,
+		map[string]string{
+			"name": l.Name(),
+			"size": strconv.Itoa(l.Len()),
+			"time": time.Now().Format(time.RFC1123),
+		},
+	))
+
 	clipboard.lists[index] = l
-	clipboard.Add(list.Row{
-		list.RowIDKey: index,
-		"name":        l.Name(),
-		"size":        strconv.Itoa(l.Len()),
-		"time":        time.Now().Format(time.RFC1123),
-	})
 
 	clipboard.active = l
 }

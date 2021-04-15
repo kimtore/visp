@@ -61,7 +61,7 @@ func (cmd *Isolate) Exec() error {
 	row := selection.Row(0)
 	queries := make([]string, len(cmd.tags))
 	for i, tag := range cmd.tags {
-		val := strconv.Quote(row[tag])
+		val := strconv.Quote(row.Fields()[tag])
 		if v, ok := tagMaps[tag]; ok {
 			tag = v
 		}
@@ -95,7 +95,7 @@ func (cmd *Isolate) Exec() error {
 	// Figure out a clever name
 	parts := make([]string, len(cmd.tags))
 	for i, tag := range cmd.tags {
-		parts[i] = tag + ":" + row[tag]
+		parts[i] = tag + ":" + row.Fields()[tag]
 	}
 	result.SetName(strings.Join(parts, ", "))
 

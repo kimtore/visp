@@ -100,7 +100,9 @@ func AlbumTrack(track spotify.SimpleTrack, album spotify.SimpleAlbum) spotify.Fu
 }
 
 func NewFromSimpleAlbumPage(client spotify.Client, source *spotify.SimpleAlbumPage) (*List, error) {
+	var lst *List
 	var err error
+	var trackPage *spotify.SimpleTrackPage
 
 	tracks := make([]spotify.FullTrack, 0, source.Total)
 	albums, err := spotify_albums.NewFromSimpleAlbumPage(client, source)
@@ -110,18 +112,18 @@ func NewFromSimpleAlbumPage(client spotify.Client, source *spotify.SimpleAlbumPa
 
 	for i := 0; i < albums.Len(); i++ {
 		album := albums.Album(i)
-		t, err := client.GetAlbumTracks(album.ID)
+		trackPage, err = client.GetAlbumTracks(album.ID)
 		if err != nil {
 			break
 		}
-		lst, err := NewFromSimpleTrackPageAndAlbum(client, t, *album)
+		lst, err = NewFromSimpleTrackPageAndAlbum(client, trackPage, *album)
 		if err != nil {
 			break
 		}
 		tracks = append(tracks, lst.Tracks()...)
 	}
 
-	if err != spotify.ErrNoMorePages {
+	if err != nil && err != spotify.ErrNoMorePages {
 		return nil, err
 	}
 
@@ -141,8 +143,7 @@ func NewFromTracks(tracks []spotify.FullTrack) *List {
 }
 
 func FullTrackRow(track spotify.FullTrack) list.Row {
-	return list.Row{
-		list.RowIDKey: track.ID.String(),
+	return list.NewRow(track.ID.String(), map[string]string{
 		"album":       track.Album.Name,
 		"albumArtist": strings.Join(artistNames(track.Album.Artists), ", "),
 		"artist":      strings.Join(artistNames(track.Artists), ", "),
@@ -153,7 +154,7 @@ func FullTrackRow(track spotify.FullTrack) list.Row {
 		"disc":        fmt.Sprintf("%d", track.DiscNumber),
 		"popularity":  fmt.Sprintf("%1.2f", float64(track.Popularity)/100),
 		"year":        track.Album.ReleaseDateTime().Format("2006"),
-	}
+	})
 }
 
 // CursorSong returns the song currently selected by the cursor.

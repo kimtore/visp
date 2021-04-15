@@ -63,8 +63,7 @@ func NewFromAlbums(albums []spotify.SimpleAlbum) *List {
 }
 
 func SimpleAlbumRow(album spotify.SimpleAlbum) list.Row {
-	return list.Row{
-		list.RowIDKey: album.ID.String(),
+	return list.NewRow(album.ID.String(), map[string]string{
 		"album":       album.Name,
 		"albumArtist": strings.Join(artistNames(album.Artists), ", "),
 		"artist":      strings.Join(artistNames(album.Artists), ", "),
@@ -73,7 +72,7 @@ func SimpleAlbumRow(album spotify.SimpleAlbum) list.Row {
 		"group":       album.AlbumGroup,
 		"type":        album.AlbumType,
 		"year":        album.ReleaseDateTime().Format("2006"),
-	}
+	})
 }
 
 // Song returns the song at a specific index.

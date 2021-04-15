@@ -17,5 +17,5 @@ func NewTime(a api.API, param string) Fragment {
 // Text implements Fragment.
 func (w *Time) Text() (string, string) {
 	playerStatus := w.api.PlayerStatus()
-	return playerStatus.TrackRow["time"], `time`
+	return playerStatus.TrackRow.Fields()["time"], `time`
 }

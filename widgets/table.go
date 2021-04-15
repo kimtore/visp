@@ -96,13 +96,13 @@ func (w *Table) Draw() {
 	case isTracklist && w.api.PlayerStatus().Item != nil:
 		trackID := w.api.PlayerStatus().Item.ID.String()
 		specialStyler = func(row list.Row) (string, bool) {
-			return `currentSong`, trackID == row[list.RowIDKey]
+			return `currentSong`, trackID == row.ID()
 		}
 	case isDevicelist:
 		id := w.api.PlayerStatus().Device.ID
 		deviceID := id.String()
 		specialStyler = func(row list.Row) (string, bool) {
-			return `currentDevice`, deviceID == row[list.RowIDKey]
+			return `currentDevice`, deviceID == row.ID()
 		}
 	default:
 		specialStyler = func(row list.Row) (string, bool) {
@@ -141,7 +141,7 @@ func (w *Table) Draw() {
 		// Draw each column separately
 		for _, col := range w.columns {
 
-			runes := []rune(row[col.key])
+			runes := []rune(row.Fields()[col.key])
 			if !lineStyled {
 				st = w.Style(col.key)
 			}

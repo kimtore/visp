@@ -24,11 +24,10 @@ func New() *List {
 }
 
 func Row(lst list.List) list.Row {
-	return list.Row{
-		list.RowIDKey: lst.ID(),
-		"name":        lst.Name(),
-		"size":        strconv.Itoa(lst.Len()),
-	}
+	return list.NewRow(lst.ID(), map[string]string{
+		"name": lst.Name(),
+		"size": strconv.Itoa(lst.Len()),
+	})
 }
 
 // Cache adds a list to the database. Returns the row number of the list.
@@ -41,7 +40,7 @@ func (s *List) Cache(lst list.List) int {
 	}
 	rown, _ := s.RowNum(existing.ID())
 	row := s.Row(rown)
-	row["size"] = Row(existing)["size"]
+	row.Fields()["size"] = Row(existing).Fields()["size"]
 	return rown
 }
 

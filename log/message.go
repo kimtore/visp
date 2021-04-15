@@ -62,11 +62,13 @@ func appendMessage(msg Message) {
 			continue
 		}
 		messages[level] = append(messages[level], msg)
-		logLineList[level].Add(list.Row{
-			list.RowIDKey: strconv.Itoa(logLineList[level].Len()),
-			"logLevel":    msg.Level.String(),
-			"logMessage":  msg.Text,
-			"timestamp":   msg.Timestamp.Format(time.RFC822),
-		})
+		logLineList[level].Add(list.NewRow(
+			strconv.Itoa(logLineList[level].Len()),
+			map[string]string{
+				"logLevel":   msg.Level.String(),
+				"logMessage": msg.Text,
+				"timestamp":  msg.Timestamp.Format(time.RFC822),
+			},
+		))
 	}
 }

@@ -32,35 +32,14 @@ const (
 	TopTracks           = "top-tracks"
 )
 
-var rows = []list.Row{
-	{
-		list.RowIDKey: Devices,
-		listName:      "Player devices",
-	},
-	{
-		list.RowIDKey: FeaturedPlaylists,
-		listName:      "Featured playlists",
-	},
-	{
-		list.RowIDKey: NewReleases,
-		listName:      "New releases",
-	},
-	{
-		list.RowIDKey: MyPlaylists,
-		listName:      "Playlists from my Spotify library",
-	},
-	{
-		list.RowIDKey: MyTracks,
-		listName:      "All liked songs from my library",
-	},
-	{
-		list.RowIDKey: MyAlbums,
-		listName:      "All saved albums in my library",
-	},
-	{
-		list.RowIDKey: TopTracks,
-		listName:      "Top tracks from my listening history",
-	},
+var entries = map[string]string{
+	Devices:           "Player devices",
+	FeaturedPlaylists: "Featured playlists",
+	NewReleases:       "New releases",
+	MyPlaylists:       "Playlists from my Spotify library",
+	MyTracks:          "All liked songs from my library",
+	MyAlbums:          "All saved albums in my library",
+	TopTracks:         "Top tracks from my listening history",
 }
 
 func New() *List {
@@ -69,8 +48,10 @@ func New() *List {
 	this.SetID("spotify_library")
 	this.SetName("Libraries and discovery")
 	this.SetVisibleColumns([]string{listName})
-	for _, row := range rows {
-		this.Add(row)
+	for key, name := range entries {
+		this.Add(list.NewRow(key, map[string]string{
+			listName: name,
+		}))
 	}
 	return this
 }
