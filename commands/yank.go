@@ -4,12 +4,15 @@ import (
 	"fmt"
 
 	"github.com/ambientsound/visp/api"
+	"github.com/ambientsound/visp/log"
+	spotify_tracklist "github.com/ambientsound/visp/spotify/tracklist"
 )
 
 // Yank copies tracks from the songlist into the clipboard.
 type Yank struct {
 	command
-	api api.API
+	api  api.API
+	list *spotify_tracklist.List
 }
 
 // NewYank returns Yank.
@@ -21,38 +24,27 @@ func NewYank(api api.API) Command {
 
 // Parse implements Command.
 func (cmd *Yank) Parse() error {
+	cmd.list = cmd.api.Tracklist()
+	if cmd.list == nil {
+		return fmt.Errorf("`yank` only works in tracklists")
+	}
 	return cmd.ParseEnd()
 }
 
 // Exec implements Command.
 func (cmd *Yank) Exec() error {
-	return fmt.Errorf("not implemented")
-	/*
-	FIXME
-	list := cmd.api.Tracklist()
-	selection := list.Selection()
-	indices := list.SelectionIndices()
-	len := len(indices)
+	selection := cmd.list.Selection()
 
-	if len == 0 {
-		return fmt.Errorf("No tracks selected.")
+	if selection.Len() == 0 {
+		return fmt.Errorf("no tracks selected")
 	}
 
-	// Place songs in clipboard
-	clipboard := cmd.api.Db().Clipboard("default")
-	selection.Duplicate(clipboard)
+	selection.SetVisibleColumns(cmd.list.ColumnNames())
 
-	// Print a message
-	if len == 1 {
-		cmd.api.Message("Yanked '%s'", selection.Song(0).StringTags["file"])
-	} else {
-		cmd.api.Message("%d tracks yanked to clipboard.", len)
-	}
+	cmd.api.Clipboards().Insert(&selection)
+	log.Infof("%d songs stored in %s", selection.Len(), selection.Name())
 
-	// Clear selection and move cursor
-	list.ClearSelection()
-	list.MoveCursor(1)
+	cmd.list.ClearSelection()
 
 	return nil
-	*/
 }
