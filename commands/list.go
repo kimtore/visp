@@ -10,6 +10,7 @@ import (
 	"github.com/ambientsound/visp/spotify/aggregator"
 	"github.com/ambientsound/visp/spotify/devices"
 	"github.com/ambientsound/visp/spotify/library"
+	"github.com/google/uuid"
 	"github.com/zmb3/spotify"
 
 	"github.com/ambientsound/visp/api"
@@ -107,11 +108,7 @@ func (cmd *List) Exec() error {
 		cmd.api.SetList(cmd.api.Db().Current())
 
 	case cmd.duplicate:
-		tracklist := cmd.api.Tracklist()
-		if tracklist == nil {
-			return fmt.Errorf("only track lists can be duplicated")
-		}
-		return fmt.Errorf("duplicate is not implemented")
+		return cmd.Duplicate()
 
 	case cmd.remove:
 		return fmt.Errorf("remove is not implemented")
@@ -179,6 +176,23 @@ func (cmd *List) Goto(id string) error {
 	lst.SetCursor(0)
 
 	cmd.api.SetList(lst)
+
+	return nil
+}
+
+func (cmd *List) Duplicate() error {
+	tracklist := cmd.api.Tracklist()
+	if tracklist == nil {
+		return fmt.Errorf("only track lists can be duplicated")
+	}
+
+	tracklist = tracklist.Copy()
+	tracklist.SetID(uuid.New().String())
+	tracklist.SetName(cmd.name)
+
+	cmd.api.SetList(tracklist)
+
+	log.Infof("Created '%s' with %d tracks", tracklist.Name(), tracklist.Len())
 
 	return nil
 }
