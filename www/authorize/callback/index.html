@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Authorize Visp to Spotify</title>
+        <link rel="stylesheet" href="/style.css">
+    </head>
+    <body>
+        <header>
+            <img id="logo" src="/visp.png" />
+            <ul>
+                <li><a href="/">Back to main site</a></li>
+            </ul>
+        </header>
+
+        <article>
+            <h2 id="title">Authorizing...</h1>
+
+            <p id="pre-text"></p>
+
+            <p id="auth-code"></p>
+
+            <p>Privacy concerns? <a href="https://github.com/ambientsound/visp/blob/master/doc/spotify.md">Read more on GitHub</a>.</p>
+
+        </article>
+
+        <script>
+            'use strict';
+            (function() {
+                const qparam = window.location.search.substr(1);
+                const req = new Request('/oauth/callback?' + qparam);
+                const titleBox = document.getElementById('title');
+                const authCodeBox = document.getElementById('auth-code');
+                const preTextBox = document.getElementById('pre-text');
+                fetch(req)
+                    .then(response => response.json())
+                    .then(data => {
+                        titleBox.textContent = "Authorization successful!";
+                        preTextBox.textContent = "Copy and paste the following code into Visp:";
+                        authCodeBox.textContent = ':auth ' + data.token;
+                    })
+                    .catch(error => {
+                        const link = document.createElement('a');
+                        link.textContent = "Click here to try again.";
+                        link.href = "/oauth/login";
+                        titleBox.textContent = "Authorization failed!";
+                        preTextBox.appendChild(link);
+                    });
+            })();
+        </script>
+    </body>
+</html>
