@@ -1,12 +1,10 @@
 package commands
 
 import (
-	"fmt"
-
 	"github.com/ambientsound/visp/api"
 )
 
-// Stop stops song playback in MPD.
+// Stop stops song playback.
 type Stop struct {
 	command
 	api api.API
@@ -26,8 +24,10 @@ func (cmd *Stop) Parse() error {
 
 // Exec implements Command.
 func (cmd *Stop) Exec() error {
-	if client := cmd.api.MpdClient(); client != nil {
-		return client.Stop()
+	client, err := cmd.api.Spotify()
+	if err != nil {
+		return err
 	}
-	return fmt.Errorf("Unable to stop: cannot communicate with MPD")
+
+	return client.Pause()
 }

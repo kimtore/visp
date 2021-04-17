@@ -2,17 +2,12 @@ package api
 
 import (
 	"github.com/ambientsound/visp/list"
-	"github.com/ambientsound/visp/songlist"
 	"github.com/spf13/viper"
 )
 
 type Collection interface {
-	Activate(songlist.Songlist)
 	ActivateIndex(int) error
-	Add(songlist.Songlist)
-	Current() songlist.Songlist
 	Index() (int, error)
-	Last() songlist.Songlist
 	Len() int
 	Remove(int) error
 	ValidIndex(int) bool

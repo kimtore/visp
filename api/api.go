@@ -2,15 +2,12 @@
 package api
 
 import (
-	"github.com/ambientsound/gompd/mpd"
 	"github.com/ambientsound/visp/clipboard"
 	"github.com/ambientsound/visp/db"
 	"github.com/ambientsound/visp/input/keys"
 	"github.com/ambientsound/visp/list"
 	"github.com/ambientsound/visp/multibar"
 	"github.com/ambientsound/visp/player"
-	"github.com/ambientsound/visp/song"
-	"github.com/ambientsound/visp/songlist"
 	"github.com/ambientsound/visp/spotify/library"
 	"github.com/ambientsound/visp/spotify/tracklist"
 	"github.com/ambientsound/visp/style"
@@ -51,17 +48,11 @@ type API interface {
 	// Message sends a message to the user through the statusbar.
 	Message(string, ...interface{})
 
-	// MpdClient returns the current MPD client, which is confirmed to be alive. If the MPD connection is not working, nil is returned.
-	MpdClient() *mpd.Client
-
 	// Options returns PMS' global options.
 	Options() Options
 
 	// PlayerStatus returns the current MPD player status.
 	PlayerStatus() player.State
-
-	// Queue returns MPD's song queue.
-	Queue() *songlist.Queue
 
 	// Quit shuts down PMS.
 	Quit()
@@ -74,11 +65,6 @@ type API interface {
 
 	// Spotify returns a Spotify client.
 	Spotify() (*spotify.Client, error)
-
-	// Song returns the currently playing song, or nil if no song is loaded.
-	// Note that the song might be stopped, and the play/pause/stop status should
-	// be checked using PlayerStatus().
-	Song() *song.Song
 
 	// Styles returns the current stylesheet.
 	Styles() style.Stylesheet

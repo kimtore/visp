@@ -1,8 +1,6 @@
 module github.com/ambientsound/visp
 
 require (
-	github.com/ambientsound/gompd v0.0.0-20170427084842-b065d40b8238
-	github.com/fhs/gompd v2.0.0+incompatible // indirect
 	github.com/gdamore/tcell v1.3.0
 	github.com/go-chi/chi v1.5.4
 	github.com/golang/protobuf v1.5.2 // indirect

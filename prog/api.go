@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/ambientsound/gompd/mpd"
 	"github.com/ambientsound/visp/api"
 	"github.com/ambientsound/visp/clipboard"
 	"github.com/ambientsound/visp/db"
@@ -15,8 +14,6 @@ import (
 	"github.com/ambientsound/visp/multibar"
 	"github.com/ambientsound/visp/options"
 	"github.com/ambientsound/visp/player"
-	"github.com/ambientsound/visp/song"
-	"github.com/ambientsound/visp/songlist"
 	"github.com/ambientsound/visp/spotify/library"
 	"github.com/ambientsound/visp/spotify/proxyclient"
 	"github.com/ambientsound/visp/spotify/tracklist"
@@ -77,11 +74,6 @@ func (v *Visp) Message(fmt string, a ...interface{}) {
 	log.Debugf("Using obsolete Message() for previous message")
 }
 
-func (v *Visp) MpdClient() *mpd.Client {
-	log.Debugf("nil mpd client; might break")
-	return nil // FIXME
-}
-
 func (v *Visp) OptionChanged(key string) {
 	switch key {
 	case options.LogFile:
@@ -118,11 +110,6 @@ func (v *Visp) PlayerStatus() player.State {
 	return v.player
 }
 
-func (v *Visp) Queue() *songlist.Queue {
-	log.Debugf("nil queue; might break")
-	return nil // FIXME
-}
-
 func (v *Visp) Quit() {
 	v.quit <- new(interface{})
 }
@@ -152,19 +139,6 @@ func (v *Visp) Spotify() (*spotify.Client, error) {
 	}
 	_ = v.Tokencache.Write(*token)
 	return v.client, nil
-}
-
-func (v *Visp) Song() *song.Song {
-	panic("nil song; might break")
-}
-
-func (v *Visp) Songlist() songlist.Songlist {
-	panic("nil songlist; might break")
-}
-
-func (v *Visp) Songlists() []songlist.Songlist {
-	log.Debugf("nil songlists; might break")
-	return nil // FIXME
 }
 
 func (v *Visp) Styles() style.Stylesheet {
