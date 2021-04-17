@@ -107,6 +107,6 @@ jobs:
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: bin/visp-windows-amd64
-          asset_name: visp-windows-amd64
+          asset_path: bin/visp-windows-amd64.exe
+          asset_name: visp-windows-amd64.exe
           asset_content_type: application/octet-stream

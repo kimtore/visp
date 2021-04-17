@@ -26,4 +26,4 @@ darwin-amd64:
 
 windows-amd64:
 	GOOS=windows GOARCH=amd64 \
-	go build ${LDFLAGS} -o bin/visp-windows-amd64 cmd/visp/visp.go
+	go build ${LDFLAGS} -o bin/visp-windows-amd64.exe cmd/visp/visp.go
