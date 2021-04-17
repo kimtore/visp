@@ -50,7 +50,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build website Docker image
-        run: docker build --tag ${authproxy_image}:latest website/
+        run: docker build --tag ${website_image}:latest www/
       - name: Push Docker image to GitHub
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
