@@ -16,9 +16,16 @@ func main() {
 	clientID := os.Getenv("VISP_OAUTH_CLIENT_ID")
 	clientSecret := os.Getenv("VISP_OAUTH_CLIENT_SECRET")
 	redirectURL := os.Getenv("VISP_OAUTH_REDIRECT_URL")
+	renderMode := os.Getenv("VISP_OAUTH_RENDER_MODE") // render in text or JSON
 	listenAddr := os.Getenv("VISP_OAUTH_LISTEN_ADDR")
 
-	renderer := &spotify_proxyserver.JSONRenderer{}
+	var renderer spotify_proxyserver.Renderer
+	if renderMode == "json" {
+		renderer = &spotify_proxyserver.JSONRenderer{}
+	} else {
+		renderer = &spotify_proxyserver.TextRenderer{}
+	}
+
 	server := spotify_proxyserver.New(clientID, clientSecret, redirectURL, renderer)
 
 	log.Infof("Visp-authproxy %s starting", version.Version)

@@ -38,20 +38,18 @@ const (
 
 type Handler struct {
 	auth     spotify.Authenticator
-	renderer Renderer
+	frontend Renderer
+	json     Renderer
 }
 
-type Renderer interface {
-	Render(w http.ResponseWriter, code int, err error, token *oauth2.Token)
-}
-
-func New(clientID, clientSecret, redirectURL string, renderer Renderer) *Handler {
+func New(clientID, clientSecret, redirectURL string, frontendRenderer Renderer) *Handler {
 	authenticator := spotify.NewAuthenticator(redirectURL, scopes...)
 	authenticator.SetAuthInfo(clientID, clientSecret)
 
 	return &Handler{
 		auth:     authenticator,
-		renderer: renderer,
+		frontend: frontendRenderer,
+		json:     &JSONRenderer{},
 	}
 }
 
@@ -61,7 +59,7 @@ func New(clientID, clientSecret, redirectURL string, renderer Renderer) *Handler
 func (h *Handler) ServeLogin(w http.ResponseWriter, r *http.Request) {
 	u, err := uuid.NewRandom()
 	if err != nil {
-		h.renderer.Render(w, http.StatusServiceUnavailable, err, nil)
+		h.frontend.Render(w, http.StatusServiceUnavailable, err, nil)
 		return
 	}
 
@@ -85,19 +83,19 @@ func (h *Handler) ServeCallback(w http.ResponseWriter, r *http.Request) {
 	// Get state parameter from cookie
 	cookie, err := r.Cookie(cookieName)
 	if err != nil {
-		h.renderer.Render(w, http.StatusBadRequest, err, nil)
+		h.frontend.Render(w, http.StatusBadRequest, err, nil)
 		return
 	}
 
 	// Exchange credentials into Spotify token
 	token, err := h.auth.Token(cookie.Value, r)
 	if err != nil {
-		h.renderer.Render(w, http.StatusForbidden, err, nil)
+		h.frontend.Render(w, http.StatusForbidden, err, nil)
 		return
 	}
 
 	// Return token to client
-	h.renderer.Render(w, http.StatusOK, nil, token)
+	h.frontend.Render(w, http.StatusOK, nil, token)
 }
 
 // Token refresh helper endpoint. Takes a valid oauth2 token containing an
@@ -107,7 +105,7 @@ func (h *Handler) RefreshCallback(w http.ResponseWriter, r *http.Request) {
 	err := json.NewDecoder(r.Body).Decode(token)
 
 	if err != nil {
-		h.renderer.Render(w, http.StatusBadRequest, err, nil)
+		h.json.Render(w, http.StatusBadRequest, err, nil)
 		return
 	}
 
@@ -119,11 +117,11 @@ func (h *Handler) RefreshCallback(w http.ResponseWriter, r *http.Request) {
 	token, err = cli.Token()
 
 	if err != nil {
-		h.renderer.Render(w, http.StatusInternalServerError, err, nil)
+		h.json.Render(w, http.StatusInternalServerError, err, nil)
 		return
 	}
 
-	h.renderer.Render(w, http.StatusOK, nil, token)
+	h.json.Render(w, http.StatusOK, nil, token)
 }
 
 func Router(handler *Handler) chi.Router {
