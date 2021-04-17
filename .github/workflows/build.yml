@@ -10,6 +10,7 @@ on:
 env:
   go_version: '1.16'
   authproxy_image: ghcr.io/ambientsound/visp-authproxy
+  website_image: ghcr.io/ambientsound/visp-website
 
 jobs:
   test:
@@ -28,6 +29,8 @@ jobs:
           bash <(curl -s https://codecov.io/bash)
   authproxy:
     if: ${{ github.ref == 'refs/heads/master' }}
+    needs:
+      - test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -39,6 +42,21 @@ jobs:
         run: |
           docker login ghcr.io -u ${GITHUB_REPOSITORY} -p ${GITHUB_TOKEN}
           docker push ${authproxy_image}:latest
+  website:
+    if: ${{ github.ref == 'refs/heads/master' }}
+    needs:
+      - test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build website Docker image
+        run: docker build --tag ${authproxy_image}:latest website/
+      - name: Push Docker image to GitHub
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          docker login ghcr.io -u ${GITHUB_REPOSITORY} -p ${GITHUB_TOKEN}
+          docker push ${website_image}:latest
   build:
     if: ${{ github.ref == 'refs/heads/master' }}
     needs:
