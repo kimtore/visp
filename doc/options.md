@@ -1,5 +1,7 @@
 # Options
 
+The default configuration can be seen in the [options.go source file](../options/options.go).
+
 See the documentation on [setting options](commands.md#setting-global-options) for more information on syntax.
 
 ## Spotify
@@ -25,12 +27,11 @@ See the documentation on [setting options](commands.md#setting-global-options) f
 
 ### Authentication
 
-* `set spotifyclientid=<string>`  
-  `set spotifyclientsecret=<string>`
+* `set spotifyauthserver=https://visp.site`  
 
-  Required in order to authenticate with Spotify. Your must register a Spotify application at
-  [Spotify developer portal](https://developer.spotify.com/documentation/web-api/quick-start/)
-  and retrieve your client ID and client secret from the portal page.
+  Required in order to authenticate with Spotify. Override this setting if
+  setting up your own authentication proxy server, as detailed in the
+  [Spotify section](spotify.md).
 
 
 ## Logging

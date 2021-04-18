@@ -5,8 +5,8 @@ import (
 	"github.com/ambientsound/visp/log"
 	"github.com/ambientsound/visp/style"
 	"github.com/ambientsound/visp/topbar"
-	"github.com/gdamore/tcell"
-	"github.com/gdamore/tcell/views"
+	"github.com/gdamore/tcell/v2"
+	"github.com/gdamore/tcell/v2/views"
 )
 
 // Pieces may be aligned to left, center or right.

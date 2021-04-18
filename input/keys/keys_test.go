@@ -4,7 +4,7 @@ import (
 	"github.com/ambientsound/visp/commands"
 	"github.com/ambientsound/visp/input/keys"
 	"github.com/ambientsound/visp/keysequence"
-	"github.com/gdamore/tcell"
+	"github.com/gdamore/tcell/v2"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )

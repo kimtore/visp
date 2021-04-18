@@ -90,51 +90,51 @@ set logfile=
 # Song tag styles
 style album teal
 style albumArtist teal
-style artist yellow dim
-style date green
+style artist yellow
+style date default
+style year default
 style disc default
 style popularity dim
-style time darkmagenta
+style time green
 style title white
 style track default
-style year default
 style _id gray
 
 # Tracklist styles
 style currentSong black yellow
 style cursor black white
-style header teal bold
-style selection white blue
+style header gray dim bold
+style selection gray blue
 
 # Key binding styles
 style context teal
 style keyBinding white
-style command yellow dim
+style command yellow
 
 # Topbar styles
 style deviceName teal
 style deviceType teal
-style elapsedTime green
-style elapsedPercentage green
+style elapsedTime teal
+style elapsedPercentage teal
 style listIndex teal
-style listTitle teal bold
+style listTitle white
 style listTotal teal
 style mute red
-style shortName bold
+style shortName yellow
 style state default
 style switches teal
 style syncStatus red dim
 style tagMissing red
 style topbar darkgray
-style version gray
+style version gray dim
 style volume green
 
 # Other styles
 style commandText default
 style currentDevice white green
 style errorText black red
-style logLevel white
-style logMessage gray
+style logLevel dim gray
+style logMessage dim gray
 style readout default
 style searchText white bold
 style sequenceText teal

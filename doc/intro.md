@@ -24,7 +24,7 @@ style statusbar black darkmagenta
 set topbar="Now playing: ${tag|artist} \\- ${tag|title} (${elapsed})"
 ```
 
-See the [default configuration](/options/defaults.go).
+See also [default configuration](../options/options.go).
 
 
 ## Basic movement

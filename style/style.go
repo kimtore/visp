@@ -2,7 +2,7 @@ package style
 
 import (
 	"github.com/ambientsound/visp/log"
-	"github.com/gdamore/tcell"
+	"github.com/gdamore/tcell/v2"
 )
 
 type Stylesheet map[string]tcell.Style

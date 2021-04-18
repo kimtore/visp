@@ -27,7 +27,7 @@ import (
 	"github.com/ambientsound/visp/tabcomplete"
 	"github.com/ambientsound/visp/tokencache"
 	"github.com/ambientsound/visp/widgets"
-	"github.com/gdamore/tcell"
+	"github.com/gdamore/tcell/v2"
 	"github.com/google/uuid"
 	"github.com/zmb3/spotify"
 )

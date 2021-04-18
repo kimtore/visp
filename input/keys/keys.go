@@ -5,7 +5,7 @@ import (
 	"github.com/ambientsound/visp/log"
 
 	"github.com/ambientsound/visp/keysequence"
-	"github.com/gdamore/tcell"
+	"github.com/gdamore/tcell/v2"
 )
 
 // Binding holds a parsed, user provided key sequence.

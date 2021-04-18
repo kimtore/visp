@@ -6,7 +6,7 @@ import (
 
 	"github.com/ambientsound/visp/input/lexer"
 	"github.com/ambientsound/visp/parser"
-	"github.com/gdamore/tcell"
+	"github.com/gdamore/tcell/v2"
 )
 
 // modifiers maps modifier names to their integer representation.

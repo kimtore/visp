@@ -1,13 +1,23 @@
 # Styling guide
 
-## Text style
+## Text style and color
 
-All UI elements in PMS can be styled with custom colors and text attributes.
+All UI elements in Visp can be styled with custom colors and text attributes.
 Styles are set with the `style` command; please see the [commands documentation](commands.md#setting-styles) for details.
 
 Colors are either literal names, such as `red`, `yellow`, or `green`, or hexadecimal color values such as `@ff0077`
-(the hash sign `#` is used for comments; the `@` character is used instead).
-A full list of supported color names can be found in the [tcell documentation](https://github.com/gdamore/tcell/blob/master/color.go#L820).
+(the hash sign `#` cannot be used as it is reserved for comments; the `@` character is used instead).
+
+The 16 base colors found in most terminals have the following names, from 0 to 15:
+
+|        | 00      | 01      | 02      | 03      | 04      | 05      | 06      | 07      |
+|--------|---------|---------|---------|---------|---------|---------|---------|---------|
+| dim    | black   | maroon  | green   | olive   | navy    | purple  | teal    | silver  |
+| bright | gray    | red     | lime    | yellow  | blue    | fuchsia | aqua    | white   |
+
+More colors can be used, but they are not included here. A full list of supported
+color names can be found in the [tcell documentation](https://github.com/gdamore/tcell/blob/v2.2.0/color.go#L842).
+
 
 ### Tags
 

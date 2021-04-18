@@ -18,7 +18,7 @@ import (
 	"github.com/ambientsound/visp/message"
 	"github.com/ambientsound/visp/utils"
 
-	"github.com/gdamore/tcell"
+	"github.com/gdamore/tcell/v2"
 )
 
 type TabCompleter interface {
