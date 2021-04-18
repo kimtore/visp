@@ -8,12 +8,12 @@
 package multibar
 
 import (
-	"github.com/ambientsound/visp/log"
 	"strings"
 	"unicode"
 	"unicode/utf8"
 
-	"github.com/ambientsound/visp/console"
+	"github.com/ambientsound/visp/log"
+
 	"github.com/ambientsound/visp/input/lexer"
 	"github.com/ambientsound/visp/message"
 	"github.com/ambientsound/visp/utils"
@@ -112,7 +112,7 @@ func (m *Multibar) Input(event tcell.Event) bool {
 		m.deleteWord()
 
 	default:
-		console.Log("Unhandled text input event in Multibar: %v", ev.Key())
+		log.Debugf("Unhandled text input event in Multibar: %v", ev.Key())
 		return false
 	}
 
@@ -149,7 +149,7 @@ func (m *Multibar) SetMessage(msg message.Message) {
 }
 
 func (m *Multibar) SetMode(mode InputMode) {
-	console.Log("Switching input mode from %s to %s", m.mode, mode)
+	log.Debugf("Switching input mode from %s to %s", m.mode, mode)
 	m.mode = mode
 	m.setRunes(make([]rune, 0))
 	m.History().Reset("")
@@ -326,7 +326,7 @@ func (m *Multibar) tab() {
 	// Get next sentence, and abort on any errors.
 	sentence, err := m.tabComplete.Scan()
 	if err != nil {
-		console.Log("Autocomplete: %s", err)
+		log.Debugf("Autocomplete: %s", err)
 		return
 	}
 

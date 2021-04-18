@@ -3,8 +3,6 @@ package message
 
 import (
 	"fmt"
-
-	"github.com/ambientsound/visp/console"
 )
 
 // Message is a message passed from anywhere inside PMS, relayed to the user
@@ -50,19 +48,4 @@ func Errorf(fmt string, a ...interface{}) Message {
 // Sequencef returns a sequence text message.
 func Sequencef(fmt string, a ...interface{}) Message {
 	return format(Info, SequenceText, fmt, a...)
-}
-
-// Log prints a message to the debug log.
-func Log(msg Message) {
-	if msg.Type != Normal {
-		return
-	}
-	switch msg.Severity {
-	case Info:
-		console.Log(msg.Text)
-	case Error:
-		console.Log("ERROR: %s", msg.Text)
-	case Debug:
-		console.Log("DEBUG: %s", msg.Text)
-	}
 }

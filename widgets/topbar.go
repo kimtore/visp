@@ -2,7 +2,7 @@ package widgets
 
 import (
 	"github.com/ambientsound/visp/api"
-	"github.com/ambientsound/visp/console"
+	"github.com/ambientsound/visp/log"
 	"github.com/ambientsound/visp/style"
 	"github.com/ambientsound/visp/topbar"
 	"github.com/gdamore/tcell"
@@ -42,7 +42,7 @@ func NewTopbar(a api.API) *Topbar {
 func (w *Topbar) SetMatrix(matrix *topbar.MatrixStatement) {
 	w.matrix = matrix
 	w.height = len(matrix.Rows)
-	console.Log("Setting up new topbar with height %d", w.height)
+	log.Debugf("Setting up new topbar with height %d", w.height)
 }
 
 // Draw draws all the pieces in the matrix, from top to bottom, right to left.
