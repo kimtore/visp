@@ -82,7 +82,7 @@ jobs:
         run: |
           go mod download
       - name: Build binaries
-        run: make ${{ strategy.os_arch }}
+        run: make ${{ matrix.os_arch }}
       - name: Delete latest release
         uses: dev-drprasad/delete-tag-and-release@v0.2.0
         env:
