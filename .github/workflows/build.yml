@@ -102,6 +102,6 @@ jobs:
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: bin/${{ matrix.os_arch }}
+          asset_path: bin/visp-${{ matrix.os_arch }}
           asset_name: visp-${{ matrix.os_arch }}
           asset_content_type: application/octet-stream
