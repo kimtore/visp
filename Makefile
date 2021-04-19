@@ -20,10 +20,22 @@ linux-amd64:
 	GOOS=linux GOARCH=amd64 \
 	go build ${LDFLAGS} -o bin/visp-linux-amd64 cmd/visp/visp.go
 
+linux-arm64:
+	GOOS=linux GOARCH=arm64 \
+	go build ${LDFLAGS} -o bin/visp-linux-arm64 cmd/visp/visp.go
+
+linux-arm:
+	GOOS=linux GOARCH=arm \
+	go build ${LDFLAGS} -o bin/visp-linux-arm cmd/visp/visp.go
+
 darwin-amd64:
 	GOOS=darwin GOARCH=amd64 \
 	go build ${LDFLAGS} -o bin/visp-darwin-amd64 cmd/visp/visp.go
 
-windows-amd64:
+darwin-arm64:
+	GOOS=darwin GOARCH=arm64 \
+	go build ${LDFLAGS} -o bin/visp-darwin-arm64 cmd/visp/visp.go
+
+windows-amd64.exe:
 	GOOS=windows GOARCH=amd64 \
 	go build ${LDFLAGS} -o bin/visp-windows-amd64.exe cmd/visp/visp.go
