@@ -2,10 +2,10 @@ package spotify_devices
 
 import (
 	"fmt"
-	"strconv"
 
 	"github.com/ambientsound/visp/list"
 	"github.com/ambientsound/visp/log"
+	"github.com/ambientsound/visp/utils"
 	"github.com/zmb3/spotify"
 )
 
@@ -56,8 +56,8 @@ func Row(device spotify.PlayerDevice) list.Row {
 	return list.NewRow(device.ID.String(), map[string]string{
 		"deviceName": device.Name,
 		"deviceType": device.Type,
-		"active":     strconv.FormatBool(device.Active),
-		"restricted": strconv.FormatBool(device.Restricted),
+		"active":     utils.HumanFormatBool(device.Active),
+		"restricted": utils.HumanFormatBool(device.Restricted),
 		"volume":     fmt.Sprintf("%d%%", device.Volume),
 	})
 }

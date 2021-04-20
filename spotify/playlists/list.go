@@ -2,9 +2,9 @@ package spotify_playlists
 
 import (
 	"fmt"
-	"strconv"
 
 	"github.com/ambientsound/visp/list"
+	"github.com/ambientsound/visp/utils"
 	"github.com/zmb3/spotify"
 )
 
@@ -49,8 +49,8 @@ func Row(playlist spotify.SimplePlaylist) list.Row {
 		"name":          playlist.Name,
 		"tracks":        fmt.Sprintf("%d", playlist.Tracks.Total),
 		"owner":         playlist.Owner.DisplayName,
-		"public":        strconv.FormatBool(playlist.IsPublic),
-		"collaborative": strconv.FormatBool(playlist.Collaborative),
+		"public":        utils.HumanFormatBool(playlist.IsPublic),
+		"collaborative": utils.HumanFormatBool(playlist.Collaborative),
 	})
 }
 

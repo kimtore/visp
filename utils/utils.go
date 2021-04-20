@@ -51,6 +51,14 @@ func TokenFilter(match string, tokens []string) []string {
 	return dest
 }
 
+// HumanFormatBool works as strconv.FormatBool, but returns "yes" or "no".
+func HumanFormatBool(b bool) string {
+	if b {
+		return "yes"
+	}
+	return "no"
+}
+
 // Min returns the minimum of a and b.
 func Min(a, b int) int {
 	if a < b {
