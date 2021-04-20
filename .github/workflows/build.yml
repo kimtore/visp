@@ -64,15 +64,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    strategy:
-      matrix:
-        os_arch:
-          - darwin-amd64
-          - darwin-arm64
-          - linux-amd64
-          - linux-arm64
-          - linux-arm
-          - windows-amd64.exe
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-go@v2
@@ -82,6 +73,15 @@ jobs:
         run: |
           go mod download
       - name: Build binaries
+        strategy:
+          matrix:
+            os_arch:
+              - darwin-amd64
+              - darwin-arm64
+              - linux-amd64
+              - linux-arm64
+              - linux-arm
+              - windows-amd64.exe
         run: make ${{ matrix.os_arch }}
       - name: Delete latest release
         uses: dev-drprasad/delete-tag-and-release@v0.2.0
@@ -100,6 +100,15 @@ jobs:
           prerelease: false
       - name: Upload binary
         uses: actions/upload-release-asset@v1
+        strategy:
+          matrix:
+            os_arch:
+              - darwin-amd64
+              - darwin-arm64
+              - linux-amd64
+              - linux-arm64
+              - linux-arm
+              - windows-amd64.exe
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: bin/visp-${{ matrix.os_arch }}
