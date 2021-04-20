@@ -18,9 +18,10 @@ import (
 type ChangeType int
 
 const (
-	ChangeNone ChangeType = iota // noop
-	ChangeList
-	ChangeOption
+	ChangeNone               ChangeType = iota // noop
+	ChangeList                                 // some list has changes in row data, title, or other
+	ChangeOption                               // a setting has been changed
+	ChangePlayerStateInvalid                   // player state is no longer valid due to a server command
 )
 
 // API defines a set of commands that should be available to commands run

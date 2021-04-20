@@ -47,5 +47,7 @@ func (cmd *Seek) Exec() error {
 		return err
 	}
 
+	defer cmd.api.Changed(api.ChangePlayerStateInvalid, nil)
+
 	return client.Seek(cmd.absolute)
 }

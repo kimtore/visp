@@ -25,5 +25,8 @@ func (cmd *Next) Exec() error {
 	if err != nil {
 		return err
 	}
+
+	defer cmd.api.Changed(api.ChangePlayerStateInvalid, nil)
+
 	return client.Next()
 }

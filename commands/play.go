@@ -94,6 +94,8 @@ func (cmd *Play) playCursor() error {
 		return fmt.Errorf("cannot play: no track under cursor")
 	}
 
+	defer cmd.api.Changed(api.ChangePlayerStateInvalid, nil)
+
 	// Play the correct song.
 	return cmd.client.PlayOpt(&spotify.PlayOptions{
 		URIs: []spotify.URI{
@@ -123,6 +125,8 @@ func (cmd *Play) playSelection() error {
 
 	// TODO: queue is unsupported by the Spotify Web API
 	// https://github.com/spotify/web-api/issues/462
+
+	defer cmd.api.Changed(api.ChangePlayerStateInvalid, nil)
 
 	// Start playing all the URIs
 	return cmd.client.PlayOpt(&spotify.PlayOptions{

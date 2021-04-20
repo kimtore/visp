@@ -84,5 +84,7 @@ func (cmd *Volume) Exec() error {
 		cmd.volume = 0
 	}
 
+	defer cmd.api.Changed(api.ChangePlayerStateInvalid, nil)
+
 	return client.Volume(cmd.volume)
 }

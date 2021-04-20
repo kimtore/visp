@@ -36,6 +36,8 @@ func (v *Visp) Authenticate(token *oauth2.Token) error {
 
 	v.tokenRefresh = time.After(next)
 
+	v.Changed(api.ChangePlayerStateInvalid, nil)
+
 	err := v.Tokencache.Write(*token)
 	if err != nil {
 		return fmt.Errorf("write Spotify token to file: %s", err)
@@ -65,10 +67,6 @@ func (v *Visp) List() list.List {
 	return v.list
 }
 
-func (v *Visp) ListChanged() {
-	// FIXME
-}
-
 func (v *Visp) Message(fmt string, a ...interface{}) {
 	log.Infof(fmt, a...)
 	log.Debugf("Using obsolete Message() for previous message")
@@ -86,7 +84,12 @@ func (v *Visp) Changed(change api.ChangeType, data interface{}) {
 			return
 		}
 		v.optionChanged(s)
+
+	case api.ChangePlayerStateInvalid:
+		v.player.Invalidate()
+		v.ticker.Reset(1 * time.Millisecond)
 	}
+
 }
 
 func (v *Visp) optionChanged(key string) {
@@ -122,7 +125,7 @@ func (v *Visp) Options() api.Options {
 }
 
 func (v *Visp) PlayerStatus() player.State {
-	return v.player
+	return *v.player
 }
 
 func (v *Visp) Quit() {
@@ -146,7 +149,7 @@ func (v *Visp) SetList(lst list.List) {
 
 func (v *Visp) Spotify() (*spotify.Client, error) {
 	if v.client == nil {
-		return nil, fmt.Errorf("please authenticate with Spotify at: %s", v.Options().GetString("spotifyauthserver"))
+		return nil, fmt.Errorf("please authenticate with Spotify at: %s/authorize", v.Options().GetString("spotifyauthserver"))
 	}
 	token, err := v.client.Token()
 	if err != nil {

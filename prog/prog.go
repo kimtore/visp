@@ -35,6 +35,7 @@ import (
 const (
 	refreshTokenTimeout       = time.Second * 5
 	refreshTokenRetryInterval = time.Second * 30
+	tickerInterval            = time.Second * 1
 )
 
 type Visp struct {
@@ -49,7 +50,7 @@ type Visp struct {
 	library      *spotify_library.List
 	list         list.List
 	multibar     *multibar.Multibar
-	player       player.State
+	player       *player.State
 	quit         chan interface{}
 	sequencer    *keys.Sequencer
 	stylesheet   style.Stylesheet
@@ -72,7 +73,7 @@ func (v *Visp) Init() {
 	v.quit = make(chan interface{}, 1)
 	v.sequencer = keys.NewSequencer()
 	v.stylesheet = make(style.Stylesheet)
-	v.ticker = time.NewTicker(time.Second)
+	v.ticker = time.NewTicker(tickerInterval)
 	v.tokenRefresh = make(chan time.Time)
 	v.player = player.NewState(spotify.PlayerState{})
 
@@ -89,8 +90,9 @@ func (v *Visp) Main() error {
 		case <-v.ticker.C:
 			err := v.updatePlayer()
 			if err != nil {
-				log.Errorf("update player: %s", err)
+				log.Errorf("Update player: %s", err)
 			}
+			v.ticker.Reset(tickerInterval)
 
 		case <-v.tokenRefresh:
 			log.Infof("Spotify access token is too old, refreshing...")
@@ -162,11 +164,11 @@ func (v *Visp) updatePlayer() error {
 
 	// no time for polling yet; just increase the ticker.
 	if v.player.CreateTime.Add(pollInterval).After(now) {
-		v.player = v.player.Tick()
+		v.player.Tick()
 		return nil
 	}
 
-	log.Debugf("fetching new player information")
+	log.Debugf("Fetching new player information")
 
 	client, err := v.Spotify()
 	if err != nil {

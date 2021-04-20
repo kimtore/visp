@@ -26,6 +26,8 @@ func (cmd *Pause) Exec() error {
 		return err
 	}
 
+	defer cmd.api.Changed(api.ChangePlayerStateInvalid, nil)
+
 	if cmd.api.PlayerStatus().Playing {
 		return client.Pause()
 	} else {

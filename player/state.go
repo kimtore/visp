@@ -18,14 +18,14 @@ type State struct {
 	updateTime         time.Time
 }
 
-func NewState(state spotify.PlayerState) State {
+func NewState(state spotify.PlayerState) *State {
 	var row list.Row
 	if state.Item == nil {
 		row = list.NewRow("", nil)
 	} else {
 		row = spotify_tracklist.FullTrackRow(*state.Item)
 	}
-	return State{
+	return &State{
 		PlayerState: state,
 		CreateTime:  time.Now(),
 		TrackRow:    row,
@@ -48,7 +48,7 @@ func (p *State) Since() time.Duration {
 	return time.Since(p.updateTime)
 }
 
-func (p State) State() string {
+func (p *State) State() string {
 	// FIXME
 	if p.Playing {
 		return StatePlay
@@ -59,7 +59,7 @@ func (p State) State() string {
 	return StatePause
 }
 
-func (p State) percentage() float64 {
+func (p *State) percentage() float64 {
 	if p.Item == nil {
 		return p.ProgressPercentage
 	} else if p.Progress == 0 {
@@ -69,14 +69,16 @@ func (p State) percentage() float64 {
 	}
 }
 
-func (p State) Tick() State {
+func (p *State) Tick() {
 	if !p.Playing {
-		return p
+		return
 	}
 	diff := p.Since()
 	p.SetTime()
 	p.Progress += int(diff.Milliseconds())
 	p.ProgressPercentage = p.percentage()
+}
 
-	return p
+func (p *State) Invalidate() {
+	p.CreateTime = time.Time{}
 }
