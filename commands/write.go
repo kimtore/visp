@@ -2,6 +2,7 @@ package commands
 
 import (
 	"fmt"
+	"strconv"
 
 	"github.com/ambientsound/visp/log"
 	spotify_tracklist "github.com/ambientsound/visp/spotify/tracklist"
@@ -9,7 +10,6 @@ import (
 	"github.com/zmb3/spotify"
 
 	"github.com/ambientsound/visp/api"
-	"github.com/ambientsound/visp/input/lexer"
 )
 
 // Write saves a local tracklist to Spotify.
@@ -30,23 +30,17 @@ func NewWrite(api api.API) Command {
 
 // Parse implements Command.
 func (cmd *Write) Parse() error {
-	tok, lit := cmd.ScanIgnoreWhitespace()
+	lit := cmd.ScanRemainderAsIdentifier()
 
-	cmd.setTabCompleteEmpty()
+	cmd.setTabComplete(lit, []string{strconv.Quote(cmd.api.List().Name())})
 
-	switch tok {
-	case lexer.TokenEnd:
-		// No parameters; save original list back to itself
-	case lexer.TokenIdentifier:
-		// New name; write this list to a new copy
+	if len(lit) > 0 {
 		cmd.name = lit
-	default:
-		return fmt.Errorf("unexpected '%s', expected name of playlist", lit)
 	}
 
 	// TODO: private/public?
 
-	return cmd.ParseEnd()
+	return nil
 }
 
 // Exec implements Command.
