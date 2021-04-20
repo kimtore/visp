@@ -58,12 +58,18 @@ jobs:
           docker login ghcr.io -u ${GITHUB_REPOSITORY} -p ${GITHUB_TOKEN}
           docker push ${website_image}:latest
   build:
-    if: ${{ github.ref == 'refs/heads/master' }}
-    needs:
-      - test
     runs-on: ubuntu-latest
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    strategy:
+      matrix:
+        os_arch:
+          - darwin-amd64
+          - darwin-arm64
+          - linux-amd64
+          - linux-arm64
+          - linux-arm
+          - windows-amd64.exe
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-go@v2
@@ -72,17 +78,22 @@ jobs:
       - name: Download dependencies
         run: |
           go mod download
-      - name: Build binaries
-        strategy:
-          matrix:
-            os_arch:
-              - darwin-amd64
-              - darwin-arm64
-              - linux-amd64
-              - linux-arm64
-              - linux-arm
-              - windows-amd64.exe
+      - name: Build binary
         run: make ${{ matrix.os_arch }}
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.os_arch }}
+          path: bin/visp-${{ matrix.os_arch }}
+  make_release:
+    if: ${{ github.ref == 'refs/heads/master' }}
+    needs:
+      - test
+      - build
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
       - name: Delete latest release
         uses: dev-drprasad/delete-tag-and-release@v0.2.0
         env:
@@ -98,19 +109,27 @@ jobs:
           release_name: Latest build
           draft: false
           prerelease: false
+  release:
+    if: ${{ github.ref == 'refs/heads/master' }}
+    needs:
+      - make_release
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    strategy:
+      matrix:
+        os_arch:
+          - darwin-amd64
+          - darwin-arm64
+          - linux-amd64
+          - linux-arm64
+          - linux-arm
+          - windows-amd64.exe
+    steps:
       - name: Upload binary
         uses: actions/upload-release-asset@v1
-        strategy:
-          matrix:
-            os_arch:
-              - darwin-amd64
-              - darwin-arm64
-              - linux-amd64
-              - linux-arm64
-              - linux-arm
-              - windows-amd64.exe
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          upload_url: ${{ jobs.make_release.steps.create_release.outputs.upload_url }}
           asset_path: bin/visp-${{ matrix.os_arch }}
           asset_name: visp-${{ matrix.os_arch }}
           asset_content_type: application/octet-stream
