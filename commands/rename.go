@@ -1,11 +1,9 @@
 package commands
 
 import (
-	"fmt"
 	"strconv"
 
 	"github.com/ambientsound/visp/api"
-	"github.com/ambientsound/visp/input/lexer"
 )
 
 // Rename saves a local tracklist to Spotify.
@@ -24,18 +22,12 @@ func NewRename(api api.API) Command {
 
 // Parse implements Command.
 func (cmd *Rename) Parse() error {
-	tok, lit := cmd.ScanIgnoreWhitespace()
+	lit := cmd.ScanRemainderAsIdentifier()
 
 	cmd.setTabComplete(lit, []string{strconv.Quote(cmd.api.List().Name())})
+	cmd.name = lit
 
-	switch tok {
-	case lexer.TokenIdentifier:
-		cmd.name = lit
-	default:
-		return fmt.Errorf("unexpected '%s', expected new name", lit)
-	}
-
-	return cmd.ParseEnd()
+	return nil
 }
 
 // Exec implements Command.

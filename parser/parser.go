@@ -77,6 +77,21 @@ func (p *Parser) ScanIgnoreWhitespace() (tok int, lit string) {
 	return
 }
 
+func (p *Parser) ScanRemainderAsIdentifier() string {
+	var s string
+	var whitespace bool
+	for {
+		tok, lit := p.Scan()
+		if tok == lexer.TokenWhitespace && !whitespace {
+			whitespace = true
+		} else if tok == lexer.TokenEnd {
+			return s
+		} else {
+			s += lit
+		}
+	}
+}
+
 // Unscan pushes the previously read token back onto the buffer.
 func (p *Parser) Unscan() { p.buf.n = 1 }
 
