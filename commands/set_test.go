@@ -1,8 +1,10 @@
 package commands_test
 
 import (
-	"github.com/spf13/viper"
 	"testing"
+
+	"github.com/spf13/viper"
+	"github.com/stretchr/testify/mock"
 
 	"github.com/ambientsound/visp/commands"
 	"github.com/stretchr/testify/assert"
@@ -29,11 +31,14 @@ func TestSet(t *testing.T) {
 }
 
 func testSetInit(test *commands.TestData) {
-	viper.Set("foo", "")
-	viper.Set("bar", "")
-	viper.Set("baz", "foobar")
-	viper.Set("int", 0)
-	viper.Set("bool", false)
+	v := viper.New()
+	test.MockAPI.On("Options").Return(v)
+	test.MockAPI.On("OptionChanged", mock.Anything).Return()
+	v.Set("foo", "")
+	v.Set("bar", "")
+	v.Set("baz", "foobar")
+	v.Set("int", 0)
+	v.Set("bool", false)
 }
 
 func testFooSet(key, check string, ok bool) func(*commands.TestData) {

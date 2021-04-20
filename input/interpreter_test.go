@@ -1,8 +1,9 @@
 package input_test
 
 import (
-	"github.com/spf13/viper"
 	"testing"
+
+	"github.com/spf13/viper"
 
 	"github.com/ambientsound/visp/api"
 	"github.com/ambientsound/visp/input"
@@ -15,11 +16,15 @@ import (
 func TestCLISet(t *testing.T) {
 	var err error
 
-	a := api.NewTestAPI()
+	a := &api.MockAPI{}
+	v := viper.New()
+	a.On("Options").Return(v)
+	a.On("OptionChanged", "foo").Return().Once()
+
 	opts := a.Options()
 	iface := input.NewCLI(a)
 
-	viper.Set("foo", "this string must die")
+	opts.Set("foo", "this string must die")
 
 	err = iface.Exec("set foo=something")
 	assert.Nil(t, err)

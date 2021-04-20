@@ -39,12 +39,12 @@ var tabCompleteTests = []struct {
 func TestTabComplete(t *testing.T) {
 	for n, test := range tabCompleteTests {
 
-		api := api.NewTestAPI()
+		testapi := &api.MockAPI{}
 
 		t.Logf("### Test %d: '%s'", n+1, test.input)
 
 		clen := len(test.completions)
-		tabComplete := tabcomplete.New(test.input, api)
+		tabComplete := tabcomplete.New(test.input, testapi)
 		sentences := make([]string, clen)
 		i := 0
 

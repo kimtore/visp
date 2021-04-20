@@ -16,6 +16,9 @@ test:
 test-coverage:
 	go test -coverprofile=cover.out ./...
 
+mocks:
+	mockery --all --inpackage --case underscore --dir api/
+
 linux-amd64:
 	GOOS=linux GOARCH=amd64 \
 	go build ${LDFLAGS} -o bin/visp-linux-amd64 cmd/visp/visp.go

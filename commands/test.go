@@ -12,10 +12,11 @@ import (
 
 // TestData contains data needed for a single Command table test.
 type TestData struct {
-	T    *testing.T
-	Cmd  Command
-	Api  api.API
-	Test Test
+	T       *testing.T
+	Cmd     Command
+	Api     api.API
+	MockAPI *api.MockAPI
+	Test    Test
 }
 
 // Test is a structure for test data, and can be used to conveniently
@@ -41,13 +42,14 @@ type Test struct {
 // TestVerb runs table tests for Command implementations.
 func TestVerb(t *testing.T, verb string, tests []Test) {
 	for n, test := range tests {
-		api := &api.MockAPI{}
+		mockAPI := &api.MockAPI{}
 
 		data := &TestData{
-			T:    t,
-			Api:  api,
-			Cmd:  New(verb, api),
-			Test: test,
+			T:       t,
+			Api:     mockAPI,
+			MockAPI: mockAPI,
+			Cmd:     New(verb, mockAPI),
+			Test:    test,
 		}
 
 		require.NotNil(t, data.Cmd, "Command '%s' is not implemented; it must be added to the `commands.Verb` variable.", verb)
