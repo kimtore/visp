@@ -111,6 +111,16 @@ style context teal
 style keyBinding white
 style command yellow
 
+# Playlist library styles
+style public green
+style collaborative green
+style owner teal
+style name white
+style tracks default
+
+# Library styles
+style description white
+
 # Topbar styles
 style deviceName teal
 style deviceType teal
