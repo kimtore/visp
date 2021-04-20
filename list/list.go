@@ -241,6 +241,7 @@ func (s *Base) Name() string {
 
 func (s *Base) SetName(name string) {
 	s.name = name
+	s.SetUpdated()
 }
 
 // Updated returns the timestamp of when this songlist was last updated.
