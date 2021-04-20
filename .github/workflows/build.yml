@@ -26,6 +26,7 @@ jobs:
         run: |
           go mod download
           make test-coverage
+          make
           bash <(curl -s https://codecov.io/bash)
   authproxy:
     if: ${{ github.ref == 'refs/heads/master' }}
@@ -57,40 +58,13 @@ jobs:
         run: |
           docker login ghcr.io -u ${GITHUB_REPOSITORY} -p ${GITHUB_TOKEN}
           docker push ${website_image}:latest
-  build:
-    runs-on: ubuntu-latest
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    strategy:
-      matrix:
-        os_arch:
-          - darwin-amd64
-          - darwin-arm64
-          - linux-amd64
-          - linux-arm64
-          - linux-arm
-          - windows-amd64.exe
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-go@v2
-        with:
-          go-version: ${{ env.go_version }}
-      - name: Download dependencies
-        run: |
-          go mod download
-      - name: Build binary
-        run: make ${{ matrix.os_arch }}
-      - name: Upload artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: ${{ matrix.os_arch }}
-          path: bin/visp-${{ matrix.os_arch }}
   make_release:
     if: ${{ github.ref == 'refs/heads/master' }}
     needs:
       - test
-      - build
     runs-on: ubuntu-latest
+    outputs:
+      upload_url: ${{ steps.create_release.outputs.upload_url }}
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
@@ -126,10 +100,19 @@ jobs:
           - linux-arm
           - windows-amd64.exe
     steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-go@v2
+        with:
+          go-version: ${{ env.go_version }}
+      - name: Download dependencies
+        run: |
+          go mod download
+      - name: Build binary
+        run: make ${{ matrix.os_arch }}
       - name: Upload binary
         uses: actions/upload-release-asset@v1
         with:
-          upload_url: ${{ jobs.make_release.steps.create_release.outputs.upload_url }}
+          upload_url: ${{ needs.make_release.outputs.upload_url }}
           asset_path: bin/visp-${{ matrix.os_arch }}
           asset_name: visp-${{ matrix.os_arch }}
           asset_content_type: application/octet-stream
