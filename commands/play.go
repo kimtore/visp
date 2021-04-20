@@ -3,6 +3,7 @@ package commands
 import (
 	"fmt"
 
+	"github.com/ambientsound/visp/log"
 	"github.com/ambientsound/visp/spotify/tracklist"
 	"github.com/zmb3/spotify"
 
@@ -82,7 +83,8 @@ func (cmd *Play) Exec() error {
 	}
 }
 
-// playCursor plays the song under the cursor.
+// playCursor plays the song under the cursor, and also adds the rest of the list to the play context.
+// Playback starts from the song beneath the cursor.
 func (cmd *Play) playCursor() error {
 	if cmd.tracklist == nil {
 		return fmt.Errorf("cannot play cursor when not in a track list")
@@ -94,12 +96,34 @@ func (cmd *Play) playCursor() error {
 		return fmt.Errorf("cannot play: no track under cursor")
 	}
 
+	// Figure out the playback context.
+	// If the local list is a remote playlist, AND it is in sync with the server,
+	// we can use the playlist URI as playback context in order to have the queue
+	// display our played tracks in the desktop app.
+	//
+	// If the local list has changes, or it is not a remote playlist, we compose
+	// a list of all tracks in the list, and use this ad-hoc list as a playback context.
+	uri := cmd.tracklist.URI()
+	uris := make([]spotify.URI, 0, cmd.tracklist.Len())
+	if uri == nil || cmd.tracklist.HasLocalChanges() {
+		uri = nil
+		for _, tr := range cmd.tracklist.Tracks() {
+			uris = append(uris, tr.URI)
+		}
+		log.Infof("Starting playback of %d tracks starting with '%s'", len(uris), track.Name)
+	} else {
+		uris = nil
+		log.Infof("Starting playback of playlist '%s', starting with '%s'", cmd.tracklist.Name(), track.Name)
+	}
+
 	defer cmd.api.Changed(api.ChangePlayerStateInvalid, nil)
 
-	// Play the correct song.
+	// Start playing with correct parameters.
 	return cmd.client.PlayOpt(&spotify.PlayOptions{
-		URIs: []spotify.URI{
-			track.URI,
+		URIs:            uris,
+		PlaybackContext: uri,
+		PlaybackOffset: &spotify.PlaybackOffset{
+			URI: track.URI,
 		},
 	})
 }
@@ -114,6 +138,12 @@ func (cmd *Play) playSelection() error {
 	selection := cmd.tracklist.Selection()
 	if selection.Len() == 0 {
 		return fmt.Errorf("cannot play: no selection")
+	}
+
+	// Selection is cursor
+	track := cmd.tracklist.CursorTrack()
+	if selection.Len() == 1 && track != nil && selection.Tracks()[0].ID == track.ID {
+		return cmd.playCursor()
 	}
 
 	cmd.tracklist.ClearSelection()

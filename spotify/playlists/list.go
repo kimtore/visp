@@ -38,11 +38,11 @@ func NewFromPlaylists(playlists []spotify.SimplePlaylist) *List {
 		playlists: make(map[string]spotify.SimplePlaylist, len(playlists)),
 	}
 	this.Clear()
-	this.SetVisibleColumns(options.GetList(options.ColumnsPlaylists))
 	for _, playlist := range playlists {
 		this.playlists[playlist.ID.String()] = playlist
 		this.Add(Row(playlist))
 	}
+	this.SetVisibleColumns(options.GetList(options.ColumnsPlaylists))
 	return this
 }
 

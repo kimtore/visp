@@ -15,6 +15,7 @@ type List struct {
 	list.Base
 	remote   bool
 	syncTime time.Time
+	uri      spotify.URI
 }
 
 var _ list.List = &List{}
@@ -157,6 +158,18 @@ func FullTrackRow(track spotify.FullTrack) list.Row {
 			"year":        track.Album.ReleaseDateTime().Format("2006"),
 		}),
 	}
+}
+
+func (l *List) URI() *spotify.URI {
+	if len(l.uri) > 0 {
+		uri := l.uri
+		return &uri
+	}
+	return nil
+}
+
+func (l *List) SetURI(uri spotify.URI) {
+	l.uri = uri
 }
 
 func (l *List) CursorTrack() *spotify.FullTrack {
