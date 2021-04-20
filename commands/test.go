@@ -41,7 +41,7 @@ type Test struct {
 // TestVerb runs table tests for Command implementations.
 func TestVerb(t *testing.T, verb string, tests []Test) {
 	for n, test := range tests {
-		api := api.NewTestAPI()
+		api := &api.MockAPI{}
 
 		data := &TestData{
 			T:    t,
