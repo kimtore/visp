@@ -3,6 +3,7 @@ package commands_test
 import (
 	"testing"
 
+	"github.com/ambientsound/visp/api"
 	"github.com/spf13/viper"
 	"github.com/stretchr/testify/mock"
 
@@ -33,7 +34,7 @@ func TestSet(t *testing.T) {
 func testSetInit(test *commands.TestData) {
 	v := viper.New()
 	test.MockAPI.On("Options").Return(v)
-	test.MockAPI.On("OptionChanged", mock.Anything).Return()
+	test.MockAPI.On("Changed", api.ChangeOption, mock.Anything).Return()
 	v.Set("foo", "")
 	v.Set("bar", "")
 	v.Set("baz", "foobar")

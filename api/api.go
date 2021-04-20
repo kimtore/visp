@@ -15,16 +15,27 @@ import (
 	"golang.org/x/oauth2"
 )
 
+type ChangeType int
+
+const (
+	ChangeNone ChangeType = iota // noop
+	ChangeList
+	ChangeOption
+)
+
 // API defines a set of commands that should be available to commands run
 // through the command-line interface.
 type API interface {
-	// Authenticate starts OAuth authentication.
+	// Authenticate sets an OAuth2 token that should be used for Spotify calls.
 	Authenticate(token *oauth2.Token) error
+
+	// Changed notifies the program that some internal state has changed.
+	Changed(typ ChangeType, data interface{})
 
 	// Clipboards is a list of clipboards.
 	Clipboards() *clipboard.List
 
-	// Db returns the PMS database.
+	// Db returns the database of lists.
 	Db() *db.List
 
 	// Exec executes a command through the command-line interface.
@@ -38,12 +49,6 @@ type API interface {
 
 	// List returns the active list.
 	List() list.List
-
-	// ListChanged notifies the UI that the current songlist has changed.
-	ListChanged()
-
-	// OptionChanged notifies that an option has been changed.
-	OptionChanged(string)
 
 	// Message sends a message to the user through the statusbar.
 	Message(string, ...interface{})

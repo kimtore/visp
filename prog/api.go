@@ -74,7 +74,22 @@ func (v *Visp) Message(fmt string, a ...interface{}) {
 	log.Debugf("Using obsolete Message() for previous message")
 }
 
-func (v *Visp) OptionChanged(key string) {
+func (v *Visp) Changed(change api.ChangeType, data interface{}) {
+	switch change {
+	case api.ChangeList:
+		// FIXME
+
+	case api.ChangeOption:
+		s, ok := data.(string)
+		if !ok {
+			log.Debugf("BUG: option '#v' changed, but is not of type 'string'", data)
+			return
+		}
+		v.optionChanged(s)
+	}
+}
+
+func (v *Visp) optionChanged(key string) {
 	switch key {
 	case options.LogFile:
 		logFile := v.Options().GetString(options.LogFile)

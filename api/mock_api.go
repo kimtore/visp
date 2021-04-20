@@ -46,6 +46,11 @@ func (_m *MockAPI) Authenticate(token *oauth2.Token) error {
 	return r0
 }
 
+// Changed provides a mock function with given fields: typ, data
+func (_m *MockAPI) Changed(typ ChangeType, data interface{}) {
+	_m.Called(typ, data)
+}
+
 // Clipboards provides a mock function with given fields:
 func (_m *MockAPI) Clipboards() *clipboard.List {
 	ret := _m.Called()
@@ -124,11 +129,6 @@ func (_m *MockAPI) List() list.List {
 	return r0
 }
 
-// ListChanged provides a mock function with given fields:
-func (_m *MockAPI) ListChanged() {
-	_m.Called()
-}
-
 // Message provides a mock function with given fields: _a0, _a1
 func (_m *MockAPI) Message(_a0 string, _a1 ...interface{}) {
 	var _ca []interface{}
@@ -151,11 +151,6 @@ func (_m *MockAPI) Multibar() *multibar.Multibar {
 	}
 
 	return r0
-}
-
-// OptionChanged provides a mock function with given fields: _a0
-func (_m *MockAPI) OptionChanged(_a0 string) {
-	_m.Called(_a0)
 }
 
 // Options provides a mock function with given fields:

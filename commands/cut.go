@@ -46,7 +46,8 @@ func (cmd *Cut) Exec() error {
 	// Remove songs from list
 	index := indices[0]
 	err := cmd.list.RemoveIndices(indices)
-	cmd.api.ListChanged()
+
+	cmd.api.Changed(api.ChangeList, cmd.list)
 
 	if err != nil {
 		return err

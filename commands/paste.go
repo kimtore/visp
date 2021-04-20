@@ -81,7 +81,7 @@ func (cmd *Paste) Exec() error {
 		cmd.list.MoveCursor(1)
 	}
 
-	cmd.api.ListChanged()
+	cmd.api.Changed(api.ChangeList, cmd.list)
 
 	cmd.api.Message("%d tracks inserted", ln)
 

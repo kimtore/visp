@@ -3,10 +3,9 @@ package input_test
 import (
 	"testing"
 
-	"github.com/spf13/viper"
-
 	"github.com/ambientsound/visp/api"
 	"github.com/ambientsound/visp/input"
+	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -19,7 +18,7 @@ func TestCLISet(t *testing.T) {
 	a := &api.MockAPI{}
 	v := viper.New()
 	a.On("Options").Return(v)
-	a.On("OptionChanged", "foo").Return().Once()
+	a.On("Changed", api.ChangeOption, "foo").Return()
 
 	opts := a.Options()
 	iface := input.NewCLI(a)

@@ -2,12 +2,12 @@ package commands
 
 import (
 	"fmt"
-	"github.com/ambientsound/visp/log"
 	"strings"
 
 	"github.com/ambientsound/visp/api"
 	"github.com/ambientsound/visp/input/lexer"
 	"github.com/ambientsound/visp/input/parser"
+	"github.com/ambientsound/visp/log"
 	"github.com/ambientsound/visp/options"
 )
 
@@ -134,7 +134,8 @@ func (cmd *Set) Exec() error {
 			cmd.api.Options().Set(tok.Key, tok.Value)
 		}
 
-		cmd.api.OptionChanged(tok.Key)
+		cmd.api.Changed(api.ChangeOption, tok.Key)
+
 		prnt()
 	}
 

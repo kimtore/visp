@@ -1,9 +1,10 @@
 package options_test
 
 import (
+	"testing"
+
 	"github.com/ambientsound/visp/options"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 type printTest struct {
