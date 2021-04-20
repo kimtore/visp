@@ -11,13 +11,14 @@ import (
 const (
 	Center            = "center"
 	Columns           = "columns"
+	ColumnsPlaylists  = "columns.playlists"
 	Limit             = "limit"
-	Sort              = "sort"
-	Topbar            = "topbar"
-	PollInterval      = "pollinterval"
-	SpotifyAuthServer = "spotifyauthserver"
 	LogFile           = "logfile"
 	LogOverwrite      = "logoverwrite"
+	PollInterval      = "pollinterval"
+	Sort              = "sort"
+	SpotifyAuthServer = "spotifyauthserver"
+	Topbar            = "topbar"
 )
 
 // Option types.
@@ -27,31 +28,38 @@ const (
 	stringType = ""
 )
 
+var (
+	v = viper.NewWithOptions(viper.KeyDelimiter("::"))
+)
+
 // Initialize option types.
 // Default values must be defined in the Defaults string.
 func init() {
-	viper.Set(Center, boolType)
-	viper.Set(Columns, stringType)
-	viper.Set(Limit, intType)
-	viper.Set(LogFile, stringType)
-	viper.Set(LogOverwrite, boolType)
-	viper.Set(PollInterval, intType)
-	viper.Set(Sort, stringType)
-	viper.Set(SpotifyAuthServer, stringType)
-	viper.Set(Topbar, stringType)
+	v.Set(Center, boolType)
+	v.Set(Columns, stringType)
+	v.Set(ColumnsPlaylists, stringType)
+	v.Set(Limit, intType)
+	v.Set(LogFile, stringType)
+	v.Set(LogOverwrite, boolType)
+	v.Set(PollInterval, intType)
+	v.Set(Sort, stringType)
+	v.Set(SpotifyAuthServer, stringType)
+	v.Set(Topbar, stringType)
 }
 
 // Methods for getting options from Viper.
 var (
-	Get       = viper.Get
-	GetString = viper.Get
-	GetInt    = viper.GetInt
-	GetBool   = viper.GetBool
+	Get       = v.Get
+	GetString = v.GetString
+	GetInt    = v.GetInt
+	GetBool   = v.GetBool
+	Set       = v.Set
+	AllKeys   = v.AllKeys
 )
 
 // Split a string option into a comma-delimited list.
 func GetList(key string) []string {
-	return strings.Split(viper.GetString(key), ",")
+	return strings.Split(v.GetString(key), ",")
 }
 
 // Return a human-readable representation of an option.
@@ -77,6 +85,7 @@ const Defaults string = `
 # Global options
 set nocenter
 set columns=artist,title,track,album,year,time,popularity
+set columns.playlists=name,tracks,owner,public,collaborative
 set sort=track,disc,album,year,albumArtist
 set topbar="${tag|artist} - ${tag|title}|$shortname $version|$elapsed $state $time;\\#${tag|track} ${tag|album}|${list|title} [${list|index}/${list|total}] ${synced}|$device $mode $volume;;"
 set spotifyauthserver="https://visp.site"

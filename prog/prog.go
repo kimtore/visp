@@ -115,12 +115,12 @@ func (v *Visp) Main() error {
 				log.Errorf(err.Error())
 				break
 			}
-			lst, err := spotify_aggregator.Search(*client, query, v.Options().GetInt(options.Limit))
+			lst, err := spotify_aggregator.Search(*client, query, options.GetInt(options.Limit))
 			if err != nil {
 				log.Errorf("spotify search: %s", err)
 				break
 			}
-			columns := v.Options().GetString(options.Columns)
+			columns := options.GetString(options.Columns)
 			lst.SetID(uuid.New().String())
 			lst.SetName(fmt.Sprintf("Search for '%s'", query))
 			lst.SetVisibleColumns(strings.Split(columns, ","))
@@ -160,7 +160,7 @@ func (v *Visp) updatePlayer() error {
 	var err error
 
 	now := time.Now()
-	pollInterval := time.Second * time.Duration(v.Options().GetInt(options.PollInterval))
+	pollInterval := time.Second * time.Duration(options.GetInt(options.PollInterval))
 
 	// no time for polling yet; just increase the ticker.
 	if v.player.CreateTime.Add(pollInterval).After(now) {
@@ -236,7 +236,7 @@ func (v *Visp) SourceConfig(reader io.Reader) error {
 }
 
 func (v *Visp) refreshToken() error {
-	server := v.Options().GetString(options.SpotifyAuthServer)
+	server := options.GetString(options.SpotifyAuthServer)
 	client := &http.Client{
 		Timeout: refreshTokenTimeout,
 	}

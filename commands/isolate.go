@@ -70,7 +70,7 @@ func (cmd *Isolate) Exec() error {
 
 	query := strings.Join(queries, " AND ")
 	log.Debugf("isolate search: %s", query)
-	result, err := spotify_aggregator.Search(*client, query, cmd.api.Options().GetInt(options.Limit))
+	result, err := spotify_aggregator.Search(*client, query, options.GetInt(options.Limit))
 
 	if err != nil {
 		return err
@@ -81,7 +81,7 @@ func (cmd *Isolate) Exec() error {
 	}
 
 	// Post-processing: sort in default order
-	sort := cmd.api.Options().GetString(options.Sort)
+	sort := options.GetString(options.Sort)
 
 	err = result.Sort(strings.Split(sort, ","))
 	if err != nil {

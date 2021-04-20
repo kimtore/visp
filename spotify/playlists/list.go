@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/ambientsound/visp/list"
+	"github.com/ambientsound/visp/options"
 	"github.com/ambientsound/visp/utils"
 	"github.com/zmb3/spotify"
 )
@@ -37,6 +38,7 @@ func NewFromPlaylists(playlists []spotify.SimplePlaylist) *List {
 		playlists: make(map[string]spotify.SimplePlaylist, len(playlists)),
 	}
 	this.Clear()
+	this.SetVisibleColumns(options.GetList(options.ColumnsPlaylists))
 	for _, playlist := range playlists {
 		this.playlists[playlist.ID.String()] = playlist
 		this.Add(Row(playlist))

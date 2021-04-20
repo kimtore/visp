@@ -153,22 +153,6 @@ func (_m *MockAPI) Multibar() *multibar.Multibar {
 	return r0
 }
 
-// Options provides a mock function with given fields:
-func (_m *MockAPI) Options() Options {
-	ret := _m.Called()
-
-	var r0 Options
-	if rf, ok := ret.Get(0).(func() Options); ok {
-		r0 = rf()
-	} else {
-		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(Options)
-		}
-	}
-
-	return r0
-}
-
 // PlayerStatus provides a mock function with given fields:
 func (_m *MockAPI) PlayerStatus() player.State {
 	ret := _m.Called()

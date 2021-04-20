@@ -54,9 +54,6 @@ type API interface {
 	// Message sends a message to the user through the statusbar.
 	Message(string, ...interface{})
 
-	// Options returns PMS' global options.
-	Options() Options
-
 	// PlayerStatus returns the current MPD player status.
 	PlayerStatus() player.State
 

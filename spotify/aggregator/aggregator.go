@@ -37,7 +37,6 @@ func FeaturedPlaylists(client spotify.Client, limit int) (*spotify_playlists.Lis
 
 	lst.SetName(message)
 	lst.SetID(spotify_library.FeaturedPlaylists)
-	lst.SetVisibleColumns(lst.ColumnNames())
 
 	return lst, nil
 }

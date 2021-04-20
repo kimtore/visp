@@ -19,7 +19,6 @@ import (
 	"github.com/ambientsound/visp/spotify/tracklist"
 	"github.com/ambientsound/visp/style"
 	"github.com/ambientsound/visp/topbar"
-	"github.com/spf13/viper"
 	"github.com/zmb3/spotify"
 	"golang.org/x/oauth2"
 )
@@ -95,8 +94,8 @@ func (v *Visp) Changed(change api.ChangeType, data interface{}) {
 func (v *Visp) optionChanged(key string) {
 	switch key {
 	case options.LogFile:
-		logFile := v.Options().GetString(options.LogFile)
-		overwrite := v.Options().GetBool(options.LogOverwrite)
+		logFile := options.GetString(options.LogFile)
+		overwrite := options.GetBool(options.LogOverwrite)
 		if len(logFile) == 0 {
 			break
 		}
@@ -109,7 +108,7 @@ func (v *Visp) optionChanged(key string) {
 		log.Infof("Writing debug log to %s", logFile)
 
 	case options.Topbar:
-		config := v.Options().GetString(options.Topbar)
+		config := options.GetString(options.Topbar)
 		matrix, err := topbar.Parse(v, config)
 		if err == nil {
 			v.Termui.Widgets.Topbar.SetMatrix(matrix)
@@ -118,10 +117,6 @@ func (v *Visp) optionChanged(key string) {
 			log.Errorf("topbar configuration: %s", err)
 		}
 	}
-}
-
-func (v *Visp) Options() api.Options {
-	return viper.GetViper()
 }
 
 func (v *Visp) PlayerStatus() player.State {
@@ -149,7 +144,7 @@ func (v *Visp) SetList(lst list.List) {
 
 func (v *Visp) Spotify() (*spotify.Client, error) {
 	if v.client == nil {
-		return nil, fmt.Errorf("please authenticate with Spotify at: %s/authorize", v.Options().GetString("spotifyauthserver"))
+		return nil, fmt.Errorf("please authenticate with Spotify at: %s/authorize", options.GetString("spotifyauthserver"))
 	}
 	token, err := v.client.Token()
 	if err != nil {
