@@ -5,6 +5,7 @@ import (
 
 	"github.com/ambientsound/visp/api"
 	"github.com/ambientsound/visp/input"
+	"github.com/ambientsound/visp/options"
 	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
 )
@@ -20,13 +21,12 @@ func TestCLISet(t *testing.T) {
 	a.On("Options").Return(v)
 	a.On("Changed", api.ChangeOption, "foo").Return()
 
-	opts := a.Options()
 	iface := input.NewCLI(a)
 
-	opts.Set("foo", "this string must die")
+	options.Set("foo", "this string must die")
 
 	err = iface.Exec("set foo=something")
 	assert.Nil(t, err)
 
-	assert.Equal(t, "something", opts.GetString("foo"))
+	assert.Equal(t, "something", options.GetString("foo"))
 }

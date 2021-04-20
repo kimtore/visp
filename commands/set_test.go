@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/ambientsound/visp/api"
-	"github.com/spf13/viper"
+	"github.com/ambientsound/visp/options"
 	"github.com/stretchr/testify/mock"
 
 	"github.com/ambientsound/visp/commands"
@@ -32,14 +32,12 @@ func TestSet(t *testing.T) {
 }
 
 func testSetInit(test *commands.TestData) {
-	v := viper.New()
-	test.MockAPI.On("Options").Return(v)
 	test.MockAPI.On("Changed", api.ChangeOption, mock.Anything).Return()
-	v.Set("foo", "")
-	v.Set("bar", "")
-	v.Set("baz", "foobar")
-	v.Set("int", 0)
-	v.Set("bool", false)
+	options.Set("foo", "")
+	options.Set("bar", "")
+	options.Set("baz", "foobar")
+	options.Set("int", 0)
+	options.Set("bool", false)
 }
 
 func testFooSet(key, check string, ok bool) func(*commands.TestData) {
@@ -49,7 +47,7 @@ func testFooSet(key, check string, ok bool) func(*commands.TestData) {
 		if err != nil {
 			return
 		}
-		val := test.Api.Options().GetString(key)
+		val := options.GetString(key)
 		assert.Equal(test.T, check, val)
 	}
 }
@@ -57,10 +55,9 @@ func testFooSet(key, check string, ok bool) func(*commands.TestData) {
 func testMultiSet(test *commands.TestData) {
 	err := test.Cmd.Exec()
 	assert.Nil(test.T, err)
-	opts := test.Api.Options()
-	assert.Equal(test.T, "x", opts.GetString("foo"))
-	assert.Equal(test.T, "x", opts.GetString("bar"))
-	assert.Equal(test.T, "x", opts.GetString("baz"))
-	assert.Equal(test.T, 4, opts.GetInt("int"))
-	assert.Equal(test.T, true, opts.GetBool("bool"))
+	assert.Equal(test.T, "x", options.GetString("foo"))
+	assert.Equal(test.T, "x", options.GetString("bar"))
+	assert.Equal(test.T, "x", options.GetString("baz"))
+	assert.Equal(test.T, 4, options.GetInt("int"))
+	assert.Equal(test.T, true, options.GetBool("bool"))
 }
