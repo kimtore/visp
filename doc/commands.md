@@ -158,11 +158,11 @@ These commands switch between, create, and edit lists.
 
 ## Spotify library
   
-* `like add cursor`
-  `like add playing`
-  `like add selection`
-  `like remove cursor`
-  `like remove playing`
+* `like add cursor`  
+  `like add playing`  
+  `like add selection`  
+  `like remove cursor`  
+  `like remove playing`  
   `like remove selection`
   
   Add or remove tracks from your Spotify library, also known as _liked songs_.
