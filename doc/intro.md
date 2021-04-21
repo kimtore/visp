@@ -7,6 +7,9 @@ music, you need a dedicated program such as either the official Spotify client, 
 other playback-capable software such as [spotifyd](https://github.com/Spotifyd/spotifyd).
 This program needs to be running and connected to Spotify so that Visp can recognize it.
 
+To authorize Visp to your Spotify account, please visit https://visp.site/authorize
+to get an access token. Enter your access token with `:auth <TOKEN>`.
+
 Visp is based around the concept of _lists_. Every view in Visp is a list of some kind.
 Upon starting the program, you are shown the _log console_, which keeps track of things
 that happen within the program. Other lists contain playlists, albums, or tracks.
