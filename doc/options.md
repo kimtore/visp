@@ -60,7 +60,7 @@ See the documentation on [setting options](commands.md#setting-global-options) f
 
   If set, the viewport is automatically moved so that the cursor stays in the center, if possible.
 
-### Visible columns of tracklist
+### Visible columns
 
 * `set columns=<tag>[,<tag>[...]]`
 
@@ -68,6 +68,10 @@ See the documentation on [setting options](commands.md#setting-global-options) f
 
   A comma-separated list of tag names must be given, such as the default `artist,track,title,album,year,time,popularity`.
 
+* `set columns.playlists=<tag>[,<tag>[...]]`
+
+  Define which tags should be shown when showing a list of playlists.
+  
 ### Sort order
 
 * `set sort=<tag>[,<tag>[...]]`

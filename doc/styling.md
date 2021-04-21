@@ -3,7 +3,7 @@
 ## Text style and color
 
 All UI elements in Visp can be styled with custom colors and text attributes.
-Styles are set with the `style` command; please see the [commands documentation](commands.md#setting-styles) for details.
+Assign styles with the `style` command; please see the [commands documentation](commands.md#setting-styles) for details.
 
 Colors are either literal names, such as `red`, `yellow`, or `green`, or hexadecimal color values such as `@ff0077`
 (the hash sign `#` cannot be used as it is reserved for comments; the `@` character is used instead).

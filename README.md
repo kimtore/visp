@@ -35,7 +35,9 @@ Downloads for Linux, Mac OS X and Windows can be found on the [releases](https:/
 
 Visp is _beta software_ and is a work in progress. Testers are welcome.
 
-[Documentation](doc/README.md) is available in the project repository.
+If you're new to Visp, please start out by reading the [User Guide](doc/intro.md).
+
+For in-depth information about configuration or advanced use, check out the [documentation](doc/README.md).
 
 
 ## Limitations

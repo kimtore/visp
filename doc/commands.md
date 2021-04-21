@@ -1,11 +1,18 @@
 # Commands
 
-Visp is driven by _commands_.
 Commands are strings of text, and can be entered in the [_multibar_](#switching-input-modes) or in configuration files.
+Enter commands by pressing `:`. This will place you in _command input mode_. Exit command input mode by pressing `<Ctrl-C>`
+or completing a command by pressing `<Enter>`.
+
+Navigate command history by pressing `<Up>` or `<Down>`. Delete the previous word by pressing `<Ctrl-W>`.
+Clear the entire line with `<Ctrl-U>`.
+
+Commands along with their parameters can be _tab completed_ by pressing `<Tab>` at any point.
+Press `<Tab>` multiple times to cycle through all available options.
 
 Below is a list of commands recognized by Visp, along with their parameters and description.
 
-Literal text spells out normally, Placeholders enclosed in `<angle brackets>`, and optional parameters enclosed in `[square brackets]`.
+Literal text spells out normally, placeholders enclosed in `<angle brackets>`, and optional parameters enclosed in `[square brackets]`.
 
 
 ## Move the cursor and viewport
@@ -72,7 +79,6 @@ These commands are split into `cursor` and `viewport` namespaces.
   Move the viewport up or down one row;
   leave the cursor on its current song if possible.
 
-
 * `viewport halfpageup`  
   `viewport halfpgup`  
   `viewport halfpaged[ow]n`  
@@ -101,6 +107,7 @@ These commands are split into `cursor` and `viewport` namespaces.
   Move the viewport so that the cursor is in the middle of the viewport,
   still pointing to the same song.
 
+
 ## Manipulating lists
 
 These commands switch between, create, and edit lists.
@@ -117,6 +124,14 @@ These commands switch between, create, and edit lists.
 * `list duplicate`
 
   Duplicate the current list.
+
+* `list home`
+
+  Switch to _log console_.
+  
+* `list goto <id>`
+
+  Switch to a named list. `id` can be a Spotify ID.
 
 * `list remove`
 
@@ -135,6 +150,25 @@ These commands switch between, create, and edit lists.
   The most significant sort criterion is specified last.
 
   The first sort is performed as an unstable sort, while the remainder use a stable sorting algorithm.
+  
+* `columns <column>[ <column>[...]]`
+
+  Specify columns that should be visible in the current list.
+  
+* `new [playlist name]`
+
+  Create a new track list. The list is not saved to Spotify until `w[rite]` is invoked, see below.
+  
+* `w[rite] [playlist name]`
+
+  Save the current track list as a Spotify playlist.
+  If no name is given, and the track list is an existing Spotify playlist, Visp will save changes to this list.
+  If a name is given, Visp will create a new Spotify playlist.
+  
+* `rename <playlist name>`
+
+  Assign a new name to the current playlist. Changes must be saved back to Spotify with `w[rite]`.
+
 
 ### Adding, removing, and moving tracks
 
@@ -200,12 +234,12 @@ The `select` commands allow the tracklist selection to be manipulated.
 
 * `play cursor`
 
-  Add the song under the cursor to the queue if necessary, and start playing.
+  Start playing the current list, starting at the cursor position.
 
 * `play selection`
 
-  Add the entire [selection](#selecting-tracks) to the queue, and start playing from the first selected song.
-  If there is no selection, fall back to the song under the cursor.
+  Start playing the current [selection](#selecting-tracks).
+  If there is no selection, fall back to `play cursor` above.
 
 * `seek +<N>`  
   `seek -<N>`
@@ -224,7 +258,7 @@ The `select` commands allow the tracklist selection to be manipulated.
   `single on`  
   `single off`
 
-  Toggle MPD's single mode playback style, or switch it on or off.
+  Toggle single mode playback style, or switch it on or off.
 
 ### Controlling the volume
 
