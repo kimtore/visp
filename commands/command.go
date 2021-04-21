@@ -54,6 +54,7 @@ var Verbs = map[string]func(api.API) Command{
 	"device":    NewDevice,
 	"inputmode": NewInputMode,
 	"isolate":   NewIsolate,
+	"like":      NewLike,
 	"list":      NewList,
 	"n":         NewNew,
 	"next":      NewNext,

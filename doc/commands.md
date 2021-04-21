@@ -154,21 +154,36 @@ These commands switch between, create, and edit lists.
 * `columns <column>[ <column>[...]]`
 
   Specify columns that should be visible in the current list.
+
+
+## Spotify library
+  
+* `like add cursor`
+  `like add playing`
+  `like add selection`
+  `like remove cursor`
+  `like remove playing`
+  `like remove selection`
+  
+  Add or remove tracks from your Spotify library, also known as _liked songs_.
+  Using `playing` will like the track currently playing, whereas `cursor` and `selection`
+  likes the track(s) under the cursor or currently selected, respectively.
+  If there is no selection, `like ... selection` acts as `like ... cursor`.
   
 * `new [playlist name]`
 
   Create a new track list. The list is not saved to Spotify until `w[rite]` is invoked, see below.
   
+* `rename <playlist name>`
+
+  Assign a new name to the current playlist. Changes must be saved back to Spotify with `w[rite]`.
+
 * `w[rite] [playlist name]`
 
   Save the current track list as a Spotify playlist.
   If no name is given, and the track list is an existing Spotify playlist, Visp will save changes to this list.
   If a name is given, Visp will create a new Spotify playlist.
   
-* `rename <playlist name>`
-
-  Assign a new name to the current playlist. Changes must be saved back to Spotify with `w[rite]`.
-
 
 ### Adding, removing, and moving tracks
 
