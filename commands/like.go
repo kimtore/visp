@@ -21,6 +21,7 @@ type Like struct {
 	// mode of operation
 	add    bool
 	remove bool
+	toggle bool
 }
 
 // NewLike returns Like.
@@ -47,6 +48,8 @@ func (cmd *Like) Parse() error {
 		cmd.add = true
 	case "remove":
 		cmd.remove = true
+	case "toggle":
+		cmd.toggle = true
 	default:
 		return fmt.Errorf("unexpected '%s', expected 'add' or 'remove'", lit)
 	}
@@ -99,6 +102,7 @@ func (cmd *Like) Exec() error {
 	}
 
 	ids := make([]spotify.ID, 0)
+
 	switch {
 	case cmd.cursor:
 		track := tracklist.CursorTrack()
@@ -118,22 +122,48 @@ func (cmd *Like) Exec() error {
 		ids = append(ids, spotify.ID(id))
 	}
 
+	if cmd.toggle {
+		client.UserHasTracks(ids...)
+	}
+
 	defer cmd.api.Changed(api.ChangePlayerStateInvalid, nil)
 
-	if cmd.add {
-		err = client.AddTracksToLibrary(ids...)
-	} else if cmd.remove {
-		err = client.RemoveTracksFromLibrary(ids...)
+	additions := make([]spotify.ID, 0, len(ids))
+	removals := make([]spotify.ID, 0, len(ids))
+
+	switch {
+	case cmd.add:
+		additions = append(additions, ids...)
+	case cmd.remove:
+		removals = append(removals, ids...)
+	case cmd.toggle:
+		liked, err := client.UserHasTracks(ids...)
+		if err != nil {
+			return err
+		}
+		for i, trackLiked := range liked {
+			if trackLiked {
+				removals = append(removals, ids[i])
+			} else {
+				additions = append(additions, ids[i])
+			}
+		}
 	}
 
-	if err != nil {
-		return err
+	if len(additions) > 0 {
+		err = client.AddTracksToLibrary(additions...)
+		if err != nil {
+			return err
+		}
+		log.Infof("%d track(s) added to Liked tracks", len(additions))
 	}
 
-	if cmd.add {
-		log.Infof("%d track(s) added to Liked tracks", len(ids))
-	} else if cmd.remove {
-		log.Infof("%d track(s) removed from Liked tracks", len(ids))
+	if len(removals) > 0 {
+		err = client.RemoveTracksFromLibrary(removals...)
+		if err != nil {
+			return err
+		}
+		log.Infof("%d track(s) removed from Liked tracks", len(removals))
 	}
 
 	if cmd.selection {
@@ -155,5 +185,6 @@ func (cmd *Like) setTabCompleteVerbs(lit string) {
 	cmd.setTabComplete(lit, []string{
 		"add",
 		"remove",
+		"toggle",
 	})
 }

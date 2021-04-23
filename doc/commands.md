@@ -163,7 +163,10 @@ These commands switch between, create, and edit lists.
   `like add selection`  
   `like remove cursor`  
   `like remove playing`  
-  `like remove selection`
+  `like remove selection`  
+  `like toggle cursor`  
+  `like toggle playing`  
+  `like toggle selection`
   
   Add or remove tracks from your Spotify library, also known as _liked songs_.
   Using `playing` will like the track currently playing, whereas `cursor` and `selection`

@@ -251,5 +251,5 @@ bind tracklist y yank
 bind tracklist Y yank current
 bind tracklist p paste after
 bind tracklist P paste before
-bind global o like add playing
+bind global o like toggle playing
 `
