@@ -53,6 +53,8 @@ A new window will be created in _tracklist view_, showing all the tracks in that
 When you are in a tracklist view, press `<Enter>` on any track to start playing
 from that track. Press `a` to add the track to the queue instead of playing right away.
 
+Press `o` to like or unlike the currently playing track.
+
 
 ## Select multiple tracks
 
