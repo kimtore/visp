@@ -22,6 +22,7 @@ const (
 	ChangeList                                 // some list has changes in row data, title, or other
 	ChangeOption                               // a setting has been changed
 	ChangePlayerStateInvalid                   // player state is no longer valid due to a server command
+	ChangeDevice                               // playback device changed
 )
 
 // API defines a set of commands that should be available to commands run

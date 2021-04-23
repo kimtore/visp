@@ -158,6 +158,7 @@ func (cmd *Play) playCursor() error {
 	}
 
 	defer cmd.api.Changed(api.ChangePlayerStateInvalid, nil)
+	defer cmd.api.Changed(api.ChangeDevice, nil)
 
 	// Start playing with correct parameters.
 	return cmd.client.PlayOpt(&spotify.PlayOptions{

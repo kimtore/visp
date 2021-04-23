@@ -74,7 +74,7 @@ func (v *Visp) Message(fmt string, a ...interface{}) {
 func (v *Visp) Changed(change api.ChangeType, data interface{}) {
 	switch change {
 	case api.ChangeList:
-		// FIXME
+		// TODO
 
 	case api.ChangeOption:
 		s, ok := data.(string)
@@ -87,8 +87,11 @@ func (v *Visp) Changed(change api.ChangeType, data interface{}) {
 	case api.ChangePlayerStateInvalid:
 		v.player.Invalidate()
 		v.ticker.Reset(1 * time.Millisecond)
-	}
 
+	case api.ChangeDevice:
+		// TODO
+
+	}
 }
 
 func (v *Visp) optionChanged(key string) {
