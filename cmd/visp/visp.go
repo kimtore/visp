@@ -78,6 +78,13 @@ func run() (int, error) {
 		return ExitInternalError, fmt.Errorf("read default configuration: %s", err)
 	}
 
+	configDirs := xdg.ConfigDirectories()
+	homeConfigDir := configDirs[len(configDirs)-1]
+	err = os.MkdirAll(homeConfigDir, 0755)
+	if err != nil {
+		log.Errorf("Unable to create configuration directory: %s", err)
+	}
+
 	// Source configuration files from all XDG standard directories.
 	for _, dir := range xdg.ConfigDirectories() {
 		configFile := filepath.Join(dir, ConfigFileName)
@@ -92,7 +99,6 @@ func run() (int, error) {
 	}
 
 	// In case a token has been cached on disk, restore it to memory.
-	configDirs := xdg.ConfigDirectories()
 	tokenFile := filepath.Join(configDirs[len(configDirs)-1], TokenFileName)
 	visp.Tokencache = tokencache.New(tokenFile)
 	token, err := visp.Tokencache.Read()
