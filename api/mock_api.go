@@ -129,14 +129,6 @@ func (_m *MockAPI) List() list.List {
 	return r0
 }
 
-// Message provides a mock function with given fields: _a0, _a1
-func (_m *MockAPI) Message(_a0 string, _a1 ...interface{}) {
-	var _ca []interface{}
-	_ca = append(_ca, _a0)
-	_ca = append(_ca, _a1...)
-	_m.Called(_ca...)
-}
-
 // Multibar provides a mock function with given fields:
 func (_m *MockAPI) Multibar() *multibar.Multibar {
 	ret := _m.Called()

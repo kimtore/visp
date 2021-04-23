@@ -5,6 +5,7 @@ import (
 
 	"github.com/ambientsound/visp/api"
 	"github.com/ambientsound/visp/input/lexer"
+	"github.com/ambientsound/visp/log"
 	spotify_tracklist "github.com/ambientsound/visp/spotify/tracklist"
 )
 
@@ -83,7 +84,7 @@ func (cmd *Paste) Exec() error {
 
 	cmd.api.Changed(api.ChangeList, cmd.list)
 
-	cmd.api.Message("%d tracks inserted", ln)
+	log.Infof("%d tracks inserted", ln)
 
 	return nil
 }

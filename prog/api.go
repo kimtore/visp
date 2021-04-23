@@ -66,11 +66,6 @@ func (v *Visp) List() list.List {
 	return v.list
 }
 
-func (v *Visp) Message(fmt string, a ...interface{}) {
-	log.Infof(fmt, a...)
-	log.Debugf("Using obsolete Message() for previous message")
-}
-
 func (v *Visp) Changed(change api.ChangeType, data interface{}) {
 	switch change {
 	case api.ChangeList:

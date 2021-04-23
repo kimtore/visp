@@ -3,6 +3,7 @@ package commands
 import (
 	"fmt"
 
+	"github.com/ambientsound/visp/log"
 	"github.com/ambientsound/visp/spotify/tracklist"
 	"github.com/zmb3/spotify"
 
@@ -60,7 +61,7 @@ func (cmd *Add) Exec() error {
 		if err != nil {
 			return err
 		}
-		cmd.api.Message("Added %s to queue.", track.String())
+		log.Infof("Added %s to queue.", track.String())
 		cmd.tracklist.SetSelected(i, false)
 	}
 

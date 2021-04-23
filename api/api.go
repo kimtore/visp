@@ -52,9 +52,6 @@ type API interface {
 	// List returns the active list.
 	List() list.List
 
-	// Message sends a message to the user through the statusbar.
-	Message(string, ...interface{})
-
 	// PlayerStatus returns the current MPD player status.
 	PlayerStatus() player.State
 
