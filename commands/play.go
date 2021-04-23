@@ -2,8 +2,10 @@ package commands
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/ambientsound/visp/log"
+	"github.com/ambientsound/visp/options"
 	"github.com/ambientsound/visp/spotify/tracklist"
 	"github.com/zmb3/spotify"
 
@@ -83,6 +85,39 @@ func (cmd *Play) Exec() error {
 	}
 }
 
+// If no device is active, use the `device` option to automatically start playing
+// on a preferred device.
+func (cmd *Play) deviceID() (*spotify.ID, error) {
+	if len(cmd.api.PlayerStatus().Device.ID) > 0 {
+		return nil, nil
+	}
+
+	deviceName := options.GetString(options.Device)
+	if len(deviceName) == 0 {
+		return nil, nil
+	}
+
+	devices, err := cmd.client.PlayerDevices()
+	if err != nil {
+		return nil, fmt.Errorf("unable to determine device ID for playback: %w", err)
+	}
+
+	for _, device := range devices {
+		if device.Name == deviceName {
+			return &device.ID, nil
+		}
+	}
+
+	// Fallback to lower-case matching if no exact match is found
+	for _, device := range devices {
+		if strings.ToLower(device.Name) == strings.ToLower(deviceName) {
+			return &device.ID, nil
+		}
+	}
+
+	return nil, fmt.Errorf("no active playback device and no default set; try `list goto devices` or `set device=<device_name>`")
+}
+
 // playCursor plays the song under the cursor, and also adds the rest of the list to the play context.
 // Playback starts from the song beneath the cursor.
 func (cmd *Play) playCursor() error {
@@ -94,6 +129,12 @@ func (cmd *Play) playCursor() error {
 	track := cmd.tracklist.CursorTrack()
 	if track == nil {
 		return fmt.Errorf("cannot play: no track under cursor")
+	}
+
+	// Get a device ID for playback.
+	deviceID, err := cmd.deviceID()
+	if err != nil {
+		return err
 	}
 
 	// Figure out the playback context.
@@ -120,6 +161,7 @@ func (cmd *Play) playCursor() error {
 
 	// Start playing with correct parameters.
 	return cmd.client.PlayOpt(&spotify.PlayOptions{
+		DeviceID:        deviceID,
 		URIs:            uris,
 		PlaybackContext: uri,
 		PlaybackOffset: &spotify.PlaybackOffset{

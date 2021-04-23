@@ -6,6 +6,13 @@ See the documentation on [setting options](commands.md#setting-global-options) f
 
 ## Spotify
 
+### Default playback device
+
+* `set device=<name>`
+
+  When starting playback, and in case no Spotify playback device is currently active,
+  Visp will try to play music on the device with the given name.
+
 ### Search results limit
 
 * `set limit=50`

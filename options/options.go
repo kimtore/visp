@@ -12,6 +12,7 @@ const (
 	Center            = "center"
 	Columns           = "columns"
 	ColumnsPlaylists  = "columns.playlists"
+	Device            = "device"
 	Limit             = "limit"
 	LogFile           = "logfile"
 	LogOverwrite      = "logoverwrite"
@@ -38,6 +39,7 @@ func init() {
 	v.Set(Center, boolType)
 	v.Set(Columns, stringType)
 	v.Set(ColumnsPlaylists, stringType)
+	v.Set(Device, stringType)
 	v.Set(Limit, intType)
 	v.Set(LogFile, stringType)
 	v.Set(LogOverwrite, boolType)
