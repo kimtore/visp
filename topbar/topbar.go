@@ -20,6 +20,7 @@ type Fragment interface {
 var fragments = map[string]func(api.API, string) Fragment{
 	"device":    NewDevice,
 	"elapsed":   NewElapsed,
+	"liked":     NewLiked,
 	"list":      NewList,
 	"mode":      NewMode,
 	"shortname": NewShortname,

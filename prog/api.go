@@ -69,7 +69,7 @@ func (v *Visp) List() list.List {
 func (v *Visp) Changed(change api.ChangeType, data interface{}) {
 	switch change {
 	case api.ChangeList:
-		// TODO
+		// TODO: update track counts, playlist names, etc.
 
 	case api.ChangeOption:
 		s, ok := data.(string)
@@ -84,7 +84,9 @@ func (v *Visp) Changed(change api.ChangeType, data interface{}) {
 		v.ticker.Reset(1 * time.Millisecond)
 
 	case api.ChangeDevice:
-		// TODO
+		v.player.Invalidate()
+		v.ticker.Reset(1 * time.Millisecond)
+		// TODO: refresh devices window
 
 	}
 }

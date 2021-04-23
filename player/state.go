@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/ambientsound/visp/list"
+	"github.com/ambientsound/visp/log"
 	"github.com/ambientsound/visp/spotify/tracklist"
 	"github.com/zmb3/spotify"
 )
@@ -15,6 +16,7 @@ type State struct {
 	CreateTime         time.Time
 	ProgressPercentage float64
 	TrackRow           list.Row
+	liked              *bool
 	updateTime         time.Time
 }
 
@@ -30,6 +32,18 @@ func NewState(state spotify.PlayerState) *State {
 		CreateTime:  time.Now(),
 		TrackRow:    row,
 		updateTime:  time.Now(),
+	}
+}
+
+func (p *State) Update(state spotify.PlayerState) {
+	now := time.Now()
+	p.PlayerState = state
+	p.CreateTime = now
+	p.updateTime = now
+	if state.Item == nil {
+		p.TrackRow = list.NewRow("", nil)
+	} else {
+		p.TrackRow = spotify_tracklist.FullTrackRow(*state.Item)
 	}
 }
 
@@ -80,5 +94,26 @@ func (p *State) Tick() {
 }
 
 func (p *State) Invalidate() {
+	log.Debugf("Invalidating current player state")
 	p.CreateTime = time.Time{}
+	p.liked=nil
+}
+
+func (p State) Liked() bool {
+	if p.liked == nil {
+		return false
+	}
+	return *p.liked
+}
+
+func (p *State) SetLiked(b bool) {
+	p.liked = &b
+}
+
+func (p *State) ClearLiked() {
+	p.liked = nil
+}
+
+func (p *State) LikedIsKnown() bool {
+	return p.liked != nil
 }

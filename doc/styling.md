@@ -92,6 +92,10 @@ See [below](#top-bar-variables) for corresponding variables.
 
   Corresponds to `${elapsed}`.
 
+* `liked`
+
+  Corresponds to `${liked}`.
+
 * `listIndex`
 
   Corresponds to `${list|index}`.
@@ -248,8 +252,16 @@ Borders are added for emphasis, and are not part of the rendered text.
 
 * `${mode}`
 
-  The status of the player switches `consume`, `random`, `single`, and `repeat`, printed as four characters (`czsr`).
+  The status of the player switches `random`, `single`, and `repeat`, printed as three characters (`zsr`).
 
+* `${liked}`
+
+  Shows a ASCII art heart if the current song is in the library of _liked songs_.
+  
+* `${liked|unicode}`
+
+  Green heart symbol if the current song is in the library of _liked songs_.
+  
 * `${volume}`
 
   The current volume, or `MUTE` if the volume is zero.

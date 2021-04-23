@@ -89,7 +89,7 @@ set nocenter
 set columns=artist,title,track,album,year,time,popularity
 set columns.playlists=name,tracks,owner,public,collaborative
 set sort=track,disc,album,year,albumArtist
-set topbar="${tag|artist} - ${tag|title}|$shortname $version|$elapsed $state $time;\\#${tag|track} ${tag|album}|${list|title} [${list|index}/${list|total}] ${synced}|$device $mode $volume;;"
+set topbar="${tag|artist} - ${tag|title} $liked|$shortname $version|$elapsed $state $time;\\#${tag|track} ${tag|album}|${list|title} [${list|index}/${list|total}] ${synced}|$device $mode $volume;;"
 set spotifyauthserver="https://visp.site"
 set limit=50
 set pollinterval=10
@@ -149,6 +149,7 @@ style tagMissing red
 style topbar darkgray
 style version gray dim
 style volume green
+style liked green
 
 # Other styles
 style commandText default
@@ -250,4 +251,5 @@ bind tracklist y yank
 bind tracklist Y yank current
 bind tracklist p paste after
 bind tracklist P paste before
+bind global o like add playing
 `

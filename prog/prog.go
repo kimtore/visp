@@ -156,6 +156,34 @@ func (v *Visp) Main() error {
 	}
 }
 
+// Record the current "liked" status of the current track.
+func (v *Visp) updateLiked() error {
+	if v.player.Item == nil || len(v.player.Item.ID) == 0 {
+		return nil
+	}
+
+	log.Debugf("Fetching liked status")
+
+	client, err := v.Spotify()
+	if err != nil {
+		return err
+	}
+
+	liked, err := client.UserHasTracks(v.player.Item.ID)
+	if err != nil {
+		return err
+	}
+
+	if len(liked) != 1 {
+		return nil
+	}
+
+	v.player.SetLiked(liked[0])
+	log.Debugf("Likes current track: %v", v.player.Liked())
+
+	return nil
+}
+
 func (v *Visp) updatePlayer() error {
 	var err error
 
@@ -180,7 +208,23 @@ func (v *Visp) updatePlayer() error {
 		return err
 	}
 
-	v.player = player.NewState(*state)
+	currentID := spotify.ID(v.player.TrackRow.ID())
+
+	v.player.Update(*state)
+
+	// If track changed, clear information about whether this song is liked or not
+	if state.Item == nil || currentID != state.Item.ID {
+		v.player.ClearLiked()
+	}
+
+	if v.player.LikedIsKnown() {
+		return nil
+	}
+
+	err = v.updateLiked()
+	if err != nil {
+		return fmt.Errorf("get liked status of current song: %s", err)
+	}
 
 	return nil
 }
