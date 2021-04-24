@@ -79,6 +79,10 @@ See the documentation on [setting options](commands.md#setting-global-options) f
 
   Define which tags should be shown when showing a list of playlists.
   
+* `set expandcolumns=<tag>[,<tag>[...]]`
+
+  Control auto-expansion of column widths in the tracklist. Tags entered here will expand to fill the size of the window.
+
 ### Sort order
 
 * `set sort=<tag>[,<tag>[...]]`

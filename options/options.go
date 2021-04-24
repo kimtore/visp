@@ -13,6 +13,7 @@ const (
 	Columns           = "columns"
 	ColumnsPlaylists  = "columns.playlists"
 	Device            = "device"
+	ExpandColumns     = "expandcolumns"
 	Limit             = "limit"
 	LogFile           = "logfile"
 	LogOverwrite      = "logoverwrite"
@@ -40,6 +41,7 @@ func init() {
 	v.Set(Columns, stringType)
 	v.Set(ColumnsPlaylists, stringType)
 	v.Set(Device, stringType)
+	v.Set(ExpandColumns, stringType)
 	v.Set(Limit, intType)
 	v.Set(LogFile, stringType)
 	v.Set(LogOverwrite, boolType)
@@ -85,14 +87,15 @@ func Print(key string, opt interface{}) string {
 // Default configuration file.
 const Defaults string = `
 # Global options
-set nocenter
-set columns=artist,title,track,album,year,time,popularity
 set columns.playlists=name,tracks,owner,public,collaborative
-set sort=track,disc,album,year,albumArtist
-set topbar="${tag|artist} - ${tag|title} $liked|$shortname $version|$elapsed $state $time;\\#${tag|track} ${tag|album}|${list|title} [${list|index}/${list|total}] ${synced}|$device $mode $volume;;"
-set spotifyauthserver="https://visp.site"
+set columns=artist,title,track,album,year,time,popularity
+set expandcolumns=logMessage,description,deviceName,name,artist,title,album
 set limit=50
+set nocenter
 set pollinterval=10
+set sort=track,disc,album,year,albumArtist
+set spotifyauthserver="https://visp.site"
+set topbar="${tag|artist} - ${tag|title} $liked|$shortname $version|$elapsed $state $time;\\#${tag|track} ${tag|album}|${list|title} [${list|index}/${list|total}] ${synced}|$device $mode $volume;;"
 
 # Logging
 set nologoverwrite

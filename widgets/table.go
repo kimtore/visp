@@ -2,13 +2,14 @@ package widgets
 
 import (
 	"fmt"
+	"math"
+	"time"
+
 	"github.com/ambientsound/visp/list"
 	"github.com/ambientsound/visp/log"
 	"github.com/ambientsound/visp/options"
 	"github.com/ambientsound/visp/spotify/devices"
 	"github.com/ambientsound/visp/spotify/tracklist"
-	"math"
-	"time"
 
 	"github.com/ambientsound/visp/api"
 	"github.com/ambientsound/visp/style"
@@ -279,11 +280,23 @@ func (w *Table) SetColumns(tags []string) {
 	cols := w.list.Columns(tags)
 	w.columns = make([]column, len(tags))
 
+	expandColumns := options.GetList(options.ExpandColumns)
+	expand := make(map[string]bool)
+	for _, col := range expandColumns {
+		expand[col] = true
+	}
+
 	for i, key := range tags {
 		w.columns[i].col = cols[i]
 		w.columns[i].key = key
-		w.columns[i].title = ColumnTitle(key)
-		w.columns[i].width = cols[i].Median()
+		if expand[key] {
+			// auto-expanded columns start at their median size
+			w.columns[i].width = cols[i].Median()
+		} else {
+			// non-expanded columns start at maximum size plus one character for padding
+			w.columns[i].width = cols[i].Max() + 1
+		}
+		w.columns[i].rightPadding = 1
 		usedWidth += w.columns[i].width
 	}
 
@@ -291,35 +304,52 @@ func (w *Table) SetColumns(tags []string) {
 		return
 	}
 
-	// right-hand column must have some space for readability
-	w.columns[len(tags)-1].rightPadding = 1
-
-	// log.Debugf("expanding column widths from %d to %d", usedWidth, totalWidth)
-
-	// expand to size
-	poolSize := len(tags)
-	saturated := make([]bool, poolSize)
-
-	// expand as long as there is space left
-	for {
-		for i := range tags {
-			if usedWidth > totalWidth {
-				return
-			}
-			if poolSize > 0 && saturated[i] {
-				continue
-			}
-			col := w.columns[i]
-			if poolSize > 0 && col.width > col.col.Max() {
-				// log.Debugf("saturating column %s at width %d", tags[i], col.width)
-				saturated[i] = true
-				poolSize--
-				continue
-			}
-			w.columns[i].width++
-			// log.Debugf("increase column %s to width %d", tags[i], w.columns[i].width)
-			usedWidth++
+	// create a list of tags that should auto-expand
+	poolSize := 0
+	for _, tag := range tags {
+		if expand[tag] {
+			poolSize++
 		}
+	}
+
+	// if no columns are marked as auto-expand, skip expanison algorithm
+	if poolSize > 0 {
+		// expand columns to maximum length as long as there is space left
+		saturated := make([]bool, len(tags))
+
+	outer:
+		for {
+			for i, tag := range tags {
+				if usedWidth > totalWidth {
+					break outer
+				}
+				if !expand[tag] {
+					continue
+				}
+				if poolSize > 0 && saturated[i] {
+					continue
+				}
+				col := w.columns[i]
+				if poolSize > 0 && col.width > col.col.Max() {
+					// log.Debugf("saturating column %s at width %d", tags[i], col.width)
+					saturated[i] = true
+					poolSize--
+					continue
+				}
+				w.columns[i].width++
+				// log.Debugf("increase column %s to width %d", tags[i], w.columns[i].width)
+				usedWidth++
+			}
+		}
+	}
+
+	// Set column names, preferably to their maximum size, but truncate as needed.
+	for i, key := range tags {
+		title := ColumnTitle(key)
+		if len(title) >= w.columns[i].width {
+			title = title[:w.columns[i].width-2] + "."
+		}
+		w.columns[i].title = title
 	}
 }
 

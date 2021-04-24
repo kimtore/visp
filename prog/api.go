@@ -116,6 +116,10 @@ func (v *Visp) optionChanged(key string) {
 		} else {
 			log.Errorf("topbar configuration: %s", err)
 		}
+
+	case options.ExpandColumns:
+		// Re-render columns
+		v.UI().TableWidget().SetColumns(v.UI().TableWidget().ColumnNames())
 	}
 }
 
