@@ -286,12 +286,23 @@ func (w *Table) SetColumns(tags []string) {
 		expand[col] = true
 	}
 
+	fullHeaderColumns := options.GetList(options.FullHeaderColumns)
+	fullHeader := make(map[string]bool)
+	for _, col := range fullHeaderColumns {
+		fullHeader[col] = true
+	}
+
 	for i, key := range tags {
 		w.columns[i].col = cols[i]
 		w.columns[i].key = key
+		w.columns[i].title = ColumnTitle(key)
 		if expand[key] {
 			// auto-expanded columns start at their median size
 			w.columns[i].width = cols[i].Median()
+		} else if fullHeader[key] {
+			// non-expanded columns with full headers start at maximum size plus one character for padding.
+			// header titles are included in the maximum size calculation.
+			w.columns[i].width = utils.Max(cols[i].Max(), len(w.columns[i].title)) + 1
 		} else {
 			// non-expanded columns start at maximum size plus one character for padding
 			w.columns[i].width = cols[i].Max() + 1
@@ -344,12 +355,10 @@ func (w *Table) SetColumns(tags []string) {
 	}
 
 	// Set column names, preferably to their maximum size, but truncate as needed.
-	for i, key := range tags {
-		title := ColumnTitle(key)
-		if len(title) >= w.columns[i].width {
-			title = title[:w.columns[i].width-2] + "."
+	for i := range tags {
+		if len(w.columns[i].title) >= w.columns[i].width {
+			w.columns[i].title = w.columns[i].title[:w.columns[i].width-2] + "."
 		}
-		w.columns[i].title = title
 	}
 }
 

@@ -83,6 +83,10 @@ See the documentation on [setting options](commands.md#setting-global-options) f
 
   Control auto-expansion of column widths in the tracklist. Tags entered here will expand to fill the size of the window.
 
+* `set fullheadercolumns=<tag>[,<tag>[...]]`
+
+  Define that the minimum size of these columns should be at least the length of their title headers.
+
 ### Sort order
 
 * `set sort=<tag>[,<tag>[...]]`

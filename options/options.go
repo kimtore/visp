@@ -14,6 +14,7 @@ const (
 	ColumnsPlaylists  = "columns.playlists"
 	Device            = "device"
 	ExpandColumns     = "expandcolumns"
+	FullHeaderColumns = "fullheadercolumns"
 	Limit             = "limit"
 	LogFile           = "logfile"
 	LogOverwrite      = "logoverwrite"
@@ -42,6 +43,7 @@ func init() {
 	v.Set(ColumnsPlaylists, stringType)
 	v.Set(Device, stringType)
 	v.Set(ExpandColumns, stringType)
+	v.Set(FullHeaderColumns, stringType)
 	v.Set(Limit, intType)
 	v.Set(LogFile, stringType)
 	v.Set(LogOverwrite, boolType)
@@ -90,6 +92,7 @@ const Defaults string = `
 set columns.playlists=name,tracks,owner,public,collaborative
 set columns=artist,title,track,album,year,time,popularity
 set expandcolumns=logMessage,description,deviceName,name,artist,title,album
+set fullheadercolumns=logLevel,public,collaborative,deviceName,track
 set limit=50
 set nocenter
 set pollinterval=10
