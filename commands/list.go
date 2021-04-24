@@ -28,6 +28,7 @@ type List struct {
 	open      bool
 	relative  int
 	remove    bool
+	last      bool
 	name      string
 }
 
@@ -61,6 +62,8 @@ func (cmd *List) Parse() error {
 			cmd.goto_ = true
 		case "open":
 			cmd.open = true
+		case "last":
+			cmd.last = true
 		default:
 			i, err := strconv.Atoi(lit)
 			if err != nil {
@@ -91,6 +94,10 @@ func (cmd *List) Exec() error {
 	switch {
 	case cmd.goto_:
 		return cmd.Goto(cmd.name)
+
+	case cmd.last:
+		cmd.api.SetList(cmd.api.Db().Last())
+		return nil
 
 	case cmd.open:
 		row := cmd.api.List().CursorRow()
@@ -205,6 +212,7 @@ func (cmd *List) setTabCompleteVerbs(lit string) {
 		"end",
 		"goto",
 		"home",
+		"last",
 		"next",
 		"prev",
 		"previous",

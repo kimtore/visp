@@ -136,6 +136,14 @@ func (v *Visp) Multibar() *multibar.Multibar {
 }
 
 func (v *Visp) SetList(lst list.List) {
+	if lst == nil {
+		return
+	}
+	cur := v.db.Current()
+	if cur != nil && cur != lst && cur != v.db && cur != v.clipboards {
+		log.Debugf("Setting last used list to '%s'", cur.Name())
+		v.db.SetLast(v.db.Current())
+	}
 	c := v.db.Cache(lst)
 	v.db.SetCursor(c)
 	v.list = lst

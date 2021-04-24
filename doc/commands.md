@@ -133,6 +133,11 @@ These commands switch between, create, and edit lists.
 
   Switch to a named list. `id` can be a Spotify ID.
 
+* `list last`
+
+  Activate the previous window. Due to its special nature, the list of windows, nor the list of clipboards, will
+  never be considered the previous window as this would result in a bad user experience.
+
 * `list remove`
 
   Remove the currently visible list, if possible.

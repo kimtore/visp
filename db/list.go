@@ -9,6 +9,7 @@ import (
 type List struct {
 	list.Base
 	lists map[string]list.List
+	last  list.List
 }
 
 var _ list.List = &List{}
@@ -59,4 +60,12 @@ func (s *List) List(id string) list.List {
 		return nil
 	}
 	return row.(*Row).List()
+}
+
+func (s *List) SetLast(last list.List) {
+	s.last = last
+}
+
+func (s *List) Last() list.List {
+	return s.last
 }
