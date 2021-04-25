@@ -67,7 +67,7 @@ func ListWithID(client spotify.Client, id string, limit int) (*spotify_tracklist
 	lst.SetURI(playlist.URI)
 	lst.SetRemote(true)
 	lst.SetSyncedToRemote()
-	lst.SetVisibleColumns(options.GetList(options.Columns))
+	lst.SetVisibleColumns(options.GetList(options.ColumnsTracklists))
 
 	return lst, nil
 }
@@ -107,7 +107,7 @@ func MyTracks(client spotify.Client, limit int) (*spotify_tracklist.List, error)
 
 	lst.SetName("Saved tracks")
 	lst.SetID(spotify_library.MyTracks)
-	lst.SetVisibleColumns(options.GetList(options.Columns))
+	lst.SetVisibleColumns(options.GetList(options.ColumnsTracklists))
 	_ = lst.Sort(options.GetList(options.Sort))
 
 	return lst, nil
@@ -126,7 +126,7 @@ func MyAlbums(client spotify.Client) (*spotify_albums.List, error) {
 
 	lst.SetName("Saved albums")
 	lst.SetID(spotify_library.MyAlbums)
-	lst.SetVisibleColumns(lst.ColumnNames())
+	lst.SetVisibleColumns(options.GetList(options.ColumnsAlbums))
 
 	return lst, nil
 }
@@ -146,7 +146,7 @@ func TopTracks(client spotify.Client, limit int) (*spotify_tracklist.List, error
 
 	lst.SetName("Top tracks")
 	lst.SetID(spotify_library.TopTracks)
-	lst.SetVisibleColumns(options.GetList(options.Columns))
+	lst.SetVisibleColumns(options.GetList(options.ColumnsTracklists))
 
 	return lst, nil
 }
@@ -164,7 +164,7 @@ func NewReleases(client spotify.Client) (*spotify_tracklist.List, error) {
 
 	lst.SetName("New releases")
 	lst.SetID(spotify_library.NewReleases)
-	lst.SetVisibleColumns(options.GetList(options.Columns))
+	lst.SetVisibleColumns(options.GetList(options.ColumnsTracklists))
 
 	return lst, nil
 }

@@ -243,7 +243,7 @@ func (cmd *List) New() error {
 	tracklist := spotify_tracklist.NewFromTracks([]spotify.FullTrack{})
 	tracklist.SetName(cmd.name)
 	tracklist.SetID(uuid.New().String())
-	tracklist.SetVisibleColumns(options.GetList(options.Columns))
+	tracklist.SetVisibleColumns(options.GetList(options.ColumnsTracklists))
 
 	cmd.api.SetList(tracklist)
 

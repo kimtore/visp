@@ -126,7 +126,7 @@ func (v *Visp) Main() error {
 				log.Errorf("spotify search: %s", err)
 				break
 			}
-			columns := options.GetString(options.Columns)
+			columns := options.GetString(options.ColumnsTracklists)
 			lst.SetID(uuid.New().String())
 			lst.SetName(fmt.Sprintf("Search for '%s'", query))
 			lst.SetVisibleColumns(strings.Split(columns, ","))

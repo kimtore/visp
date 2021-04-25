@@ -53,7 +53,7 @@ func (cmd *Yank) Exec() error {
 		}
 		cmd.list = list.New()
 		cmd.list.Add(row)
-		cmd.list.SetVisibleColumns(options.GetList(options.Columns))
+		cmd.list.SetVisibleColumns(options.GetList(options.ColumnsTracklists))
 
 	default:
 		tracklist := cmd.api.Tracklist()

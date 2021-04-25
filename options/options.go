@@ -10,8 +10,9 @@ import (
 // Option names.
 const (
 	Center            = "center"
-	Columns           = "columns"
+	ColumnsAlbums     = "columns.albums"
 	ColumnsPlaylists  = "columns.playlists"
+	ColumnsTracklists = "columns.tracklists"
 	Device            = "device"
 	ExpandColumns     = "expandcolumns"
 	FullHeaderColumns = "fullheadercolumns"
@@ -39,8 +40,9 @@ var (
 // Default values must be defined in the Defaults string.
 func init() {
 	v.Set(Center, boolType)
-	v.Set(Columns, stringType)
+	v.Set(ColumnsAlbums, stringType)
 	v.Set(ColumnsPlaylists, stringType)
+	v.Set(ColumnsTracklists, stringType)
 	v.Set(Device, stringType)
 	v.Set(ExpandColumns, stringType)
 	v.Set(FullHeaderColumns, stringType)
@@ -89,8 +91,9 @@ func Print(key string, opt interface{}) string {
 // Default configuration file.
 const Defaults string = `
 # Global options
+set columns.albums=artist,title,album,year,type
 set columns.playlists=name,tracks,owner,public,collaborative
-set columns=artist,title,track,album,year,time,popularity
+set columns.tracklists=artist,title,track,album,year,time,popularity
 set expandcolumns=logMessage,description,deviceName,name,artist,title,album
 set fullheadercolumns=logLevel,public,collaborative,deviceName,track,tracks,year,time
 set limit=50

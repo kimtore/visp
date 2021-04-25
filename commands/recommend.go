@@ -160,7 +160,7 @@ func (cmd *Recommend) Exec() error {
 	newList := spotify_tracklist.NewFromTracks(append(selection.Tracks(), fullTracks...))
 	newList.SetName(cmd.name(cmd.seedType, seedTracks))
 	newList.SetID(uuid.New().String())
-	newList.SetVisibleColumns(options.GetList(options.Columns))
+	newList.SetVisibleColumns(options.GetList(options.ColumnsTracklists))
 
 	cmd.api.SetList(newList)
 	list.ClearSelection()
