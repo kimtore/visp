@@ -17,7 +17,15 @@ func Search(client spotify.Client, query string, limit int) (*spotify_tracklist.
 		return nil, err
 	}
 
-	return spotify_tracklist.NewFromFullTrackPage(client, results.Tracks)
+	lst, err := spotify_tracklist.NewFromFullTrackPage(client, results.Tracks)
+	if err != nil {
+		return nil, err
+	}
+
+	lst.Sort(options.GetList(options.SortSearch))
+	lst.SetCursor(0)
+
+	return lst, nil
 }
 
 func FeaturedPlaylists(client spotify.Client, limit int) (*spotify_playlists.List, error) {
@@ -38,6 +46,8 @@ func FeaturedPlaylists(client spotify.Client, limit int) (*spotify_playlists.Lis
 	lst.SetName(message)
 	lst.SetID(spotify_library.FeaturedPlaylists)
 	lst.SetVisibleColumns(options.GetList(options.ColumnsPlaylists))
+	lst.Sort(options.GetList(options.SortPlaylists))
+	lst.SetCursor(0)
 
 	return lst, nil
 }
@@ -69,6 +79,8 @@ func ListWithID(client spotify.Client, id string, limit int) (*spotify_tracklist
 	lst.SetSyncedToRemote()
 	lst.SetVisibleColumns(options.GetList(options.ColumnsTracklists))
 
+	// don't sort list with ID's, their order are significant.
+
 	return lst, nil
 }
 
@@ -88,6 +100,8 @@ func MyPrivatePlaylists(client spotify.Client, limit int) (*spotify_playlists.Li
 	lst.SetName("My playlists")
 	lst.SetID(spotify_library.MyPlaylists)
 	lst.SetVisibleColumns(options.GetList(options.ColumnsPlaylists))
+	lst.Sort(options.GetList(options.SortPlaylists))
+	lst.SetCursor(0)
 
 	return lst, nil
 }
@@ -108,7 +122,8 @@ func MyTracks(client spotify.Client, limit int) (*spotify_tracklist.List, error)
 	lst.SetName("Saved tracks")
 	lst.SetID(spotify_library.MyTracks)
 	lst.SetVisibleColumns(options.GetList(options.ColumnsTracklists))
-	_ = lst.Sort(options.GetList(options.SortTracklists))
+	lst.Sort(options.GetList(options.SortTracklists))
+	lst.SetCursor(0)
 
 	return lst, nil
 }
@@ -127,6 +142,8 @@ func MyAlbums(client spotify.Client) (*spotify_albums.List, error) {
 	lst.SetName("Saved albums")
 	lst.SetID(spotify_library.MyAlbums)
 	lst.SetVisibleColumns(options.GetList(options.ColumnsAlbums))
+	lst.Sort(options.GetList(options.SortAlbums))
+	lst.SetCursor(0)
 
 	return lst, nil
 }
@@ -148,6 +165,10 @@ func TopTracks(client spotify.Client, limit int) (*spotify_tracklist.List, error
 	lst.SetID(spotify_library.TopTracks)
 	lst.SetVisibleColumns(options.GetList(options.ColumnsTracklists))
 
+	// the order of this list is significant, but it's probably best to sort it for better UX.
+	lst.Sort(options.GetList(options.SortTracklists))
+	lst.SetCursor(0)
+
 	return lst, nil
 }
 
@@ -165,6 +186,8 @@ func NewReleases(client spotify.Client) (*spotify_tracklist.List, error) {
 	lst.SetName("New releases")
 	lst.SetID(spotify_library.NewReleases)
 	lst.SetVisibleColumns(options.GetList(options.ColumnsTracklists))
+	lst.Sort(options.GetList(options.SortTracklists))
+	lst.SetCursor(0)
 
 	return lst, nil
 }

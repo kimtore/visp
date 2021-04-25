@@ -20,6 +20,9 @@ const (
 	LogFile           = "logfile"
 	LogOverwrite      = "logoverwrite"
 	PollInterval      = "pollinterval"
+	SortAlbums        = "sort.albums"
+	SortPlaylists     = "sort.playlists"
+	SortSearch        = "sort.search"
 	SortTracklists    = "sort.tracklists"
 	SpotifyAuthServer = "spotifyauthserver"
 	Topbar            = "topbar"
@@ -50,6 +53,9 @@ func init() {
 	v.Set(LogFile, stringType)
 	v.Set(LogOverwrite, boolType)
 	v.Set(PollInterval, intType)
+	v.Set(SortAlbums, stringType)
+	v.Set(SortPlaylists, stringType)
+	v.Set(SortSearch, stringType)
 	v.Set(SortTracklists, stringType)
 	v.Set(SpotifyAuthServer, stringType)
 	v.Set(Topbar, stringType)
@@ -91,7 +97,7 @@ func Print(key string, opt interface{}) string {
 // Default configuration file.
 const Defaults string = `
 # Global options
-set columns.albums=artist,title,album,year,type
+set columns.albums=artist,album,year,type
 set columns.playlists=name,tracks,owner,public,collaborative
 set columns.tracklists=artist,title,track,album,year,time,popularity
 set expandcolumns=logMessage,description,deviceName,name,artist,title,album
@@ -99,6 +105,9 @@ set fullheadercolumns=logLevel,public,collaborative,deviceName,track,tracks,year
 set limit=50
 set nocenter
 set pollinterval=10
+set sort.albums=album,date,artist
+set sort.playlists=name
+set sort.search=track,disc,album,year,albumArtist
 set sort.tracklists=track,disc,album,year,albumArtist
 set spotifyauthserver="https://visp.site"
 set topbar="${tag|artist} - ${tag|title} $liked|$shortname $version|$elapsed $state $time;\\#${tag|track} ${tag|album}|${list|title} [${list|index}/${list|total}] ${synced}|$device $mode $volume;;"
