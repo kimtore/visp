@@ -43,6 +43,9 @@ type API interface {
 	// Exec executes a command through the command-line interface.
 	Exec(string) error
 
+	// History returns a list with all tracks played back during the current session.
+	History() *spotify_tracklist.List
+
 	// Return the global multibar instance.
 	Multibar() *multibar.Multibar
 

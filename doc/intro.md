@@ -57,6 +57,8 @@ Press `o` to like or unlike the currently playing track.
 
 Select up to five tracks and type `R` to have Spotify recommend similar tracks.
 
+To see all the tracks you've played while running Visp, type `<Ctrl-W>h`.
+
 
 ## Select multiple tracks
 

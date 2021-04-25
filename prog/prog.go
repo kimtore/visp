@@ -24,6 +24,7 @@ import (
 	"github.com/ambientsound/visp/spotify/aggregator"
 	"github.com/ambientsound/visp/spotify/library"
 	spotify_proxyclient "github.com/ambientsound/visp/spotify/proxyclient"
+	spotify_tracklist "github.com/ambientsound/visp/spotify/tracklist"
 	"github.com/ambientsound/visp/style"
 	"github.com/ambientsound/visp/tabcomplete"
 	"github.com/ambientsound/visp/tokencache"
@@ -49,6 +50,7 @@ type Visp struct {
 	clipboards   *clipboard.List
 	commands     chan string
 	db           *db.List
+	history      *spotify_tracklist.List
 	interpreter  *input.Interpreter
 	library      *spotify_library.List
 	list         list.List
@@ -67,18 +69,18 @@ func (v *Visp) Init() {
 	tcf := func(in string) multibar.TabCompleter {
 		return tabcomplete.New(in, v)
 	}
-	v.db = db.New()
 	v.clipboards = clipboard.New()
 	v.commands = make(chan string, 1024)
+	v.db = db.New()
 	v.interpreter = input.NewCLI(v)
 	v.library = spotify_library.New()
 	v.multibar = multibar.New(tcf)
+	v.player = player.NewState(spotify.PlayerState{})
 	v.quit = make(chan interface{}, 1)
 	v.sequencer = keys.NewSequencer()
 	v.stylesheet = make(style.Stylesheet)
 	v.ticker = time.NewTicker(tickerInterval)
 	v.tokenRefresh = make(chan time.Time)
-	v.player = player.NewState(spotify.PlayerState{})
 
 	v.SetList(log.List(log.InfoLevel))
 }
@@ -221,6 +223,11 @@ func (v *Visp) updatePlayer() error {
 	// If track changed, clear information about whether this song is liked or not
 	if state.Item == nil || currentID != state.Item.ID {
 		v.player.ClearLiked()
+	}
+
+	// If track changed, and is known, add the currently playing track to history
+	if state.Item != nil && currentID != state.Item.ID {
+		v.History().Add(spotify_tracklist.FullTrackRow(*state.Item))
 	}
 
 	if v.player.LikedIsKnown() {

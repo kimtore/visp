@@ -97,6 +97,22 @@ func (_m *MockAPI) Exec(_a0 string) error {
 	return r0
 }
 
+// History provides a mock function with given fields:
+func (_m *MockAPI) History() *spotify_tracklist.List {
+	ret := _m.Called()
+
+	var r0 *spotify_tracklist.List
+	if rf, ok := ret.Get(0).(func() *spotify_tracklist.List); ok {
+		r0 = rf()
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*spotify_tracklist.List)
+		}
+	}
+
+	return r0
+}
+
 // Library provides a mock function with given fields:
 func (_m *MockAPI) Library() *spotify_library.List {
 	ret := _m.Called()

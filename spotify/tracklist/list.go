@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/ambientsound/visp/list"
+	"github.com/ambientsound/visp/options"
 	spotify_albums "github.com/ambientsound/visp/spotify/albums"
 	"github.com/ambientsound/visp/utils"
 	"github.com/zmb3/spotify"
@@ -140,6 +141,16 @@ func NewFromTracks(tracks []spotify.FullTrack) *List {
 		this.Add(FullTrackRow(track))
 	}
 	return this
+}
+
+func NewHistory() *List {
+	this := &List{}
+	this.Clear()
+	this.SetName("History")
+	this.SetID("history")
+	this.SetVisibleColumns(options.GetList(options.ColumnsTracklists))
+	return this
+
 }
 
 func FullTrackRow(track spotify.FullTrack) list.Row {

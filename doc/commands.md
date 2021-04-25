@@ -409,7 +409,8 @@ the `tracklist` context will always be attempted before `global`.
 
   Force a screen redraw. Useful if rendering has gone wrong.
 
-* `show logs`  
+* `show history`
+  `show logs`  
   `show library`
   `show keybindings`
   `show windows`

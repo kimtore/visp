@@ -258,6 +258,7 @@ bind global T list previous
 bind global <C-w>d list duplicate
 bind global <C-w>c list new
 bind global <C-w>x list close
+bind global <C-w>h show history
 bind global <Tab> list last
 bind tracklist <C-j> isolate artist
 bind tracklist <C-t> isolate albumArtist album

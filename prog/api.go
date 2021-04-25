@@ -146,6 +146,13 @@ func (v *Visp) Multibar() *multibar.Multibar {
 	return v.multibar
 }
 
+func (v *Visp) History() *spotify_tracklist.List {
+	if v.history == nil {
+		v.history = spotify_tracklist.NewHistory()
+	}
+	return v.history
+}
+
 func (v *Visp) SetList(lst list.List) {
 	if lst == nil {
 		return

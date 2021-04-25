@@ -60,6 +60,8 @@ func (cmd *Show) Parse() error {
 		cmd.list = cmd.api.Sequencer().List()
 	case "clipboards":
 		cmd.list = cmd.api.Clipboards()
+	case "history":
+		cmd.list = cmd.api.History()
 	default:
 		return fmt.Errorf("can't show '%s'; no such window", lit)
 	}
@@ -82,6 +84,7 @@ func (cmd *Show) Exec() error {
 func (cmd *Show) setTabCompleteVerbs(lit string) {
 	cmd.setTabComplete(lit, []string{
 		"clipboards",
+		"history",
 		"keybindings",
 		"library",
 		"logs",
