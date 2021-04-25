@@ -37,6 +37,7 @@ func FeaturedPlaylists(client spotify.Client, limit int) (*spotify_playlists.Lis
 
 	lst.SetName(message)
 	lst.SetID(spotify_library.FeaturedPlaylists)
+	lst.SetVisibleColumns(options.GetList(options.ColumnsPlaylists))
 
 	return lst, nil
 }
@@ -86,7 +87,7 @@ func MyPrivatePlaylists(client spotify.Client, limit int) (*spotify_playlists.Li
 
 	lst.SetName("My playlists")
 	lst.SetID(spotify_library.MyPlaylists)
-	lst.SetVisibleColumns(lst.ColumnNames())
+	lst.SetVisibleColumns(options.GetList(options.ColumnsPlaylists))
 
 	return lst, nil
 }
