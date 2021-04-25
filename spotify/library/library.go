@@ -53,5 +53,7 @@ func New() *List {
 			listName: name,
 		}))
 	}
+	this.Sort([]string{listName})
+	this.SetCursor(0)
 	return this
 }
