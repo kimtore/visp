@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"regexp"
 	"strings"
 	"time"
 
@@ -91,6 +92,9 @@ func (v *Visp) Main() error {
 			err := v.updatePlayer()
 			if err != nil {
 				log.Errorf("Update player: %s", err)
+				if isSpotifyAccessTokenExpired(err) {
+					v.tokenRefresh = time.After(1 * time.Millisecond)
+				}
 			}
 			v.ticker.Reset(tickerInterval)
 
@@ -290,4 +294,9 @@ func (v *Visp) refreshToken() error {
 		return err
 	}
 	return v.Authenticate(token)
+}
+
+func isSpotifyAccessTokenExpired(err error) bool {
+	match, _ := regexp.MatchString("access token", err.Error())
+	return match
 }
