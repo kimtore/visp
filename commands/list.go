@@ -3,13 +3,16 @@ package commands
 import (
 	"fmt"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/ambientsound/visp/list"
 	"github.com/ambientsound/visp/log"
+	"github.com/ambientsound/visp/options"
 	"github.com/ambientsound/visp/spotify/aggregator"
 	"github.com/ambientsound/visp/spotify/devices"
 	"github.com/ambientsound/visp/spotify/library"
+	spotify_tracklist "github.com/ambientsound/visp/spotify/tracklist"
 	"github.com/google/uuid"
 	"github.com/zmb3/spotify"
 
@@ -26,6 +29,7 @@ type List struct {
 	duplicate bool
 	goto_     bool
 	open      bool
+	new       bool
 	relative  int
 	close     bool
 	last      bool
@@ -64,6 +68,8 @@ func (cmd *List) Parse() error {
 			cmd.open = true
 		case "last":
 			cmd.last = true
+		case "new":
+			cmd.new = true
 		default:
 			i, err := strconv.Atoi(lit)
 			if err != nil {
@@ -75,16 +81,24 @@ func (cmd *List) Parse() error {
 		return fmt.Errorf("unexpected '%s', expected identifier", lit)
 	}
 
-	if cmd.goto_ {
+	if cmd.goto_ || cmd.new {
 		for tok != lexer.TokenEnd {
-			tok, lit = cmd.ScanIgnoreWhitespace()
+			tok, lit = cmd.Scan()
 			cmd.name += lit
 		}
 
+		cmd.name = strings.TrimSpace(cmd.name)
 		cmd.Unscan()
-		cmd.setTabComplete(cmd.name, cmd.api.Db().Keys())
+
+		if cmd.goto_ {
+			cmd.setTabComplete(cmd.name, cmd.api.Db().Keys())
+		}
 	} else {
 		cmd.setTabCompleteEmpty()
+	}
+
+	if cmd.new && len(cmd.name) == 0 {
+		cmd.name = cmd.generateName()
 	}
 
 	return cmd.ParseEnd()
@@ -116,6 +130,9 @@ func (cmd *List) Exec() error {
 
 	case cmd.duplicate:
 		return cmd.Duplicate()
+
+	case cmd.new:
+		return cmd.New()
 
 	case cmd.close:
 		db := cmd.api.Db()
@@ -217,6 +234,30 @@ func (cmd *List) Duplicate() error {
 	return nil
 }
 
+var (
+	totalNewCreated = 0
+)
+
+// Exec implements Command.
+func (cmd *List) New() error {
+	tracklist := spotify_tracklist.NewFromTracks([]spotify.FullTrack{})
+	tracklist.SetName(cmd.name)
+	tracklist.SetID(uuid.New().String())
+	tracklist.SetVisibleColumns(options.GetList(options.Columns))
+
+	cmd.api.SetList(tracklist)
+
+	log.Infof("Created new empty playlist '%s'", tracklist.Len())
+
+	return nil
+}
+
+// Generates a new playlist name.
+func (cmd *List) generateName() string {
+	totalNewCreated++
+	return fmt.Sprintf("New playlist %d", totalNewCreated)
+}
+
 // setTabCompleteVerbs sets the tab complete list to the list of available sub-commands.
 func (cmd *List) setTabCompleteVerbs(lit string) {
 	cmd.setTabComplete(lit, []string{
@@ -227,6 +268,7 @@ func (cmd *List) setTabCompleteVerbs(lit string) {
 		"goto",
 		"home",
 		"last",
+		"new",
 		"next",
 		"prev",
 		"previous",

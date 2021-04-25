@@ -121,6 +121,10 @@ These commands switch between, create, and edit lists.
 
   Switch to the list with the given index.
 
+* `list new [playlist name]`
+
+  Create a new track list. The list remains in memory until `write` is used to save it to Spotify.
+  
 * `list duplicate`
 
   Duplicate the current list.
@@ -177,10 +181,6 @@ These commands switch between, create, and edit lists.
   Using `current` will like the track currently playing, whereas `cursor` and `selection`
   likes the track(s) under the cursor or currently selected, respectively.
   If there is no selection, `like ... selection` acts as `like ... cursor`.
-  
-* `new [playlist name]`
-
-  Create a new track list. The list is not saved to Spotify until `w[rite]` is invoked, see below.
   
 * `recommend`  
   `recommend artist`  

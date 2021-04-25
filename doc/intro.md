@@ -82,16 +82,16 @@ created in your Visp session. A clipboard acts like a track list.
 
 ## Make or change a playlist
 
-Enter the command `new`, optionally followed by a playlist name, to create a new playlist.
+Press `<Ctrl-W>c` to create a new playlist.
 This playlist exists entirely in Visp and is not saved to Spotify yet.
 
 To rename a playlist, enter the command `rename` followed by a playlist name.
 
 Add tracks by copying and pasting them from either a search result or another tracklist.
 
-To save a playlist to Spotify, enter the command `w` optionally followed by a playlist name.
-If entered without a name, `w` will save changes to an existing playlist. If you provide a name,
-a new playlist is created instead.
+To save a playlist to Spotify, enter the command `write` (or `w`) optionally followed by a playlist name.
+If entered without a name, `write` will save changes to an existing playlist. If you provide a name,
+a new playlist is created instead. The `write` command can be used from any track list or search result.
 
 
 ## Advanced navigation
