@@ -244,6 +244,7 @@ bind global gT list previous
 bind global t list next
 bind global T list previous
 bind global <C-w>d list duplicate
+bind global <C-w>c new
 bind global <C-g> list remove
 bind global <Tab> list last
 bind tracklist <C-j> isolate artist
