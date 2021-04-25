@@ -81,7 +81,7 @@ func (cmd *Isolate) Exec() error {
 	}
 
 	// Post-processing: sort in default order
-	sort := options.GetString(options.Sort)
+	sort := options.GetString(options.SortTracklists)
 
 	err = result.Sort(strings.Split(sort, ","))
 	if err != nil {

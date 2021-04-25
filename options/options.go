@@ -20,7 +20,7 @@ const (
 	LogFile           = "logfile"
 	LogOverwrite      = "logoverwrite"
 	PollInterval      = "pollinterval"
-	Sort              = "sort"
+	SortTracklists    = "sort.tracklists"
 	SpotifyAuthServer = "spotifyauthserver"
 	Topbar            = "topbar"
 )
@@ -50,7 +50,7 @@ func init() {
 	v.Set(LogFile, stringType)
 	v.Set(LogOverwrite, boolType)
 	v.Set(PollInterval, intType)
-	v.Set(Sort, stringType)
+	v.Set(SortTracklists, stringType)
 	v.Set(SpotifyAuthServer, stringType)
 	v.Set(Topbar, stringType)
 }
@@ -99,7 +99,7 @@ set fullheadercolumns=logLevel,public,collaborative,deviceName,track,tracks,year
 set limit=50
 set nocenter
 set pollinterval=10
-set sort=track,disc,album,year,albumArtist
+set sort.tracklists=track,disc,album,year,albumArtist
 set spotifyauthserver="https://visp.site"
 set topbar="${tag|artist} - ${tag|title} $liked|$shortname $version|$elapsed $state $time;\\#${tag|track} ${tag|album}|${list|title} [${list|index}/${list|total}] ${synced}|$device $mode $volume;;"
 

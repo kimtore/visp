@@ -48,7 +48,7 @@ func (cmd *Sort) Parse() error {
 
 		case lexer.TokenEnd:
 			// Sort by default tags
-			sort := options.GetString(options.Sort)
+			sort := options.GetString(options.SortTracklists)
 			cmd.tags = strings.Split(sort, ",")
 			return nil
 

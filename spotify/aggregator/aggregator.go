@@ -108,7 +108,7 @@ func MyTracks(client spotify.Client, limit int) (*spotify_tracklist.List, error)
 	lst.SetName("Saved tracks")
 	lst.SetID(spotify_library.MyTracks)
 	lst.SetVisibleColumns(options.GetList(options.ColumnsTracklists))
-	_ = lst.Sort(options.GetList(options.Sort))
+	_ = lst.Sort(options.GetList(options.SortTracklists))
 
 	return lst, nil
 }
