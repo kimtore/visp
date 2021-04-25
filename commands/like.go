@@ -15,8 +15,8 @@ type Like struct {
 	command
 	api api.API
 	// selector
+	current   bool
 	cursor    bool
-	playing   bool
 	selection bool
 	// mode of operation
 	add    bool
@@ -71,10 +71,10 @@ func (cmd *Like) Parse() error {
 	}
 
 	switch lit {
+	case "current":
+		cmd.current = true
 	case "cursor":
 		cmd.cursor = true
-	case "playing":
-		cmd.playing = true
 	case "selection":
 		cmd.selection = true
 	default:
@@ -92,7 +92,7 @@ func (cmd *Like) Exec() error {
 
 	tracklist := cmd.api.Tracklist()
 
-	if !cmd.playing && tracklist == nil {
+	if !cmd.current && tracklist == nil {
 		return fmt.Errorf("liking tracks by cursor or selection needs an active tracklist")
 	}
 
@@ -114,16 +114,12 @@ func (cmd *Like) Exec() error {
 		for _, track := range tracks {
 			ids = append(ids, track.ID)
 		}
-	case cmd.playing:
+	case cmd.current:
 		id := cmd.api.PlayerStatus().TrackRow.ID()
 		if len(id) == 0 {
 			return fmt.Errorf("no track is playing right now")
 		}
 		ids = append(ids, spotify.ID(id))
-	}
-
-	if cmd.toggle {
-		client.UserHasTracks(ids...)
 	}
 
 	defer cmd.api.Changed(api.ChangePlayerStateInvalid, nil)
@@ -175,8 +171,8 @@ func (cmd *Like) Exec() error {
 
 func (cmd *Like) setTabCompleteSelection(lit string) {
 	cmd.setTabComplete(lit, []string{
+		"current",
 		"cursor",
-		"playing",
 		"selection",
 	})
 }
