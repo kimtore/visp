@@ -255,7 +255,7 @@ bind global <C-c> select none
 bind tracklist <Delete> cut
 bind tracklist x cut
 bind tracklist y yank
-bind tracklist Y yank current
+bind global Y yank current
 bind tracklist p paste after
 bind tracklist P paste before
 bind global o like toggle current
