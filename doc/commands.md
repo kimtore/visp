@@ -138,9 +138,9 @@ These commands switch between, create, and edit lists.
   Activate the previous window. Due to its special nature, the list of windows, nor the list of clipboards, will
   never be considered the previous window as this would result in a bad user experience.
 
-* `list remove`
+* `list close`
 
-  Remove the currently visible list, if possible.
+  Close the currently visible list. At least one list needs to be visible, so if all lists are closed, the log console is opened.
 
 * `isolate <tag> [<tag> [...]]`
 

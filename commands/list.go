@@ -27,7 +27,7 @@ type List struct {
 	goto_     bool
 	open      bool
 	relative  int
-	remove    bool
+	close     bool
 	last      bool
 	name      string
 }
@@ -48,8 +48,8 @@ func (cmd *List) Parse() error {
 		switch lit {
 		case "duplicate":
 			cmd.duplicate = true
-		case "remove":
-			cmd.remove = true
+		case "close":
+			cmd.close = true
 		case "up", "prev", "previous":
 			cmd.relative = -1
 		case "down", "next":
@@ -117,8 +117,21 @@ func (cmd *List) Exec() error {
 	case cmd.duplicate:
 		return cmd.Duplicate()
 
-	case cmd.remove:
-		return fmt.Errorf("remove is not implemented")
+	case cmd.close:
+		db := cmd.api.Db()
+		cur := db.Current()
+		err := db.Remove(db.Cursor())
+		if err != nil {
+			return err
+		}
+		if cur != nil {
+			log.Infof("Closed '%s'", cur.Name())
+		}
+		if db.Len() == 0 {
+			db.Cache(log.List(log.InfoLevel))
+		}
+		db.SetCursor(db.Cursor())
+		cmd.api.SetList(db.Current())
 	}
 
 	return nil
@@ -207,6 +220,7 @@ func (cmd *List) Duplicate() error {
 // setTabCompleteVerbs sets the tab complete list to the list of available sub-commands.
 func (cmd *List) setTabCompleteVerbs(lit string) {
 	cmd.setTabComplete(lit, []string{
+		"close",
 		"down",
 		"duplicate",
 		"end",
@@ -216,7 +230,6 @@ func (cmd *List) setTabCompleteVerbs(lit string) {
 		"next",
 		"prev",
 		"previous",
-		"remove",
 		"up",
 	})
 }
