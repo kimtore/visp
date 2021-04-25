@@ -55,6 +55,8 @@ from that track. Press `a` to add the track to the queue instead of playing righ
 
 Press `o` to like or unlike the currently playing track.
 
+Select up to five tracks and type `R` to have Spotify recommend similar tracks.
+
 
 ## Select multiple tracks
 

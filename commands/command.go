@@ -67,6 +67,7 @@ var Verbs = map[string]func(api.API) Command{
 	"print":     NewPrint,
 	"q":         NewQuit,
 	"quit":      NewQuit,
+	"recommend": NewRecommend,
 	"redraw":    NewRedraw,
 	"rename":    NewRename,
 	"seek":      NewSeek,

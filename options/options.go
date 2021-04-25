@@ -188,7 +188,6 @@ bind global gg cursor home
 bind global <End> cursor end
 bind global G cursor end
 bind global gc cursor current
-bind global R cursor random
 bind global H cursor high
 bind global M cursor middle
 bind global L cursor low
@@ -202,6 +201,7 @@ bind global z<Enter> viewport low
 # Tracklist specifics
 bind tracklist b cursor prevOf album
 bind tracklist e cursor nextOf album
+bind tracklist R recommend track
 
 # Keyboard bindings: input mode
 bind global : inputmode input

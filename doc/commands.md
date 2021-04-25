@@ -182,6 +182,16 @@ These commands switch between, create, and edit lists.
 
   Create a new track list. The list is not saved to Spotify until `w[rite]` is invoked, see below.
   
+* `recommend`  
+  `recommend artist`  
+  `recommend track`
+
+  Get a list of song recommendations based on the currently selected tracks, or if no selection, the track beneath the cursor.
+  `recommend artist` will make recommendations on the track artists, whereas `recommend track` picks recommendations based
+  on the tracks themselves.
+  
+  `recommend` without any parameters behaves as `recommend track`.
+
 * `rename <playlist name>`
 
   Assign a new name to the current playlist. Changes must be saved back to Spotify with `w[rite]`.
