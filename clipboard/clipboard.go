@@ -46,6 +46,15 @@ func (clipboard *List) Insert(l list.List) {
 	clipboard.active = l
 }
 
+func (clipboard *List) Update(l list.List) {
+	row := clipboard.RowByID(l.ID())
+	if row == nil {
+		return
+	}
+	row.Set("name", l.Name())
+	row.Set("size", strconv.Itoa(l.Len()))
+}
+
 // Return the currently selected clipboard
 func (clipboard *List) Current() list.List {
 	row := clipboard.CursorRow()

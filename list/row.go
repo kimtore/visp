@@ -12,6 +12,8 @@ type Row interface {
 	Fields() map[string]string
 	SetFields(map[string]string)
 	Keys() []string
+	Set(key, value string)
+	Get(key string) string
 }
 
 var _ Row = &BaseRow{}
@@ -41,6 +43,14 @@ func (row *BaseRow) ID() string {
 
 func (row *BaseRow) SetID(id string) {
 	row.id = id
+}
+
+func (row *BaseRow) Set(key, value string) {
+	row.fields[key] = value
+}
+
+func (row *BaseRow) Get(key string) string {
+	return row.fields[key]
 }
 
 func (row *BaseRow) SetFields(fields map[string]string) {

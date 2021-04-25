@@ -69,7 +69,14 @@ func (v *Visp) List() list.List {
 func (v *Visp) Changed(change api.ChangeType, data interface{}) {
 	switch change {
 	case api.ChangeList:
-		// TODO: update track counts, playlist names, etc.
+		lst, ok := data.(list.List)
+		if !ok {
+			log.Debugf("BUG: list was changed, but is '%T', not 'list.List'", data)
+			return
+		}
+		v.db.Cache(lst)
+		v.clipboards.Update(lst)
+		// TODO: playlists indexes
 
 	case api.ChangeOption:
 		s, ok := data.(string)

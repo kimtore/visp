@@ -42,6 +42,9 @@ func (s *List) Cache(lst list.List) int {
 		return s.Len() - 1
 	} else {
 		n, _ := s.RowNum(lst.ID())
+		row := s.Row(n)
+		row.Set("name", lst.Name())
+		row.Set("size", strconv.Itoa(lst.Len()))
 		return n
 	}
 }
