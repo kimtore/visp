@@ -157,7 +157,7 @@ func (cmd *Recommend) Exec() error {
 
 	fullTracks, err := spotify_tracklist.SimpleTracksToFullTracks(client, recommendations.Tracks)
 
-	newList := spotify_tracklist.NewFromTracks(fullTracks)
+	newList := spotify_tracklist.NewFromTracks(append(selection.Tracks(), fullTracks...))
 	newList.SetName(cmd.name(cmd.seedType, seedTracks))
 	newList.SetID(uuid.New().String())
 	newList.SetVisibleColumns(options.GetList(options.Columns))
@@ -165,7 +165,7 @@ func (cmd *Recommend) Exec() error {
 	cmd.api.SetList(newList)
 	list.ClearSelection()
 
-	log.Infof("Received %d recommendations into '%s'", newList.Len(), newList.Name())
+	log.Infof("Copied %d source tracks and %d recommendations into '%s'", selection.Len(), len(recommendations.Tracks), newList.Name())
 
 	return nil
 }
