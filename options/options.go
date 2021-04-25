@@ -92,7 +92,7 @@ const Defaults string = `
 set columns.playlists=name,tracks,owner,public,collaborative
 set columns=artist,title,track,album,year,time,popularity
 set expandcolumns=logMessage,description,deviceName,name,artist,title,album
-set fullheadercolumns=logLevel,public,collaborative,deviceName,track,year,time
+set fullheadercolumns=logLevel,public,collaborative,deviceName,track,tracks,year,time
 set limit=50
 set nocenter
 set pollinterval=10
