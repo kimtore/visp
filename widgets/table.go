@@ -304,8 +304,9 @@ func (w *Table) SetColumns(tags []string) {
 			// header titles are included in the maximum size calculation.
 			w.columns[i].width = utils.Max(cols[i].Max(), len(w.columns[i].title)) + 1
 		} else {
-			// non-expanded columns start at maximum size plus one character for padding
-			w.columns[i].width = cols[i].Max() + 1
+			// non-expanded columns start at maximum size plus one character for padding.
+			// Allow at least three characters for zero-width columns.
+			w.columns[i].width = utils.Max(cols[i].Max(), 4) + 1
 		}
 		w.columns[i].rightPadding = 1
 		usedWidth += w.columns[i].width
@@ -356,8 +357,9 @@ func (w *Table) SetColumns(tags []string) {
 
 	// Set column names, preferably to their maximum size, but truncate as needed.
 	for i := range tags {
-		if len(w.columns[i].title) >= w.columns[i].width {
-			w.columns[i].title = w.columns[i].title[:w.columns[i].width-2] + "."
+		col := w.columns[i]
+		if len(col.title) >= col.width && col.width > 2 {
+			w.columns[i].title = col.title[:col.width-2] + "."
 		}
 	}
 }
