@@ -34,8 +34,10 @@ import (
 )
 
 const (
-	refreshTokenTimeout       = time.Second * 5
+	changePlayerStateDelay    = time.Millisecond * 100
+	refreshInvalidTokenDeploy = time.Millisecond * 1
 	refreshTokenRetryInterval = time.Second * 30
+	refreshTokenTimeout       = time.Second * 5
 	tickerInterval            = time.Second * 1
 )
 
@@ -93,7 +95,7 @@ func (v *Visp) Main() error {
 			if err != nil {
 				log.Errorf("Update player: %s", err)
 				if isSpotifyAccessTokenExpired(err) {
-					v.tokenRefresh = time.After(1 * time.Millisecond)
+					v.tokenRefresh = time.After(refreshInvalidTokenDeploy)
 				}
 			}
 			v.ticker.Reset(tickerInterval)

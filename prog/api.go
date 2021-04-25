@@ -88,11 +88,11 @@ func (v *Visp) Changed(change api.ChangeType, data interface{}) {
 
 	case api.ChangePlayerStateInvalid:
 		v.player.Invalidate()
-		v.ticker.Reset(1 * time.Millisecond)
+		v.ticker.Reset(changePlayerStateDelay)
 
 	case api.ChangeDevice:
 		v.player.Invalidate()
-		v.ticker.Reset(1 * time.Millisecond)
+		v.ticker.Reset(changePlayerStateDelay)
 		// TODO: refresh devices window
 
 	}
