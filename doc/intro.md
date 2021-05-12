@@ -22,7 +22,8 @@ you're typing, provided that Visp can guess what you're trying to do. Tab comple
 Visp is very powerful and can recognize pretty much anything you want to accomplish.
 See [command documentation](commands.md) for a list of all supported commands.
 
-Press `<F1>`, or enter the command `help`, at any time to show a list of key bindings.
+Press `<F1>`, or enter the command `show keybindings`, at any time to show a
+list of key bindings.
 
 
 ## Basic movement
