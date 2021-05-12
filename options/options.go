@@ -101,7 +101,7 @@ set columns.albums=artist,album,year,type
 set columns.playlists=name,tracks,owner,public,collaborative
 set columns.tracklists=artist,title,track,album,year,time,popularity
 set expandcolumns=logMessage,description,deviceName,name,artist,title,album
-set fullheadercolumns=logLevel,public,collaborative,deviceName,track,tracks,year,time
+set fullheadercolumns=logLevel,public,collaborative,deviceName,track,tracks,year,time,deviceType,active,restricted,volume
 set limit=50
 set nocenter
 set pollinterval=10
