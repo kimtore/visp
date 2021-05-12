@@ -8,6 +8,7 @@ import (
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	"github.com/google/uuid"
+	log "github.com/sirupsen/logrus"
 	"github.com/zmb3/spotify"
 	"golang.org/x/oauth2"
 )
@@ -60,6 +61,7 @@ func (h *Handler) ServeLogin(w http.ResponseWriter, r *http.Request) {
 	u, err := uuid.NewRandom()
 	if err != nil {
 		h.frontend.Render(w, http.StatusServiceUnavailable, err, nil)
+		log.Errorf("generate uuid: %s", err)
 		return
 	}
 
@@ -84,6 +86,7 @@ func (h *Handler) ServeCallback(w http.ResponseWriter, r *http.Request) {
 	cookie, err := r.Cookie(cookieName)
 	if err != nil {
 		h.frontend.Render(w, http.StatusBadRequest, err, nil)
+		log.Errorf("get cookie: %s", err)
 		return
 	}
 
@@ -91,6 +94,7 @@ func (h *Handler) ServeCallback(w http.ResponseWriter, r *http.Request) {
 	token, err := h.auth.Token(cookie.Value, r)
 	if err != nil {
 		h.frontend.Render(w, http.StatusForbidden, err, nil)
+		log.Errorf("token exchange: %s", err)
 		return
 	}
 
@@ -106,6 +110,7 @@ func (h *Handler) RefreshCallback(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		h.json.Render(w, http.StatusBadRequest, err, nil)
+		log.Errorf("decode oauth2 token: %s", err)
 		return
 	}
 
@@ -118,6 +123,7 @@ func (h *Handler) RefreshCallback(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		h.json.Render(w, http.StatusInternalServerError, err, nil)
+		log.Errorf("refresh oauth2 token: %s", err)
 		return
 	}
 
