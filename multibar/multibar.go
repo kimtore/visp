@@ -35,6 +35,7 @@ type Multibar struct {
 	history     []*history
 	mode        InputMode
 	msg         message.Message
+	orig        []rune
 	searches    chan string
 	tabComplete TabCompleter
 	tcf         TabCompleterFactory
@@ -48,6 +49,7 @@ func New(tcf TabCompleterFactory) *Multibar {
 	return &Multibar{
 		history:  hist,
 		buffer:   make([]rune, 0),
+		orig:     make([]rune, 0),
 		commands: make(chan string, 1),
 		searches: make(chan string, 1),
 		tcf:      tcf,
@@ -101,7 +103,11 @@ func (m *Multibar) Input(event tcell.Event) bool {
 	case tcell.KeyDown, tcell.KeyCtrlN:
 		m.moveHistory(1)
 	case tcell.KeyCtrlG, tcell.KeyCtrlC:
-		m.abort()
+		if m.tabComplete == nil {
+			m.abort()
+		} else {
+			m.untab()
+		}
 	case tcell.KeyCtrlA, tcell.KeyHome:
 		m.moveCursor(-len(m.buffer))
 	case tcell.KeyCtrlE, tcell.KeyEnd:
@@ -320,6 +326,8 @@ func (m *Multibar) tab() {
 
 	// Initialize tabcomplete
 	if m.tabComplete == nil {
+		m.orig = make([]rune, len(m.buffer))
+		copy(m.orig, m.buffer)
 		m.tabComplete = m.tcf(m.String())
 	}
 
@@ -333,6 +341,14 @@ func (m *Multibar) tab() {
 	// Replace current text.
 	m.setRunes([]rune(sentence))
 	m.cursor = len(m.buffer)
+}
+
+// untab cancels tab completion, restoring the buffer to its original contents.
+func (m *Multibar) untab() {
+	m.buffer = make([]rune, len(m.orig))
+	copy(m.buffer, m.orig)
+	m.cursor = len(m.buffer)
+	m.tabComplete = nil
 }
 
 // deleteBackwards returns a new rune slice with a part cut out. If the deleted
