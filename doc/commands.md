@@ -246,6 +246,12 @@ The `select` commands allow the tracklist selection to be manipulated.
   Set the visual selection to nearby tracks with the same specified tags as the track under the cursor.
   If there is already a visual selection, it will be cleared instead.
 
+* `select intersect <tracklist>`
+
+  Selects all tracks present in both the current and the named list.
+  The named list must be known by Visp. Known lists are either contained within the window list,
+  or referred to by a list of Spotify playlists.
+
 
 ## Controlling playback
 

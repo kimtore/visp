@@ -5,17 +5,23 @@ import (
 
 	"github.com/ambientsound/visp/api"
 	"github.com/ambientsound/visp/input/lexer"
+	"github.com/ambientsound/visp/list"
+	"github.com/ambientsound/visp/log"
+	spotify_aggregator "github.com/ambientsound/visp/spotify/aggregator"
+	"github.com/zmb3/spotify"
 )
 
 // Select manipulates song selection within a songlist.
 type Select struct {
 	command
-	api    api.API
-	all    bool
-	none   bool
-	toggle bool
-	visual bool
-	nearby []string
+	api           api.API
+	all           bool
+	intersect     bool
+	intersectList list.List
+	none          bool
+	toggle        bool
+	visual        bool
+	nearby        []string
 }
 
 // NewSelect returns Select.
@@ -45,6 +51,8 @@ func (cmd *Select) Parse() error {
 		cmd.toggle = true
 	case "visual":
 		cmd.visual = true
+	case "intersect":
+		return cmd.parseIntersect()
 	case "nearby":
 		return cmd.parseNearby()
 	default:
@@ -58,40 +66,80 @@ func (cmd *Select) Parse() error {
 
 // Exec implements Command.
 func (cmd *Select) Exec() error {
-	list := cmd.api.UI().TableWidget().List()
+	lst := cmd.api.List()
 
 	switch {
-	case cmd.toggle && list.HasVisualSelection():
-		list.CommitVisualSelection()
-		list.DisableVisualSelection()
+	case cmd.intersect:
+		targets := cmd.intersectList.All()
+		found := 0
+
+		for _, target := range targets {
+			rownum, err := lst.RowNum(target.ID())
+			if err == nil {
+				lst.SetSelected(rownum, true)
+				found++
+			}
+		}
+
+		log.Infof("Selected %d tracks from '%s'", found, cmd.intersectList.Name())
+
+	case cmd.toggle && lst.HasVisualSelection():
+		lst.CommitVisualSelection()
+		lst.DisableVisualSelection()
 
 	case cmd.visual:
-		list.ToggleVisualSelection()
+		lst.ToggleVisualSelection()
 		return nil
 
 	case len(cmd.nearby) > 0:
 		return cmd.selectNearby()
 
 	case cmd.all:
-		list.DisableVisualSelection()
-		for i := 0; i < list.Len(); i++ {
-			list.SetSelected(i, true)
+		lst.DisableVisualSelection()
+		for i := 0; i < lst.Len(); i++ {
+			lst.SetSelected(i, true)
 		}
 		return nil
 
 	case cmd.none:
-		list.ClearSelection()
+		lst.ClearSelection()
 		return nil
 
 	default:
-		index := list.Cursor()
-		selected := list.Selected(index)
-		list.SetSelected(index, !selected)
+		index := lst.Cursor()
+		selected := lst.Selected(index)
+		lst.SetSelected(index, !selected)
 	}
 
-	list.MoveCursor(1)
+	lst.MoveCursor(1)
 
 	return nil
+}
+
+func (cmd *Select) parseIntersect() error {
+	lit := cmd.ScanRemainderAsIdentifier()
+	cmd.setTabComplete(lit, cmd.api.Db().Names())
+
+	for {
+		result := cmd.api.Db().Lookup(lit)
+		switch typed := result.(type) {
+		case list.List:
+			cmd.intersect = true
+			cmd.intersectList = typed
+			cmd.setTabCompleteEmpty()
+			return cmd.ParseEnd()
+		case spotify.ID:
+			err := cmd.load(typed)
+			if err != nil {
+				return fmt.Errorf("load '%s' from Spotify: %w", typed, err)
+			}
+			continue
+		case nil:
+			return fmt.Errorf("no such list: '%s'", lit)
+		default:
+			return fmt.Errorf("BUG: unknown list type '%T': %v", result, typed)
+		}
+	}
 }
 
 // parseNearby parses tags and inserts them in the nearby list.
@@ -141,10 +189,32 @@ func (cmd *Select) selectNearby() error {
 	return nil
 }
 
+func (cmd *Select) load(id spotify.ID) error {
+	client, err := cmd.api.Spotify()
+	if err != nil {
+		return err
+	}
+
+	// fixme: global const
+	const limit = 50
+
+	lst, err := spotify_aggregator.ListWithID(*client, id.String(), limit)
+	if err != nil {
+		return err
+	}
+
+	log.Debugf("auto-loaded list '%s' from Spotify", lst.Name())
+
+	cmd.api.Db().Cache(lst)
+
+	return nil
+}
+
 // setTabCompleteVerbs sets the tab complete list to the list of available sub-commands.
 func (cmd *Select) setTabCompleteVerbs(lit string) {
 	cmd.setTabComplete(lit, []string{
 		"all",
+		"intersect",
 		"nearby",
 		"none",
 		"toggle",

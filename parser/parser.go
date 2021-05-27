@@ -95,6 +95,15 @@ func (p *Parser) ScanRemainderAsIdentifier() string {
 // Unscan pushes the previously read token back onto the buffer.
 func (p *Parser) Unscan() { p.buf.n = 1 }
 
+// ParseWhitespace scans a whitespace token returning nil, or error if the next token is not whitespace.
+func (p *Parser) ParseWhitespace() error {
+	tok, lit := p.Scan()
+	if tok != lexer.TokenWhitespace {
+		return fmt.Errorf("unexpected %v, expected space", lit)
+	}
+	return nil
+}
+
 // ParseEnd parses to the end, and returns an error if the end hasn't been reached.
 func (p *Parser) ParseEnd() error {
 	tok, lit := p.ScanIgnoreWhitespace()

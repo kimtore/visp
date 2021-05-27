@@ -1,15 +1,20 @@
 package db
 
 import (
+	"sort"
 	"strconv"
 
 	"github.com/ambientsound/visp/list"
+	"github.com/ambientsound/visp/log"
+	spotify_playlists "github.com/ambientsound/visp/spotify/playlists"
+	"github.com/zmb3/spotify"
 )
 
 type List struct {
 	list.Base
-	lists map[string]list.List
-	last  list.List
+	lists      map[string]list.List
+	last       list.List
+	nameLookup map[string]interface{}
 }
 
 var _ list.List = &List{}
@@ -20,6 +25,7 @@ func New() *List {
 	this.SetID("windows")
 	this.SetName("Windows")
 	this.SetVisibleColumns([]string{"name", "size"})
+	this.nameLookup = make(map[string]interface{})
 	this.lists = make(map[string]list.List)
 	return this
 }
@@ -36,6 +42,11 @@ func NewRow(lst list.List) list.Row {
 
 // Cache adds a list to the database. Returns the row number of the list.
 func (s *List) Cache(lst list.List) int {
+	defer func() {
+		s.addNameLookupChildren(lst)
+		s.nameLookup[lst.Name()] = lst
+		log.Debugf("List lookup table: %v", s.nameLookup)
+	}()
 	existing := s.RowByID(lst.ID())
 	if existing == nil {
 		s.Add(NewRow(lst))
@@ -43,6 +54,7 @@ func (s *List) Cache(lst list.List) int {
 	} else {
 		n, _ := s.RowNum(lst.ID())
 		row := s.Row(n)
+		delete(s.nameLookup, row.Get("name"))
 		row.Set("name", lst.Name())
 		row.Set("size", strconv.Itoa(lst.Len()))
 		return n
@@ -71,4 +83,27 @@ func (s *List) SetLast(last list.List) {
 
 func (s *List) Last() list.List {
 	return s.last
+}
+
+func (s *List) Names() []string {
+	names := make([]string, 0, len(s.nameLookup))
+	for k := range s.nameLookup {
+		names = append(names, k)
+	}
+	sort.Strings(names)
+	return names
+}
+
+func (s *List) Lookup(name string) interface{} {
+	return s.nameLookup[name]
+}
+
+func (s *List) addNameLookupChildren(lst list.List) {
+	playlists, ok := lst.(*spotify_playlists.List)
+	if !ok {
+		return
+	}
+	for _, row := range playlists.All() {
+		s.nameLookup[row.Get("name")] = spotify.ID(row.ID())
+	}
 }
