@@ -25,7 +25,7 @@ type ChiMiddleware struct {
 }
 
 // NewMiddleware returns a new prometheus ChiMiddleware handler.
-func NewChiMiddleware(name string, buckets ...float64) func(next http.Handler) http.Handler {
+func NewChiMiddleware(name string, buckets ...float64) *ChiMiddleware {
 	var m ChiMiddleware
 
 	m.reqs = prometheus.NewCounterVec(
@@ -48,10 +48,10 @@ func NewChiMiddleware(name string, buckets ...float64) func(next http.Handler) h
 	)
 	prometheus.MustRegister(m.latency)
 
-	return m.handler
+	return &m
 }
 
-func (c ChiMiddleware) handler(next http.Handler) http.Handler {
+func (c ChiMiddleware) Handler(next http.Handler) http.Handler {
 	fn := func(w http.ResponseWriter, r *http.Request) {
 		start := time.Now()
 		ww := middleware.NewWrapResponseWriter(w, r.ProtoMajor)
@@ -60,4 +60,15 @@ func (c ChiMiddleware) handler(next http.Handler) http.Handler {
 		c.latency.WithLabelValues(strconv.Itoa(ww.Status()), r.Method, r.URL.Path).Observe(float64(time.Since(start).Nanoseconds()) / 1000000)
 	}
 	return http.HandlerFunc(fn)
+}
+
+func (c ChiMiddleware) Zero(codes []int, methods []string, paths []string) {
+	for _, code := range codes {
+		for _, method := range methods {
+			for _, path := range paths {
+				c.reqs.WithLabelValues(strconv.Itoa(code), method, path)
+				c.latency.WithLabelValues(strconv.Itoa(code), method, path)
+			}
+		}
+	}
 }

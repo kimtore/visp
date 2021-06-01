@@ -136,16 +136,30 @@ func (h *Handler) RefreshCallback(w http.ResponseWriter, r *http.Request) {
 
 func Router(handler *Handler) chi.Router {
 	router := chi.NewRouter()
+	metrics := NewChiMiddleware(metricsMiddlewareName, prometheus.DefBuckets...)
 
 	router.Use(middleware.Logger)
 	router.Use(middleware.NoCache)
-	router.Use(NewChiMiddleware(metricsMiddlewareName, prometheus.DefBuckets...))
+	router.Use(metrics.Handler)
 
 	router.Get(loginURL, handler.ServeLogin)
 	router.Get(callbackURL, handler.ServeCallback)
 	router.Post(RefreshURL, handler.RefreshCallback)
 
 	router.Get(metricsURL, promhttp.Handler().ServeHTTP)
+
+	metrics.Zero(
+		[]int{
+			http.StatusBadRequest,
+			http.StatusForbidden,
+			http.StatusFound,
+			http.StatusInternalServerError,
+			http.StatusOK,
+			http.StatusServiceUnavailable,
+		},
+		[]string{"GET", "POST"},
+		[]string{loginURL, callbackURL, RefreshURL},
+	)
 
 	return router
 }
