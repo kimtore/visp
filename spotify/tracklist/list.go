@@ -150,7 +150,6 @@ func NewHistory() *List {
 	this.SetID("history")
 	this.SetVisibleColumns(options.GetList(options.ColumnsTracklists))
 	return this
-
 }
 
 func FullTrackRow(track spotify.FullTrack) list.Row {

@@ -8,6 +8,8 @@ import (
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	"github.com/google/uuid"
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	log "github.com/sirupsen/logrus"
 	"github.com/zmb3/spotify"
 	"golang.org/x/oauth2"
@@ -31,10 +33,12 @@ var scopes = []string{
 }
 
 const (
-	cookieName  = "token"
-	loginURL    = "/oauth/login"
-	callbackURL = "/oauth/callback"
-	RefreshURL  = "/oauth/refresh"
+	cookieName            = "token"
+	loginURL              = "/oauth/login"
+	callbackURL           = "/oauth/callback"
+	RefreshURL            = "/oauth/refresh"
+	metricsURL            = "/metrics"
+	metricsMiddlewareName = "visp_authproxy"
 )
 
 type Handler struct {
@@ -135,10 +139,13 @@ func Router(handler *Handler) chi.Router {
 
 	router.Use(middleware.Logger)
 	router.Use(middleware.NoCache)
+	router.Use(NewChiMiddleware(metricsMiddlewareName, prometheus.DefBuckets...))
 
 	router.Get(loginURL, handler.ServeLogin)
 	router.Get(callbackURL, handler.ServeCallback)
 	router.Post(RefreshURL, handler.RefreshCallback)
+
+	router.Get(metricsURL, promhttp.Handler().ServeHTTP)
 
 	return router
 }
