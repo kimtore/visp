@@ -1,6 +1,7 @@
 package spotify_tracklist
 
 import (
+	"github.com/ambientsound/visp/utils"
 	"github.com/zmb3/spotify"
 )
 
@@ -27,11 +28,14 @@ func AddTracksToPlaylist(client *spotify.Client, playlistID spotify.ID, ids []sp
 
 // Replace more than 100 tracks in a Spotify playlist.
 func ReplacePlaylistTracks(client *spotify.Client, playlistID spotify.ID, ids []spotify.ID) error {
-	if len(ids) <= maxAddToPlaylist {
-		return client.ReplacePlaylistTracks(playlistID, ids...)
+	batchSize := utils.Min(maxAddToPlaylist, len(ids))
+	err := client.ReplacePlaylistTracks(playlistID, ids[:batchSize]...)
+
+	if err != nil || len(ids) <= maxAddToPlaylist {
+		return err
 	}
 
-	_, err := AddTracksToPlaylist(client, playlistID, ids[maxAddToPlaylist:])
+	_, err = AddTracksToPlaylist(client, playlistID, ids[maxAddToPlaylist:])
 
 	return err
 }
