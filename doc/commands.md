@@ -252,6 +252,10 @@ The `select` commands allow the tracklist selection to be manipulated.
   The named list must be known by Visp. Known lists are either contained within the window list,
   or referred to by a list of Spotify playlists.
 
+* `select duplicates`
+
+  Select extra copies of all tracks found in the current list.
+
 
 ## Controlling playback
 

@@ -7,7 +7,7 @@ import (
 	"github.com/ambientsound/visp/input/lexer"
 	"github.com/ambientsound/visp/list"
 	"github.com/ambientsound/visp/log"
-	spotify_aggregator "github.com/ambientsound/visp/spotify/aggregator"
+	"github.com/ambientsound/visp/spotify/aggregator"
 	"github.com/zmb3/spotify"
 )
 
@@ -21,6 +21,7 @@ type Select struct {
 	none          bool
 	toggle        bool
 	visual        bool
+	duplicates    bool
 	nearby        []string
 }
 
@@ -51,6 +52,8 @@ func (cmd *Select) Parse() error {
 		cmd.toggle = true
 	case "visual":
 		cmd.visual = true
+	case "duplicates":
+		cmd.duplicates = true
 	case "intersect":
 		return cmd.parseIntersect()
 	case "nearby":
@@ -93,6 +96,19 @@ func (cmd *Select) Exec() error {
 
 	case len(cmd.nearby) > 0:
 		return cmd.selectNearby()
+
+	case cmd.duplicates:
+		lst.ClearSelection()
+		seen := make(map[string]bool)
+		dupes := 0
+		for i, row := range lst.All() {
+			if seen[row.ID()] {
+				lst.SetSelected(i, true)
+				dupes++
+			}
+			seen[row.ID()] = true
+		}
+		log.Infof("Selected %d duplicates", dupes)
 
 	case cmd.all:
 		lst.DisableVisualSelection()
@@ -214,6 +230,7 @@ func (cmd *Select) load(id spotify.ID) error {
 func (cmd *Select) setTabCompleteVerbs(lit string) {
 	cmd.setTabComplete(lit, []string{
 		"all",
+		"duplicates",
 		"intersect",
 		"nearby",
 		"none",
