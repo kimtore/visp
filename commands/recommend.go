@@ -26,22 +26,41 @@ var (
 		// SeedTypeGenre,
 		SeedTypeTrack,
 	}
+
+	trackAttributes = []string{
+		"acousticness",
+		"danceability",
+		"duration",
+		"energy",
+		"instrumentalness",
+		"key",
+		"liveness",
+		"loudness",
+		"mode",
+		"popularity",
+		"speechiness",
+		"tempo",
+		"time_signature",
+		"valence",
+	}
 )
 
 // Recommend gives a list of tracks similar to the ones selected and within certain constraints.
 // Effectively it implements "track radio" from the official client, but with granular control.
 type Recommend struct {
 	command
-	api        api.API
-	seedType   string
-	attributes *spotify.TrackAttributes
+	api            api.API
+	seedType       string
+	attributes     *spotify.TrackAttributes
+	usedAttributes map[string]interface{}
 }
 
 // NewRecommend returns Recommend.
 func NewRecommend(api api.API) Command {
 	return &Recommend{
-		api:        api,
-		attributes: spotify.NewTrackAttributes(),
+		api:            api,
+		attributes:     spotify.NewTrackAttributes(),
+		usedAttributes: make(map[string]interface{}),
 	}
 }
 
@@ -62,11 +81,148 @@ func (cmd *Recommend) Parse() error {
 		if lit == seedType {
 			cmd.seedType = lit
 			cmd.setTabCompleteEmpty()
-			return nil
 		}
 	}
 
-	return fmt.Errorf("wrong seed type '%s'; expected one of %s", lit, strings.Join(seedTypes, ", "))
+	if len(cmd.seedType) == 0 {
+		return fmt.Errorf("wrong seed type '%s'; expected one of %s", lit, strings.Join(seedTypes, ", "))
+	}
+
+	for {
+		tok, lit = cmd.Scan()
+		switch tok {
+		case lexer.TokenEnd:
+			return nil
+		case lexer.TokenWhitespace:
+			break
+		default:
+			return fmt.Errorf("unexpected '%s'; expected track attribute or END", lit)
+		}
+
+		err := cmd.parseTrackAttribute()
+		if err != nil {
+			return err
+		}
+	}
+}
+
+func (cmd *Recommend) setTabCompleteAttributes(lit string) {
+	attrs := make([]string, 0, len(trackAttributes))
+	for _, attr := range trackAttributes {
+		_, ok := cmd.usedAttributes[attr]
+		if !ok {
+			attrs = append(attrs, attr)
+		}
+	}
+	cmd.setTabComplete(lit, attrs)
+}
+
+func (cmd *Recommend) parseTrackAttribute() error {
+	tok, lit := cmd.Scan()
+
+	cmd.setTabCompleteAttributes(lit)
+
+	if tok != lexer.TokenIdentifier {
+		return fmt.Errorf("unexpected '%s'; expected track attribute", lit)
+	}
+
+	name := lit
+	cmd.usedAttributes[lit] = new(interface{}) // remove from tab completion candidates
+
+	tok, lit = cmd.Scan()
+	if tok != lexer.TokenEqual {
+		return fmt.Errorf("unexpected '%s'; expected equal sign", lit)
+	}
+
+	cmd.setTabCompleteEmpty()
+
+	min, err := cmd.ParseUnsignedFloat()
+	if err != nil {
+		return err
+	}
+
+	tok, lit = cmd.Scan()
+	if tok != lexer.TokenMinus {
+		cmd.Unscan()
+		return cmd.setTrackAttribute(cmd.attributes, name, min, nil)
+	}
+
+	max, err := cmd.ParseUnsignedFloat()
+	if err != nil {
+		return err
+	}
+
+	return cmd.setTrackAttribute(cmd.attributes, name, min, &max)
+}
+
+func (cmd *Recommend) setTrackAttributeInt(minFunc, maxFunc, targetFunc func(int) *spotify.TrackAttributes, min float64, max *float64) {
+	if max == nil {
+		targetFunc(int(min))
+		return
+	}
+	if min > *max {
+		tmp := *max
+		*max = min
+		min = tmp
+	}
+	minFunc(int(min))
+	maxFunc(int(*max))
+}
+
+func (cmd *Recommend) setTrackAttributeFloat(minFunc, maxFunc, targetFunc func(float64) *spotify.TrackAttributes, min float64, max *float64) {
+	if max == nil {
+		targetFunc(min)
+		return
+	}
+	if min > *max {
+		tmp := *max
+		*max = min
+		min = tmp
+	}
+	minFunc(min)
+	maxFunc(*max)
+}
+
+func (cmd *Recommend) setTrackAttribute(attributes *spotify.TrackAttributes, name string, min float64, max *float64) error {
+	switch name {
+	case "acousticness":
+		cmd.setTrackAttributeFloat(attributes.MinAcousticness, attributes.MaxAcousticness, attributes.TargetAcousticness, min, max)
+	case "danceability":
+		cmd.setTrackAttributeFloat(attributes.MinDanceability, attributes.MaxDanceability, attributes.TargetDanceability, min, max)
+	case "duration":
+		// duration expected in milliseconds, translate to seconds
+		min *= 1000
+		if max != nil {
+			*max *= 1000
+		}
+		cmd.setTrackAttributeInt(attributes.MinDuration, attributes.MaxDuration, attributes.TargetDuration, min, max)
+	case "energy":
+		cmd.setTrackAttributeFloat(attributes.MinEnergy, attributes.MaxEnergy, attributes.TargetEnergy, min, max)
+	case "instrumentalness":
+		cmd.setTrackAttributeFloat(attributes.MinInstrumentalness, attributes.MaxInstrumentalness, attributes.TargetInstrumentalness, min, max)
+	case "key":
+		cmd.setTrackAttributeInt(attributes.MinKey, attributes.MaxKey, attributes.TargetKey, min, max)
+	case "liveness":
+		cmd.setTrackAttributeFloat(attributes.MinLiveness, attributes.MaxLiveness, attributes.TargetLiveness, min, max)
+	case "loudness":
+		cmd.setTrackAttributeFloat(attributes.MinLoudness, attributes.MaxLoudness, attributes.TargetLoudness, min, max)
+	case "mode":
+		cmd.setTrackAttributeInt(attributes.MinMode, attributes.MaxMode, attributes.TargetMode, min, max)
+	case "popularity":
+		cmd.setTrackAttributeInt(attributes.MinPopularity, attributes.MaxPopularity, attributes.TargetPopularity, min, max)
+	case "speechiness":
+		cmd.setTrackAttributeFloat(attributes.MinSpeechiness, attributes.MaxSpeechiness, attributes.TargetSpeechiness, min, max)
+	case "tempo":
+		cmd.setTrackAttributeFloat(attributes.MinTempo, attributes.MaxTempo, attributes.TargetTempo, min, max)
+	case "time_signature":
+		cmd.setTrackAttributeInt(attributes.MinTimeSignature, attributes.MaxTimeSignature, attributes.TargetTimeSignature, min, max)
+	case "valence":
+		cmd.setTrackAttributeFloat(attributes.MinValence, attributes.MaxValence, attributes.TargetValence, min, max)
+	default:
+		return fmt.Errorf("unsupported track attribute '%s'", name)
+	}
+
+	return nil
 }
 
 func (cmd *Recommend) seeds(seedType string, tracks []spotify.FullTrack) (*spotify.Seeds, error) {

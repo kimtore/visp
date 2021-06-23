@@ -148,3 +148,28 @@ func (p *Parser) ParseInt() (tok int, lit int, absolute bool, err error) {
 
 	return
 }
+
+func (p *Parser) ParseUnsignedFloat() (float64, error) {
+	var sign float64 = 1
+
+	tok, lit := p.Scan()
+	switch tok {
+	case lexer.TokenIdentifier:
+		break
+	case lexer.TokenPlus:
+		tok, lit = p.Scan()
+		break
+	case lexer.TokenMinus:
+		sign = -1
+		tok, lit = p.Scan()
+	default:
+		return 0, fmt.Errorf("unexpected '%s'; expected number", lit)
+	}
+
+	num, err := strconv.ParseFloat(lit, 64)
+	if err != nil {
+		return 0, fmt.Errorf("unexpected '%s'; expected number: %w", lit, err)
+	}
+
+	return num * sign, nil
+}

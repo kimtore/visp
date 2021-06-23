@@ -183,14 +183,34 @@ These commands switch between, create, and edit lists.
   If there is no selection, `like ... selection` acts as `like ... cursor`.
   
 * `recommend`  
-  `recommend artist`  
-  `recommend track`
+  `recommend artist [attr=<TARGET|MIN-MAX>] [...]`  
+  `recommend track [attr=<TARGET|MIN-MAX>] [...]`
 
   Get a list of song recommendations based on the currently selected tracks, or if no selection, the track beneath the cursor.
   `recommend artist` will make recommendations on the track artists, whereas `recommend track` picks recommendations based
   on the tracks themselves.
   
   `recommend` without any parameters behaves as `recommend track`.
+  
+  You may constrain the results of recommendations by specifying one or more _attributes_, along with a target value,
+  or optionally floor and ceiling values of _MIN_ and _MAX_.
+  
+  | Attribute | Minimum value | Maximum value | Description |
+  |-----------|---------------|---------------|-------------|
+  | `acousticness` | 0.0 | 1.0 | A confidence measure from 0.0 to 1.0 of whether the track is acoustic. |
+  | `danceability` | 0.0 | 1.0 | How suitable a track is for dancing based on a combination of musical elements including tempo, rhythm stability, beat strength, and overall regularity. |
+  | `duration` | 0 | +Inf | Duration of a track, in seconds. |
+  | `energy` | 0.0 | 1.0 | Perceptual measure of intensity and activity.  Typically, energetic tracks feel fast, loud, and noisy. |
+  | `instrumentalness` | 0.0 | 1.0 | Instrumentalness predicts whether a track contains no vocals. "Ooh" and "aah" sounds are treated as instrumental in this context. Rap or spoken word tracks are clearly "vocal". |
+  | `key` | −39 | 48 | [Pitch class notation](https://en.wikipedia.org/wiki/Pitch_class) of track root key. |
+  | `liveness` | 0.0 | 1.0 | Detects the presence of an audience in the recording.  Higher liveness values represent an increased probability that the track was performed live. |
+  | `loudness` | -60.0 | 0.0 | Loudness values are averaged across the entire track and are useful for comparing the relative loudness of tracks. Measured in dB. |
+  | `mode` | 0.0 | 1.0 | Indicates the modality (major or minor) of a track, the type of scale from which its melodic content is derived. Major is represented by 1 and minor is 0. |
+  | `popularity` | 0 | 100 | The popularity is calculated by algorithm and is based, in the most part, on the total number of plays the track has had and how recent those plays are. |
+  | `speechiness` | 0.0 | 1.0 | The more exclusively speech-like the recording, the closer to 1.0 the speechiness will be. Values above 0.66 describe tracks that are probably made entirely of spoken words.  Values between 0.33 and 0.66 describe tracks that may contain both music and speech, including such cases as rap music. Values below 0.33 most likely represent music and other non-speech-like tracks.
+  | `tempo` | 0 | +Inf | The overall estimated tempo of a track in beats per minute (BPM). |
+  | `time_signature` | -Inf | +Inf | An estimated overall time signature of a track. The time signature (meter) is a notational convention to specify how many beats are in each bar (or measure). |
+  | `valence` | 0.0 | 1.0 | Describes the musical positiveness conveyed by a track. Tracks with high valence sound more positive (e.g. happy, cheerful, euphoric), while tracks with low valence sound more negative (e.g. sad, depressed, angry). |
 
 * `rename <playlist name>`
 
