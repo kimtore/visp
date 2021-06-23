@@ -109,6 +109,7 @@ func (cmd *Select) Exec() error {
 			seen[row.ID()] = true
 		}
 		log.Infof("Selected %d duplicates", dupes)
+		return nil
 
 	case cmd.all:
 		lst.DisableVisualSelection()
