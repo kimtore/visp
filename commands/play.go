@@ -144,11 +144,23 @@ func (cmd *Play) playCursor() error {
 	//
 	// If the local list has changes, or it is not a remote playlist, we compose
 	// a list of all tracks in the list, and use this ad-hoc list as a playback context.
+	//
+	// Unfortunately, Spotify has a limit on how many tracks can be played ad-hoc.
+	// This seems to be based on the size of the HTTP request, and not the API itself.
+	// Any request too large will return with 'HTTP 413 Request Entity Too Large'.
+	// Simple tests placed this number at 784 tracks.
+	// Here, we set the limit to 750 tracks to be sure.
 	uri := cmd.tracklist.URI()
 	uris := make([]spotify.URI, 0, cmd.tracklist.Len())
 	if uri == nil || cmd.tracklist.HasLocalChanges() {
+		const limit = 750
 		uri = nil
-		for _, tr := range cmd.tracklist.Tracks() {
+		tracks := cmd.tracklist.Tracks()
+		if len(tracks) > limit {
+			log.Infof("Note: tracklist contains %d tracks, but only %d tracks will be added to avoid errors", len(tracks), limit)
+			tracks = tracks[:limit]
+		}
+		for _, tr := range tracks {
 			uris = append(uris, tr.URI)
 		}
 		log.Infof("Starting playback of %d tracks starting with '%s'", len(uris), track.Name)
