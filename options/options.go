@@ -234,7 +234,7 @@ bind global - volume -2
 bind global <left> seek -5
 bind global <right> seek +5
 bind global <Alt-M> volume mute
-bind global S single
+bind global S repeat
 
 # Special windows
 bind global c show library

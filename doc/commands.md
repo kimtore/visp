@@ -317,11 +317,13 @@ The `select` commands allow the tracklist selection to be manipulated.
 
   Stop playback.
 
-* `single [toggle]`  
-  `single on`  
-  `single off`
+* `repeat`  
+  `repeat context`  
+  `repeat track`
+  `repeat off`
 
-  Toggle single mode playback style, or switch it on or off.
+  Switch between repeat modes. `context` will repeat the currently playing list or selection, whereas `track` will
+  repeat the currently playing track. Running this command without parameters will toggle between the different modes.
 
 ### Controlling the volume
 
