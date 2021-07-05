@@ -70,8 +70,6 @@ func (cmd *Repeat) Parse() error {
 		return fmt.Errorf("unexpected '%v', expected identifier", lit)
 	}
 
-	cmd.action = lit
-
 	cmd.setTabCompleteEmpty()
 	return cmd.ParseEnd()
 

@@ -226,7 +226,6 @@ bind global V select visual
 bind tracklist <Enter> play selection
 bind tracklist a add
 bind global <Space> pause
-bind global s stop
 bind global h previous
 bind global l next
 bind global + volume +2
@@ -235,6 +234,7 @@ bind global <left> seek -5
 bind global <right> seek +5
 bind global <Alt-M> volume mute
 bind global S repeat
+bind global s shuffle
 
 # Special windows
 bind global c show library

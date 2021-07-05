@@ -325,6 +325,12 @@ The `select` commands allow the tracklist selection to be manipulated.
   Switch between repeat modes. `context` will repeat the currently playing list or selection, whereas `track` will
   repeat the currently playing track. Running this command without parameters will toggle between the different modes.
 
+* `shuffle`  
+  `shuffle on`
+  `shuffle off`
+
+  Switch between shuffle modes. Running this command without parameters will toggle shuffle on and off.
+
 ### Controlling the volume
 
 These commands control the volume. The volume range is from 0 to 100.

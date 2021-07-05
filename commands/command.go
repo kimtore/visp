@@ -74,6 +74,7 @@ var Verbs = map[string]func(api.API) Command{
 	"se":        NewSet,
 	"set":       NewSet,
 	"show":      NewShow,
+	"shuffle":   NewShuffle,
 	"sort":      NewSort,
 	"stop":      NewStop,
 	"style":     NewStyle,
