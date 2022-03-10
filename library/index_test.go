@@ -15,11 +15,11 @@ func TestBleve(t *testing.T) {
 	}
 
 	input := list.New()
-	input.Add(list.NewRow("foobar", map[string]string{
+	input.Add(list.NewRow("foobar", list.DataTypeTrack, map[string]string{
 		"some": "verynicestring",
 		"data": "should-be-stored",
 	}))
-	input.Add(list.NewRow("baz", map[string]string{
+	input.Add(list.NewRow("baz", list.DataTypeTrack, map[string]string{
 		"some": "not so nice string",
 		"data": "save this please",
 	}))
@@ -29,6 +29,7 @@ func TestBleve(t *testing.T) {
 		panic(err)
 	}
 
+	// Perform a query for a sample string.
 	result, err := idx.Query("ver")
 	if err != nil {
 		panic(err)
@@ -40,4 +41,12 @@ func TestBleve(t *testing.T) {
 	}
 
 	assert.Equal(t, 1, result.Len())
+
+	// Query for row data and check that it is equal to what we stored.
+	row, err := idx.QueryID("baz")
+	if err != nil {
+		panic(err)
+	}
+
+	assert.Equal(t, input.RowByID("baz").Fields(), row.Fields())
 }

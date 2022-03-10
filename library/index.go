@@ -21,6 +21,7 @@ import (
 type Index interface {
 	Add(list list.List) error
 	Query(q string) (list.List, error)
+	QueryID(id string) (list.Row, error)
 	Close() error
 }
 
@@ -135,6 +136,25 @@ func (idx *index) Query(q string) (list.List, error) {
 	return idx.hitsAsList(res)
 }
 
+func (idx *index) QueryID(id string) (list.Row, error) {
+	fields := make(map[string]string)
+	document, err := idx.bleve.GetInternal([]byte(id))
+	if err != nil {
+		return nil, fmt.Errorf("document(%s) not found: %w", id, err)
+	}
+
+	err = json.Unmarshal(document, &fields)
+	if err != nil {
+		return nil, fmt.Errorf("unmarshal(%s, %s): %w", id, string(document), err)
+	}
+
+	return list.NewRow(
+		id,
+		list.DataTypeTrack,
+		fields,
+	), nil
+}
+
 func (idx *index) hitsAsList(res *bleve.SearchResult) (list.List, error) {
 	result := list.New()
 
@@ -150,18 +170,13 @@ func (idx *index) hitsAsList(res *bleve.SearchResult) (list.List, error) {
 }
 
 func (idx *index) hitAsRow(hit *search.DocumentMatch) (list.Row, error) {
-	fields := make(map[string]string)
-	document, err := idx.bleve.GetInternal([]byte(hit.ID))
+	row, err := idx.QueryID(hit.ID)
 	if err != nil {
-		return nil, fmt.Errorf("indexed document not stored: %w", err)
+		return nil, err
 	}
 
-	err = json.Unmarshal(document, &fields)
-	if err != nil {
-		return nil, fmt.Errorf("unmarshali(%s): %w", string(document), err)
-	}
+	score := fmt.Sprintf("%3.1f%%", hit.Score*100)
+	row.Set("score", score)
 
-	fields["score"] = fmt.Sprintf("%3.1f%%", hit.Score*100)
-
-	return list.NewRow(hit.ID, fields), nil
+	return row, nil
 }
