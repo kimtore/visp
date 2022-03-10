@@ -1,8 +1,7 @@
 module github.com/ambientsound/visp
 
 require (
-	github.com/blevesearch/bleve v1.0.14 // indirect
-	github.com/blevesearch/bleve/v2 v2.3.1 // indirect
+	github.com/blevesearch/bleve/v2 v2.3.1
 	github.com/gdamore/tcell/v2 v2.4.0
 	github.com/go-chi/chi v1.5.4
 	github.com/google/uuid v1.3.0
