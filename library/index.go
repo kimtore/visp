@@ -21,6 +21,7 @@ import (
 type Index interface {
 	Add(list list.List) error
 	Query(q string) (list.List, error)
+	Close() error
 }
 
 type index struct {

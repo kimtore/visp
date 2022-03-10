@@ -157,6 +157,13 @@ func (v *Visp) SetList(lst list.List) {
 	if lst == nil {
 		return
 	}
+	switch lst.(type) {
+	case *spotify_tracklist.List:
+		err := v.index.Add(lst)
+		if err != nil {
+			log.Debugf("Unable to add list '%v' to search index", lst.Name())
+		}
+	}
 	cur := v.db.Current()
 	if cur != nil && cur != lst && cur != v.db && cur != v.clipboards {
 		log.Debugf("Setting last used list to '%s'", cur.Name())

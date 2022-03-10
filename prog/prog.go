@@ -16,6 +16,7 @@ import (
 	"github.com/ambientsound/visp/db"
 	"github.com/ambientsound/visp/input"
 	"github.com/ambientsound/visp/input/keys"
+	"github.com/ambientsound/visp/library"
 	"github.com/ambientsound/visp/list"
 	"github.com/ambientsound/visp/log"
 	"github.com/ambientsound/visp/multibar"
@@ -51,6 +52,7 @@ type Visp struct {
 	commands     chan string
 	db           *db.List
 	history      *spotify_tracklist.List
+	index        library.Index
 	interpreter  *input.Interpreter
 	library      *spotify_library.List
 	list         list.List
@@ -82,10 +84,18 @@ func (v *Visp) Init() {
 	v.ticker = time.NewTicker(tickerInterval)
 	v.tokenRefresh = make(chan time.Time)
 
+	var err error
+	v.index, err = library.New()
+	if err != nil {
+		panic(err)
+	}
+
 	v.SetList(log.List(log.InfoLevel))
 }
 
 func (v *Visp) Main() error {
+	defer v.index.Close()
+
 	for {
 		select {
 		case <-v.quit:
