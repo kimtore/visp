@@ -75,7 +75,6 @@ func (app *Application) HandleEvent(ev tcell.Event) bool {
 	case *tcell.EventKey:
 		return false
 	default:
-		log.Debugf("unrecognized input event: %T %+v", e, e)
 		app.Widgets.layout.HandleEvent(ev)
 		return false
 	}

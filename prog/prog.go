@@ -142,16 +142,19 @@ func (v *Visp) Main() error {
 				v.multibar.Error(err)
 			}
 
-		// Try handling the input event in the multibar.
-		// If multibar is disabled (input mode = normal), try handling the event in the UI layer.
-		// If unhandled still, run it through the keyboard binding maps to try to get a command.
 		case ev := <-v.Termui.Events():
-			if v.multibar.Input(ev) {
-				break
-			}
+			// First try to handle basic terminal events, such as resize.
 			if v.Termui.HandleEvent(ev) {
 				break
 			}
+
+			// If the input line is activated, send key events there.
+			// This function handles text input, readline-like navigation, and history.
+			if v.multibar.Input(ev) {
+				break
+			}
+
+			// Add the key event to the sequencer, which will determine if a keybinding was pressed.
 			cmd := v.keyEventCommand(ev)
 			if len(cmd) == 0 {
 				break
