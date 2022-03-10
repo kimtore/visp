@@ -1,12 +1,15 @@
 package main
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"os"
+	"os/signal"
 	"path/filepath"
 	"runtime/debug"
 	"strings"
+	"syscall"
 
 	"github.com/ambientsound/visp/log"
 	"github.com/ambientsound/visp/prog"
@@ -55,9 +58,13 @@ func main() {
 	os.Exit(exitCode)
 }
 
+//goland:noinspection GoUnhandledErrorResult
 func run() (int, error) {
 	log.Infof("%s %s starting up", version.Program, version.Version)
 	log.Infof("This program was compiled on %s", version.BuildDate().String())
+
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
 
 	visp := &prog.Visp{}
 
@@ -115,9 +122,17 @@ func run() (int, error) {
 		}
 	}
 
+	signals := make(chan os.Signal, 1)
+	signal.Notify(signals, syscall.SIGINT, syscall.SIGTERM)
+	go func() {
+		s := <-signals
+		log.Infof("Received signal %s, exiting.", s)
+		cancel()
+	}()
+
 	log.Infof("Ready.")
 
-	err = visp.Main()
+	err = visp.Main(ctx)
 	if err != nil {
 		return ExitInternalError, err
 	}
