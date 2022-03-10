@@ -23,7 +23,7 @@ type State struct {
 func NewState(state spotify.PlayerState) *State {
 	var row list.Row
 	if state.Item == nil {
-		row = list.NewRow("", nil)
+		row = list.NewRow("", list.DataTypeTrack, nil)
 	} else {
 		row = spotify_tracklist.FullTrackRow(*state.Item)
 	}
@@ -41,7 +41,7 @@ func (p *State) Update(state spotify.PlayerState) {
 	p.CreateTime = now
 	p.updateTime = now
 	if state.Item == nil {
-		p.TrackRow = list.NewRow("", nil)
+		p.TrackRow = list.NewRow("", list.DataTypeTrack, nil)
 	} else {
 		p.TrackRow = spotify_tracklist.FullTrackRow(*state.Item)
 	}
@@ -96,7 +96,7 @@ func (p *State) Tick() {
 func (p *State) Invalidate() {
 	log.Debugf("Invalidating current player state")
 	p.CreateTime = time.Time{}
-	p.liked=nil
+	p.liked = nil
 }
 
 func (p State) Liked() bool {

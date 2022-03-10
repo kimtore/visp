@@ -14,11 +14,15 @@ func (s *Sequencer) List() list.List {
 
 	for _, bind := range s.binds {
 		keySequence := bind.Sequence.String()
-		this.Add(list.NewRow(keySequence, map[string]string{
-			"context":     bind.Context,
-			"keySequence": keySequence,
-			"command":     bind.Command,
-		}))
+		this.Add(list.NewRow(
+			keySequence,
+			list.DataTypeKeyBinding,
+			map[string]string{
+				"context":     bind.Context,
+				"keySequence": keySequence,
+				"command":     bind.Command,
+			},
+		))
 	}
 
 	this.Sort([]string{"keySequence", "context"})

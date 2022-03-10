@@ -32,7 +32,7 @@ func New() *List {
 
 func NewRow(lst list.List) list.Row {
 	return &Row{
-		BaseRow: list.NewRow(lst.ID(), map[string]string{
+		BaseRow: list.NewRow(lst.ID(), list.DataTypeWindow, map[string]string{
 			"name": lst.Name(),
 			"size": strconv.Itoa(lst.Len()),
 		}),

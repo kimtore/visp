@@ -64,6 +64,7 @@ func appendMessage(msg Message) {
 		messages[level] = append(messages[level], msg)
 		logLineList[level].Add(list.NewRow(
 			strconv.Itoa(logLineList[level].Len()),
+			list.DataTypeLogLine,
 			map[string]string{
 				"logLevel":   msg.Level.String(),
 				"logMessage": msg.Text,
