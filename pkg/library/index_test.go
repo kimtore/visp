@@ -3,8 +3,8 @@ package library_test
 import (
 	"testing"
 
-	"github.com/ambientsound/visp/library"
 	"github.com/ambientsound/visp/list"
+	"github.com/ambientsound/visp/pkg/library"
 	"github.com/stretchr/testify/assert"
 )
 
