@@ -1,13 +1,14 @@
 package widgets
 
 import (
+	"time"
+
 	"github.com/ambientsound/visp/api"
 	"github.com/ambientsound/visp/log"
 	"github.com/ambientsound/visp/multibar"
 	"github.com/ambientsound/visp/style"
 	"github.com/gdamore/tcell/v2"
 	"github.com/gdamore/tcell/v2/views"
-	"time"
 )
 
 // Multibar receives keyboard events, displays status messages, and the position readout.
@@ -82,7 +83,6 @@ func (w *Multibar) Draw() {
 func (w *Multibar) drawLeft() {
 	text, st := w.textWithStyle()
 
-	log.Debugf("multibar draw in style %x: %s", st, text)
 	for x, r := range text {
 		w.view.SetContent(x, 0, r, []rune{}, st)
 		x++
