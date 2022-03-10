@@ -15,7 +15,6 @@ import (
 	"github.com/ambientsound/visp/log"
 
 	"github.com/ambientsound/visp/input/lexer"
-	"github.com/ambientsound/visp/message"
 	"github.com/ambientsound/visp/utils"
 
 	"github.com/gdamore/tcell/v2"
@@ -34,7 +33,7 @@ type Multibar struct {
 	cursor      int
 	history     []*history
 	mode        InputMode
-	msg         message.Message
+	msg         string
 	orig        []rune
 	searches    chan string
 	tabComplete TabCompleter
@@ -136,25 +135,15 @@ func (m *Multibar) History() *history {
 
 // Clear the statusbar text
 func (m *Multibar) Clear() {
-	m.SetMessage(message.Message{
-		Severity: message.Info,
-		Text:     "",
-	})
+	m.SetMessage("")
 }
 
 // Set an error in the statusbar
 func (m *Multibar) Error(err error) {
-	m.SetMessage(message.Message{
-		Severity: message.Error,
-		Text:     err.Error(),
-	})
+	m.SetMessage(err.Error())
 }
 
-func (m *Multibar) Message() message.Message {
-	return m.msg
-}
-
-func (m *Multibar) SetMessage(msg message.Message) {
+func (m *Multibar) SetMessage(msg string) {
 	m.msg = msg
 }
 

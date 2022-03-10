@@ -49,9 +49,12 @@ func New() *List {
 	this.SetName("Libraries and discovery")
 	this.SetVisibleColumns([]string{listName})
 	for key, name := range entries {
-		this.Add(list.NewRow(key, map[string]string{
-			listName: name,
-		}))
+		this.Add(list.NewRow(
+			key,
+			list.DataTypeFIXME,
+			map[string]string{
+				listName: name,
+			}))
 	}
 	this.Sort([]string{listName})
 	this.SetCursor(0)

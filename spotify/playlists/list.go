@@ -47,13 +47,17 @@ func NewFromPlaylists(playlists []spotify.SimplePlaylist) *List {
 }
 
 func Row(playlist spotify.SimplePlaylist) list.Row {
-	return list.NewRow(playlist.ID.String(), map[string]string{
-		"name":          playlist.Name,
-		"tracks":        fmt.Sprintf("%d", playlist.Tracks.Total),
-		"owner":         playlist.Owner.DisplayName,
-		"public":        utils.HumanFormatBool(playlist.IsPublic),
-		"collaborative": utils.HumanFormatBool(playlist.Collaborative),
-	})
+	return list.NewRow(
+		playlist.ID.String(),
+		list.DataTypePlaylist,
+		map[string]string{
+			"name":          playlist.Name,
+			"tracks":        fmt.Sprintf("%d", playlist.Tracks.Total),
+			"owner":         playlist.Owner.DisplayName,
+			"public":        utils.HumanFormatBool(playlist.IsPublic),
+			"collaborative": utils.HumanFormatBool(playlist.Collaborative),
+		},
+	)
 }
 
 // CursorPlaylist returns the playlist currently selected by the cursor.

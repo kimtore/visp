@@ -34,6 +34,7 @@ func (clipboard *List) Insert(l list.List) {
 
 	clipboard.Add(list.NewRow(
 		index,
+		list.DataTypeList,
 		map[string]string{
 			"name": l.Name(),
 			"size": strconv.Itoa(l.Len()),

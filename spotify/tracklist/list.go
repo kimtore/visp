@@ -155,18 +155,22 @@ func NewHistory() *List {
 func FullTrackRow(track spotify.FullTrack) list.Row {
 	return &Row{
 		track: track,
-		BaseRow: list.NewRow(track.ID.String(), map[string]string{
-			"album":       track.Album.Name,
-			"albumArtist": strings.Join(artistNames(track.Album.Artists), ", "),
-			"artist":      strings.Join(artistNames(track.Artists), ", "),
-			"date":        track.Album.ReleaseDateTime().Format("2006-01-02"),
-			"time":        utils.TimeString(track.Duration / 1000),
-			"title":       track.Name,
-			"track":       fmt.Sprintf("%02d", track.TrackNumber),
-			"disc":        fmt.Sprintf("%d", track.DiscNumber),
-			"popularity":  fmt.Sprintf("%1.2f", float64(track.Popularity)/100),
-			"year":        track.Album.ReleaseDateTime().Format("2006"),
-		}),
+		BaseRow: list.NewRow(
+			track.ID.String(),
+			list.DataTypeTrack,
+			map[string]string{
+				"album":       track.Album.Name,
+				"albumArtist": strings.Join(artistNames(track.Album.Artists), ", "),
+				"artist":      strings.Join(artistNames(track.Artists), ", "),
+				"date":        track.Album.ReleaseDateTime().Format("2006-01-02"),
+				"time":        utils.TimeString(track.Duration / 1000),
+				"title":       track.Name,
+				"track":       fmt.Sprintf("%02d", track.TrackNumber),
+				"disc":        fmt.Sprintf("%d", track.DiscNumber),
+				"popularity":  fmt.Sprintf("%1.2f", float64(track.Popularity)/100),
+				"year":        track.Album.ReleaseDateTime().Format("2006"),
+			},
+		),
 	}
 }
 

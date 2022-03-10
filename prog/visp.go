@@ -2,6 +2,7 @@ package prog
 
 import (
 	"bufio"
+	"context"
 	"fmt"
 	"io"
 	"net/http"
@@ -92,11 +93,15 @@ func (v *Visp) Init() {
 	v.SetList(log.List(log.InfoLevel))
 }
 
-func (v *Visp) Main() error {
+func (v *Visp) Main(ctx context.Context) error {
 	defer v.index.Close()
 
-	for {
+	for ctx.Err() == nil {
 		select {
+		case <-ctx.Done():
+			log.Errorf("Killed by signal.")
+			return fmt.Errorf("killed by signal")
+
 		case <-v.quit:
 			log.Infof("Exiting.")
 			return nil
@@ -160,16 +165,19 @@ func (v *Visp) Main() error {
 				v.multibar.Error(err)
 			}
 
-		// Try handling the input event in the multibar.
-		// If multibar is disabled (input mode = normal), try handling the event in the UI layer.
-		// If unhandled still, run it through the keyboard binding maps to try to get a command.
 		case ev := <-v.Termui.Events():
-			if v.multibar.Input(ev) {
-				break
-			}
+			// First try to handle basic terminal events, such as resize.
 			if v.Termui.HandleEvent(ev) {
 				break
 			}
+
+			// If the input line is activated, send key events there.
+			// This function handles text input, readline-like navigation, and history.
+			if v.multibar.Input(ev) {
+				break
+			}
+
+			// Add the key event to the sequencer, which will determine if a keybinding was pressed.
 			cmd := v.keyEventCommand(ev)
 			if len(cmd) == 0 {
 				break
@@ -180,6 +188,8 @@ func (v *Visp) Main() error {
 		// Draw UI after processing any event.
 		v.Termui.Draw()
 	}
+
+	return ctx.Err()
 }
 
 // Record the current "liked" status of the current track.

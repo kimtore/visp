@@ -12,15 +12,15 @@ func TestList(t *testing.T) {
 	lst := list.New()
 
 	dataset := []list.Row{
-		list.NewRow("", map[string]string{
+		list.NewRow("", list.DataTypeFIXME, map[string]string{
 			"foo": "foo content",
 			"bar": "nope",
 		}),
-		list.NewRow("", map[string]string{
+		list.NewRow("", list.DataTypeFIXME, map[string]string{
 			"baz": "foo",
 			"bar": "nopenope",
 		}),
-		list.NewRow("", map[string]string{
+		list.NewRow("", list.DataTypeFIXME, map[string]string{
 			"bar": "hope",
 		}),
 	}
@@ -64,23 +64,23 @@ func TestListNextOf(t *testing.T) {
 	lst := list.New()
 
 	dataset := []list.Row{
-		list.NewRow("", map[string]string{
+		list.NewRow("", list.DataTypeFIXME, map[string]string{
 			"foo": "x",
 			"bar": "x",
 		}),
-		list.NewRow("", map[string]string{
+		list.NewRow("", list.DataTypeFIXME, map[string]string{
 			"foo": "x",
 			"bar": "xyz",
 		}),
-		list.NewRow("", map[string]string{
+		list.NewRow("", list.DataTypeFIXME, map[string]string{
 			"foo": "foo",
 			"bar": "x",
 		}),
-		list.NewRow("", map[string]string{
+		list.NewRow("", list.DataTypeFIXME, map[string]string{
 			"foo": "x",
 			"bar": "x",
 		}),
-		list.NewRow("", map[string]string{
+		list.NewRow("", list.DataTypeFIXME, map[string]string{
 			"foo": "x",
 			"bar": "x",
 		}),
@@ -118,7 +118,7 @@ func TestListInsert(t *testing.T) {
 	dataset := make([]list.Row, 0)
 	for i := 0; i < 6; i++ {
 		id := strconv.Itoa(i)
-		row := list.NewRow(id, map[string]string{
+		row := list.NewRow(id, list.DataTypeFIXME, map[string]string{
 			"name": id,
 		})
 		dataset = append(dataset, row)

@@ -63,16 +63,20 @@ func NewFromAlbums(albums []spotify.SimpleAlbum) *List {
 }
 
 func SimpleAlbumRow(album spotify.SimpleAlbum) list.Row {
-	return list.NewRow(album.ID.String(), map[string]string{
-		"album":       album.Name,
-		"albumArtist": strings.Join(artistNames(album.Artists), ", "),
-		"artist":      strings.Join(artistNames(album.Artists), ", "),
-		"date":        album.ReleaseDateTime().Format("2006-01-02"),
-		"title":       album.Name,
-		"group":       album.AlbumGroup,
-		"type":        album.AlbumType,
-		"year":        album.ReleaseDateTime().Format("2006"),
-	})
+	return list.NewRow(
+		album.ID.String(),
+		list.DataTypeAlbum,
+		map[string]string{
+			"album":       album.Name,
+			"albumArtist": strings.Join(artistNames(album.Artists), ", "),
+			"artist":      strings.Join(artistNames(album.Artists), ", "),
+			"date":        album.ReleaseDateTime().Format("2006-01-02"),
+			"title":       album.Name,
+			"group":       album.AlbumGroup,
+			"type":        album.AlbumType,
+			"year":        album.ReleaseDateTime().Format("2006"),
+		},
+	)
 }
 
 // Song returns the song at a specific index.

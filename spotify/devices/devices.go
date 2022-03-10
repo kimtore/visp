@@ -53,13 +53,17 @@ func New(client spotify.Client) (*List, error) {
 }
 
 func Row(device spotify.PlayerDevice) list.Row {
-	return list.NewRow(device.ID.String(), map[string]string{
-		"deviceName": device.Name,
-		"deviceType": device.Type,
-		"active":     utils.HumanFormatBool(device.Active),
-		"restricted": utils.HumanFormatBool(device.Restricted),
-		"volume":     fmt.Sprintf("%d%%", device.Volume),
-	})
+	return list.NewRow(
+		device.ID.String(),
+		list.DataTypeDevice,
+		map[string]string{
+			"deviceName": device.Name,
+			"deviceType": device.Type,
+			"active":     utils.HumanFormatBool(device.Active),
+			"restricted": utils.HumanFormatBool(device.Restricted),
+			"volume":     fmt.Sprintf("%d%%", device.Volume),
+		},
+	)
 }
 
 // CursorDevice returns the device currently selected by the cursor.
