@@ -122,6 +122,10 @@ func (m *Multibar) Input(event tcell.Event) bool {
 		return false
 	}
 
+	if m.mode == ModeSearch {
+		m.searches <- string(m.buffer)
+	}
+
 	return true
 }
 

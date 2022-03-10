@@ -22,7 +22,6 @@ import (
 	"github.com/ambientsound/visp/multibar"
 	"github.com/ambientsound/visp/options"
 	"github.com/ambientsound/visp/player"
-	"github.com/ambientsound/visp/spotify/aggregator"
 	"github.com/ambientsound/visp/spotify/library"
 	spotify_proxyclient "github.com/ambientsound/visp/spotify/proxyclient"
 	spotify_tracklist "github.com/ambientsound/visp/spotify/tracklist"
@@ -128,16 +127,25 @@ func (v *Visp) Main() error {
 			if len(query) == 0 {
 				break
 			}
-			client, err := v.Spotify()
+
+			lst, err := v.index.Query(query)
 			if err != nil {
 				log.Errorf(err.Error())
 				break
 			}
-			lst, err := spotify_aggregator.Search(*client, query, options.GetInt(options.Limit))
-			if err != nil {
-				log.Errorf("spotify search: %s", err)
-				break
-			}
+
+			/*
+				client, err := v.Spotify()
+				if err != nil {
+					log.Errorf(err.Error())
+					break
+				}
+				lst, err = spotify_aggregator.Search(*client, query, options.GetInt(options.Limit))
+				if err != nil {
+					log.Errorf("spotify search: %s", err)
+					break
+				}
+			*/
 			columns := options.GetString(options.ColumnsTracklists)
 			lst.SetID(uuid.New().String())
 			lst.SetName(fmt.Sprintf("Search for '%s'", query))
