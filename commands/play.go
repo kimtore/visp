@@ -161,7 +161,7 @@ func (cmd *Play) playCursor() error {
 			tracks = tracks[:limit]
 		}
 		for _, tr := range tracks {
-			uris = append(uris, spotify.URI("spotify:track:"+tr.ID()))
+			uris = append(uris, tr.URI())
 		}
 		log.Infof("Starting playback of %d tracks starting with '%s'", len(uris), row.Get("title"))
 	} else {
@@ -206,7 +206,7 @@ func (cmd *Play) playSelection() error {
 
 	uris := make([]spotify.URI, selection.Len())
 	for i, track := range selection.All() {
-		uris[i] = spotify.URI("spotify:track:" + track.ID())
+		uris[i] = track.URI()
 	}
 
 	// TODO: queue is unsupported by the Spotify Web API

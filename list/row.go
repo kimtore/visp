@@ -1,5 +1,9 @@
 package list
 
+import (
+	"github.com/zmb3/spotify"
+)
+
 type DataType string
 
 const (
@@ -20,6 +24,9 @@ type Row interface {
 	ID() string
 
 	SetID(string)
+
+	// Return a Spotify URI pointing to the track. device, album or playlist this row represents.
+	URI() spotify.URI
 
 	// Return the dataset.
 	Fields() map[string]string
@@ -72,6 +79,17 @@ func (row *BaseRow) Kind() DataType {
 
 func (row *BaseRow) SetID(id string) {
 	row.id = id
+}
+
+func (row *BaseRow) URI() spotify.URI {
+	switch row.kind {
+	case DataTypeTrack:
+	case DataTypeDevice:
+	case DataTypeAlbum:
+	default:
+		return ""
+	}
+	return spotify.URI("spotify:" + string(row.kind) + ":" + row.id)
 }
 
 func (row *BaseRow) Set(key, value string) {
