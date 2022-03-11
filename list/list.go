@@ -6,6 +6,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/google/uuid"
 	"github.com/zmb3/spotify"
 )
 
@@ -43,6 +44,7 @@ type List interface {
 	Add(Row)
 	All() []Row
 	Clear()
+	Copy() List
 	InRange(int) bool
 	InsertList(source List, position int) error
 	Keys() []string
@@ -148,6 +150,17 @@ func (s *Base) All() []Row {
 		rows[i] = s.rows[i]
 	}
 	return rows
+}
+
+// Return a new list that contains all the rows of this list.
+func (s *Base) Copy() List {
+	this := New()
+	this.SetID(uuid.New().String())
+	this.SetVisibleColumns(s.VisibleColumns())
+	for _, row := range s.All() {
+		this.Add(row)
+	}
+	return this
 }
 
 func (s *Base) Row(n int) Row {

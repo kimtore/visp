@@ -121,9 +121,14 @@ func (idx *index) Close() error {
 	return idx.bleve.Close()
 }
 
-func (idx *index) Add(list list.List) error {
+func (idx *index) Add(dataset list.List) error {
 	b := idx.bleve.NewBatch()
-	for _, row := range list.All() {
+	for _, row := range dataset.All() {
+		// Only tracks are indexed at the moment
+		if row.Kind() != list.DataTypeTrack {
+			continue
+		}
+
 		id := row.ID()
 		data := row.Fields()
 

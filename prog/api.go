@@ -157,12 +157,10 @@ func (v *Visp) SetList(lst list.List) {
 	if lst == nil {
 		return
 	}
-	switch lst.(type) {
-	case *spotify_tracklist.List:
-		err := v.index.Add(lst)
-		if err != nil {
-			log.Debugf("Unable to add list '%v' to search index", lst.Name())
-		}
+	// FIXME: should not be added here, as tracks added with SetList are potentially already seen
+	err := v.index.Add(lst)
+	if err != nil {
+		log.Debugf("Unable to add list '%v' to search index: %s", lst.Name(), err)
 	}
 	cur := v.db.Current()
 	if cur != nil && cur != lst && cur != v.db && cur != v.clipboards {

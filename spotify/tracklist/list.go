@@ -191,16 +191,6 @@ func (l *List) SelectionAsTracklist() *List {
 	return NewFromTracks(tracks)
 }
 
-func (l *List) Copy() *List {
-	this := &List{}
-	this.Clear()
-	this.SetVisibleColumns(l.VisibleColumns())
-	for _, row := range l.All() {
-		this.Add(row)
-	}
-	return this
-}
-
 func (l *List) Tracks() []spotify.FullTrack {
 	tracks := make([]spotify.FullTrack, l.Len())
 	for i := 0; i < l.Len(); i++ {

@@ -6,7 +6,6 @@ import (
 
 	"github.com/ambientsound/visp/log"
 	spotify_tracklist "github.com/ambientsound/visp/spotify/tracklist"
-	"github.com/google/uuid"
 	"github.com/zmb3/spotify"
 
 	"github.com/ambientsound/visp/api"
@@ -50,15 +49,11 @@ func (cmd *Write) Exec() error {
 		return err
 	}
 
-	tracklist := cmd.api.Tracklist()
-	if tracklist == nil {
-		return fmt.Errorf("only track lists can be saved to Spotify")
-	}
+	tracklist := cmd.api.List()
 
 	// Copy tracklist, assign new name, and save that one
 	if len(cmd.name) > 0 {
 		tracklist = tracklist.Copy()
-		tracklist.SetID(uuid.New().String())
 		tracklist.SetName(cmd.name)
 		cmd.api.Db().Cache(tracklist)
 	}
@@ -74,8 +69,8 @@ func (cmd *Write) Exec() error {
 	}
 
 	ids := make([]spotify.ID, 0, tracklist.Len())
-	for _, track := range tracklist.Tracks() {
-		ids = append(ids, track.ID)
+	for _, track := range tracklist.All() {
+		ids = append(ids, spotify.ID(track.ID()))
 	}
 
 	if !tracklist.HasRemote() {

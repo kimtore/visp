@@ -218,13 +218,7 @@ func (cmd *List) Goto(id string) error {
 }
 
 func (cmd *List) Duplicate() error {
-	tracklist := cmd.api.Tracklist()
-	if tracklist == nil {
-		return fmt.Errorf("only track lists can be duplicated")
-	}
-
-	tracklist = tracklist.Copy()
-	tracklist.SetID(uuid.New().String())
+	tracklist := cmd.api.List().Copy()
 	tracklist.SetName(cmd.name)
 
 	cmd.api.SetList(tracklist)
