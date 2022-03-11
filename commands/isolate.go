@@ -5,6 +5,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/ambientsound/visp/list"
 	"github.com/ambientsound/visp/log"
 	"github.com/ambientsound/visp/options"
 	"github.com/ambientsound/visp/spotify/aggregator"
@@ -24,6 +25,7 @@ type Isolate struct {
 	command
 	api  api.API
 	tags []string
+	list list.List
 }
 
 // NewIsolate returns Isolate.
@@ -37,29 +39,28 @@ func NewIsolate(api api.API) Command {
 // Parse implements Command.
 func (cmd *Isolate) Parse() error {
 	var err error
-	list := cmd.api.List()
-	cmd.tags, err = cmd.ParseTags(list.ColumnNames())
+	cmd.list = cmd.api.List()
+	cmd.tags, err = cmd.ParseTags(cmd.list.ColumnNames())
 	return err
 }
 
 // Exec implements Command.
 func (cmd *Isolate) Exec() error {
-	list := cmd.api.Tracklist()
-	if list == nil {
-		return fmt.Errorf("isolate only works within a track list")
-	}
-
 	client, err := cmd.api.Spotify()
 	if err != nil {
 		return err
 	}
 
-	selection := list.SelectionAsTracklist()
+	selection := cmd.list.Selection()
 	if selection.Len() != 1 {
 		return fmt.Errorf("isolate operates on exactly one track")
 	}
 
 	row := selection.Row(0)
+	if row.Kind() != list.DataTypeTrack {
+		return fmt.Errorf("isolate needs a row of type '%s', not '%s'", list.DataTypeTrack, row.Kind())
+	}
+
 	queries := make([]string, len(cmd.tags))
 	for i, tag := range cmd.tags {
 		val := strconv.Quote(row.Fields()[tag])
@@ -89,7 +90,7 @@ func (cmd *Isolate) Exec() error {
 		log.Errorf("error sorting: %s", err)
 	}
 
-	result.SetVisibleColumns(list.VisibleColumns())
+	result.SetVisibleColumns(cmd.list.VisibleColumns())
 	result.SetID(uuid.New().String())
 	_ = result.SetCursorByID(row.ID())
 
