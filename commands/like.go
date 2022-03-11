@@ -110,7 +110,7 @@ func (cmd *Like) Exec() error {
 			ids = append(ids, track.ID)
 		}
 	case cmd.selection:
-		tracks := tracklist.Selection().Tracks()
+		tracks := tracklist.SelectionAsTracklist().Tracks()
 		for _, track := range tracks {
 			ids = append(ids, track.ID)
 		}

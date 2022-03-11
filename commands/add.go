@@ -45,7 +45,7 @@ func (cmd *Add) Exec() error {
 		return fmt.Errorf("cannot add to queue: not in a track list")
 	}
 
-	selection := cmd.tracklist.Selection()
+	selection := cmd.tracklist.SelectionAsTracklist()
 	if selection.Len() == 0 {
 		return fmt.Errorf("cannot add to queue: no selection")
 	}

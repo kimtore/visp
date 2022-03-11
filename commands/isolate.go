@@ -2,12 +2,13 @@ package commands
 
 import (
 	"fmt"
+	"strconv"
+	"strings"
+
 	"github.com/ambientsound/visp/log"
 	"github.com/ambientsound/visp/options"
 	"github.com/ambientsound/visp/spotify/aggregator"
 	"github.com/google/uuid"
-	"strconv"
-	"strings"
 
 	"github.com/ambientsound/visp/api"
 )
@@ -53,7 +54,7 @@ func (cmd *Isolate) Exec() error {
 		return err
 	}
 
-	selection := list.Selection()
+	selection := list.SelectionAsTracklist()
 	if selection.Len() != 1 {
 		return fmt.Errorf("isolate operates on exactly one track")
 	}

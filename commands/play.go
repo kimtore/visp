@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/ambientsound/visp/list"
 	"github.com/ambientsound/visp/log"
 	"github.com/ambientsound/visp/options"
-	"github.com/ambientsound/visp/spotify/tracklist"
 	"github.com/zmb3/spotify"
 
 	"github.com/ambientsound/visp/api"
@@ -20,7 +20,7 @@ type Play struct {
 	cursor    bool
 	selection bool
 	client    *spotify.Client
-	tracklist *spotify_tracklist.List
+	tracklist list.List
 }
 
 // NewPlay returns Play.
@@ -66,10 +66,14 @@ func (cmd *Play) Exec() error {
 	var err error
 
 	cmd.client, err = cmd.api.Spotify()
-	cmd.tracklist = cmd.api.Tracklist()
+	cmd.tracklist = cmd.api.List()
 
 	if err != nil {
 		return err
+	}
+
+	if cmd.tracklist == nil || cmd.tracklist.Len() == 0 {
+		return fmt.Errorf("no tracks in active list")
 	}
 
 	switch {
@@ -121,14 +125,10 @@ func (cmd *Play) deviceID() (*spotify.ID, error) {
 // playCursor plays the song under the cursor, and also adds the rest of the list to the play context.
 // Playback starts from the song beneath the cursor.
 func (cmd *Play) playCursor() error {
-	if cmd.tracklist == nil {
-		return fmt.Errorf("cannot play cursor when not in a track list")
-	}
+	row := cmd.tracklist.CursorRow()
 
-	// Get the song under the cursor.
-	track := cmd.tracklist.CursorTrack()
-	if track == nil {
-		return fmt.Errorf("cannot play: no track under cursor")
+	if row.Kind() != list.DataTypeTrack {
+		return fmt.Errorf("cannot play: selected row is type '%s', need '%s'", row.Kind(), list.DataTypeTrack)
 	}
 
 	// Get a device ID for playback.
@@ -155,30 +155,31 @@ func (cmd *Play) playCursor() error {
 	if uri == nil || cmd.tracklist.HasLocalChanges() {
 		const limit = 750
 		uri = nil
-		tracks := cmd.tracklist.Tracks()
+		tracks := cmd.tracklist.All()
 		if len(tracks) > limit {
 			log.Infof("Note: tracklist contains %d tracks, but only %d tracks will be added to avoid errors", len(tracks), limit)
 			tracks = tracks[:limit]
 		}
 		for _, tr := range tracks {
-			uris = append(uris, tr.URI)
+			uris = append(uris, spotify.URI("spotify:track:"+tr.ID()))
 		}
-		log.Infof("Starting playback of %d tracks starting with '%s'", len(uris), track.Name)
+		log.Infof("Starting playback of %d tracks starting with '%s'", len(uris), row.Get("title"))
 	} else {
 		uris = nil
-		log.Infof("Starting playback of playlist '%s', starting with '%s'", cmd.tracklist.Name(), track.Name)
+		log.Infof("Starting playback of playlist '%s', starting with '%s'", cmd.tracklist.Name(), row.Get("title"))
 	}
 
 	defer cmd.api.Changed(api.ChangePlayerStateInvalid, nil)
 	defer cmd.api.Changed(api.ChangeDevice, nil)
 
 	// Start playing with correct parameters.
+	trackuri := spotify.URI("spotify:track:" + row.ID())
 	return cmd.client.PlayOpt(&spotify.PlayOptions{
 		DeviceID:        deviceID,
 		URIs:            uris,
 		PlaybackContext: uri,
 		PlaybackOffset: &spotify.PlaybackOffset{
-			URI: track.URI,
+			URI: trackuri,
 		},
 	})
 }
@@ -196,16 +197,16 @@ func (cmd *Play) playSelection() error {
 	}
 
 	// Selection is cursor
-	track := cmd.tracklist.CursorTrack()
-	if selection.Len() == 1 && track != nil && selection.Tracks()[0].ID == track.ID {
+	row := cmd.tracklist.CursorRow()
+	if selection.Len() == 1 && row != nil && selection.Row(0).ID() == row.ID() {
 		return cmd.playCursor()
 	}
 
 	cmd.tracklist.ClearSelection()
 
 	uris := make([]spotify.URI, selection.Len())
-	for i, track := range selection.Tracks() {
-		uris[i] = track.URI
+	for i, track := range selection.All() {
+		uris[i] = spotify.URI("spotify:track:" + track.ID())
 	}
 
 	// TODO: queue is unsupported by the Spotify Web API

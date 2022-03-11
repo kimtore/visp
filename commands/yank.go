@@ -60,7 +60,7 @@ func (cmd *Yank) Exec() error {
 		if tracklist == nil {
 			return fmt.Errorf("`yank` only works in tracklists")
 		}
-		cmd.list = tracklist.Selection()
+		cmd.list = tracklist.SelectionAsTracklist()
 
 		if cmd.list.Len() == 0 {
 			return fmt.Errorf("no tracks selected")

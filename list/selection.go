@@ -1,9 +1,5 @@
 package list
 
-import (
-	"sort"
-)
-
 // ManuallySelected returns true if the given song index is selected through manual selection.
 func (s *Base) ManuallySelected(i int) bool {
 	_, ok := s.selection[i]
@@ -38,8 +34,18 @@ func (s *Base) SelectionIndices() []int {
 	if len(selection) == 0 && s.Len() > 0 {
 		selection = append(selection, s.Cursor())
 	}
-	selection = sort.IntSlice(selection)
 	return selection
+}
+
+// Selection returns selected rows as a new list.
+func (s *Base) Selection() List {
+	indices := s.SelectionIndices()
+	result := New()
+	for _, i := range indices {
+		// fixme: copy?
+		result.Add(s.rows[i])
+	}
+	return result
 }
 
 // SetSelection sets the selected status of a single song.

@@ -5,13 +5,10 @@ import (
 	"math"
 	"time"
 
+	"github.com/ambientsound/visp/api"
 	"github.com/ambientsound/visp/list"
 	"github.com/ambientsound/visp/log"
 	"github.com/ambientsound/visp/options"
-	"github.com/ambientsound/visp/spotify/devices"
-	"github.com/ambientsound/visp/spotify/tracklist"
-
-	"github.com/ambientsound/visp/api"
 	"github.com/ambientsound/visp/style"
 	"github.com/ambientsound/visp/utils"
 
@@ -70,8 +67,8 @@ func (w *Table) SetList(lst list.List) {
 
 func (w *Table) Draw() {
 	var styler lineStyler
-	var specialStyler lineStyler
 	var st tcell.Style
+	var trackID, deviceID string
 
 	w.SetStylesheet(w.api.Styles())
 
@@ -89,36 +86,18 @@ func (w *Table) Draw() {
 	xmax += 1
 	cursor := false
 
-	_, isTracklist := w.list.(*spotify_tracklist.List)
-	_, isDevicelist := w.list.(*spotify_devices.List)
-
-	// Special line styling based on list type
-	switch {
-	case isTracklist && w.api.PlayerStatus().Item != nil:
-		trackID := w.api.PlayerStatus().Item.ID.String()
-		specialStyler = func(row list.Row) (string, bool) {
-			return `currentSong`, trackID == row.ID()
-		}
-	case isDevicelist:
-		id := w.api.PlayerStatus().Device.ID
-		deviceID := id.String()
-		specialStyler = func(row list.Row) (string, bool) {
-			return `currentDevice`, deviceID == row.ID()
-		}
-	default:
-		specialStyler = func(row list.Row) (string, bool) {
-			return ``, false
-		}
-	}
+	trackID = w.api.PlayerStatus().TrackRow.ID()
+	deviceID = string(w.api.PlayerStatus().Device.ID)
 
 	// Generic line styling.
 	styler = func(row list.Row) (string, bool) {
-		st, special := specialStyler(row)
 		switch {
 		case cursor:
 			return `cursor`, true
-		case special:
-			return st, special
+		case row.Kind() == list.DataTypeTrack && row.ID() == trackID:
+			return `currentSong`, true
+		case row.Kind() == list.DataTypeDevice && row.ID() == deviceID:
+			return `currentDevice`, true
 		case w.list.Selected(y):
 			return `selection`, true
 		default:
@@ -213,7 +192,7 @@ func (w *Table) Resize() {
 	w.SetColumns(w.ColumnNames())
 }
 
-func (w *Table) HandleEvent(ev tcell.Event) bool {
+func (w *Table) HandleEvent(_ tcell.Event) bool {
 	return false
 }
 

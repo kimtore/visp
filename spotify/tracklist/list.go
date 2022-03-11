@@ -3,7 +3,6 @@ package spotify_tracklist
 import (
 	"fmt"
 	"strings"
-	"time"
 
 	"github.com/ambientsound/visp/list"
 	"github.com/ambientsound/visp/options"
@@ -14,9 +13,6 @@ import (
 
 type List struct {
 	list.Base
-	remote   bool
-	syncTime time.Time
-	uri      spotify.URI
 }
 
 var _ list.List = &List{}
@@ -174,18 +170,6 @@ func FullTrackRow(track spotify.FullTrack) list.Row {
 	}
 }
 
-func (l *List) URI() *spotify.URI {
-	if len(l.uri) > 0 {
-		uri := l.uri
-		return &uri
-	}
-	return nil
-}
-
-func (l *List) SetURI(uri spotify.URI) {
-	l.uri = uri
-}
-
 func (l *List) CursorTrack() *spotify.FullTrack {
 	row := l.CursorRow()
 	if row == nil {
@@ -195,8 +179,8 @@ func (l *List) CursorTrack() *spotify.FullTrack {
 	return &track
 }
 
-// Selection returns all the selected songs as a new track list.
-func (l *List) Selection() *List {
+// SelectionAsTracklist returns all the selected songs as a new track list.
+func (l *List) SelectionAsTracklist() *List {
 	indices := l.SelectionIndices()
 	tracks := make([]spotify.FullTrack, len(indices))
 

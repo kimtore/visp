@@ -286,7 +286,7 @@ func (cmd *Recommend) Exec() error {
 		return fmt.Errorf("`recommend` only works in tracklists")
 	}
 
-	selection := list.Selection()
+	selection := list.SelectionAsTracklist()
 
 	client, err := cmd.api.Spotify()
 	if err != nil {

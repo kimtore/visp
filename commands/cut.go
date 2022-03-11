@@ -35,7 +35,7 @@ func (cmd *Cut) Parse() error {
 // Exec implements Command.
 func (cmd *Cut) Exec() error {
 
-	selection := cmd.list.Selection()
+	selection := cmd.list.SelectionAsTracklist()
 	indices := cmd.list.SelectionIndices()
 	ln := len(indices)
 

@@ -5,6 +5,8 @@ import (
 	"sort"
 	"sync"
 	"time"
+
+	"github.com/zmb3/spotify"
 )
 
 type Selectable interface {
@@ -14,6 +16,7 @@ type Selectable interface {
 	EnableVisualSelection()
 	HasVisualSelection() bool
 	Selected(int) bool
+	Selection() List
 	SelectionIndices() []int
 	SetSelected(int, bool)
 	SetVisualSelection(int, int, int)
@@ -36,6 +39,7 @@ type List interface {
 	Cursor
 	Metadata
 	Selectable
+	Remote
 	Add(Row)
 	All() []Row
 	Clear()
@@ -61,10 +65,13 @@ type Base struct {
 	id              string
 	mutex           sync.Mutex
 	name            string
+	remote          bool
 	rows            []Row
 	selection       map[int]struct{}
 	sortKey         string
+	syncTime        time.Time
 	updated         time.Time
+	uri             spotify.URI
 	visibleColumns  []string
 	visualSelection [3]int
 }

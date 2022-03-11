@@ -75,8 +75,8 @@ func (l *List) Playlist(index int) *spotify.SimplePlaylist {
 	return &playlist
 }
 
-// Selection returns all the selected songs as a new playlist list.
-func (l *List) Selection() List {
+// SelectionAsPlaylists returns all the selected songs as a new playlist list.
+func (l *List) SelectionAsPlaylists() List {
 	indices := l.SelectionIndices()
 	playlists := make([]spotify.SimplePlaylist, len(indices))
 

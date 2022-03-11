@@ -11,6 +11,7 @@ import (
 	"github.com/ambientsound/visp/clipboard"
 	"github.com/ambientsound/visp/db"
 	"github.com/ambientsound/visp/input/lexer"
+	"github.com/ambientsound/visp/list"
 	"github.com/ambientsound/visp/parser"
 	"github.com/ambientsound/visp/spotify/devices"
 	"github.com/ambientsound/visp/spotify/library"
@@ -113,6 +114,15 @@ type command struct {
 	tabComplete []string
 }
 
+func RowContext(dataType list.DataType) string {
+	switch dataType {
+	case list.DataTypeTrack:
+		return TracklistContext
+	default:
+		return ""
+	}
+}
+
 // Return an ordered list of which program contexts active right now.
 // Local contexts take precedence over global contexts.
 func Contexts(a api.API) []string {
@@ -131,6 +141,14 @@ func Contexts(a api.API) []string {
 		ctx = append(ctx, DevicesContext)
 	case *clipboard.List:
 		ctx = append(ctx, ClipboardsContext)
+	default:
+		row := lst.CursorRow()
+		if row != nil {
+			ct := RowContext(row.Kind())
+			if len(ct) > 0 {
+				ctx = append(ctx, ct)
+			}
+		}
 	}
 	ctx = append(ctx, GlobalContext)
 	return ctx
