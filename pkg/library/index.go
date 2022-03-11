@@ -11,8 +11,8 @@ import (
 	"github.com/blevesearch/bleve/v2"
 	"github.com/blevesearch/bleve/v2/analysis/analyzer/custom"
 	"github.com/blevesearch/bleve/v2/analysis/lang/en"
+	"github.com/blevesearch/bleve/v2/analysis/token/edgengram"
 	"github.com/blevesearch/bleve/v2/analysis/token/lowercase"
-	"github.com/blevesearch/bleve/v2/analysis/token/ngram"
 	"github.com/blevesearch/bleve/v2/analysis/tokenizer/unicode"
 	"github.com/blevesearch/bleve/v2/mapping"
 	"github.com/blevesearch/bleve/v2/search"
@@ -29,33 +29,39 @@ type index struct {
 	bleve bleve.Index
 }
 
+const indexAnalyzerName = "index_analyzer"
+const queryAnalyzerName = "query_analyzer"
+const edgeNgramTokenFilterName = "edge_ngram_filter"
+
 func indexMapping() mapping.IndexMapping {
-	const analyzerName = "visp_analyzer"
-	const ngramTokenFilterName = "edge_ngram_filter"
 
-	m := bleve.NewIndexMapping()
-	m.DefaultAnalyzer = analyzerName
+	indexmap := bleve.NewIndexMapping()
+	// indexmap.DefaultAnalyzer = indexAnalyzerName
 
-	err := m.AddCustomTokenFilter(ngramTokenFilterName,
+	docmap := bleve.NewDocumentMapping()
+	docmap.DefaultAnalyzer = indexAnalyzerName
+
+	indexmap.DefaultMapping = docmap
+
+	err := indexmap.AddCustomTokenFilter(edgeNgramTokenFilterName,
 		map[string]interface{}{
-			"type": ngram.Name,
-			"min":  3,
-			"max":  10,
+			"type": edgengram.Name,
+			"min":  2.0,
+			"max":  15.0,
 		})
 
 	if err != nil {
 		panic(err)
 	}
 
-	err = m.AddCustomAnalyzer(analyzerName,
+	err = indexmap.AddCustomAnalyzer(indexAnalyzerName,
 		map[string]interface{}{
 			"type":      custom.Name,
 			"tokenizer": unicode.Name,
 			"token_filters": []string{
 				en.PossessiveName,
-				en.SnowballStemmerName,
 				lowercase.Name,
-				ngramTokenFilterName,
+				edgeNgramTokenFilterName,
 			},
 		})
 
@@ -63,7 +69,21 @@ func indexMapping() mapping.IndexMapping {
 		panic(err)
 	}
 
-	return m
+	err = indexmap.AddCustomAnalyzer(queryAnalyzerName,
+		map[string]interface{}{
+			"type":      custom.Name,
+			"tokenizer": unicode.Name,
+			"token_filters": []string{
+				en.PossessiveName,
+				lowercase.Name,
+			},
+		})
+
+	if err != nil {
+		panic(err)
+	}
+
+	return indexmap
 }
 
 // New opens and returns a Bleve index.
@@ -125,8 +145,11 @@ func (idx *index) Add(list list.List) error {
 }
 
 func (idx *index) Query(q string) (list.List, error) {
+	const limit = 500
+
 	query := bleve.NewMatchQuery(q)
-	req := bleve.NewSearchRequest(query)
+	query.Analyzer = queryAnalyzerName
+	req := bleve.NewSearchRequestOptions(query, limit, 0, false)
 
 	res, err := idx.bleve.Search(req)
 	if err != nil {

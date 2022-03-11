@@ -49,8 +49,8 @@ func New(tcf TabCompleterFactory) *Multibar {
 		history:  hist,
 		buffer:   make([]rune, 0),
 		orig:     make([]rune, 0),
-		commands: make(chan string, 1),
-		searches: make(chan string, 1),
+		commands: make(chan string, 16),
+		searches: make(chan string, 16),
 		tcf:      tcf,
 	}
 }
@@ -278,8 +278,6 @@ func (m *Multibar) finish() {
 	switch mode {
 	case ModeInput:
 		m.commands <- input
-	case ModeSearch:
-		m.searches <- input
 	}
 }
 

@@ -5,7 +5,6 @@ import (
 	"strconv"
 
 	"github.com/ambientsound/visp/list"
-	"github.com/ambientsound/visp/log"
 	spotify_playlists "github.com/ambientsound/visp/spotify/playlists"
 	"github.com/zmb3/spotify"
 )
@@ -45,16 +44,18 @@ func (s *List) Cache(lst list.List) int {
 	defer func() {
 		s.addNameLookupChildren(lst)
 		s.nameLookup[lst.Name()] = lst
-		log.Debugf("List lookup table: %v", s.nameLookup)
+		// log.Debugf("List lookup table: %v", s.nameLookup)
 	}()
 	existing := s.RowByID(lst.ID())
 	if existing == nil {
 		s.Add(NewRow(lst))
 		return s.Len() - 1
 	} else {
+		ex := existing.(*Row)
 		n, _ := s.RowNum(lst.ID())
 		row := s.Row(n)
 		delete(s.nameLookup, row.Get("name"))
+		ex.list = lst
 		row.Set("name", lst.Name())
 		row.Set("size", strconv.Itoa(lst.Len()))
 		return n

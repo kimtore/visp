@@ -20,6 +20,7 @@ const (
 	LogFile           = "logfile"
 	LogOverwrite      = "logoverwrite"
 	PollInterval      = "pollinterval"
+	SearchDelay       = "searchdelay"
 	SortAlbums        = "sort.albums"
 	SortPlaylists     = "sort.playlists"
 	SortSearch        = "sort.search"
@@ -53,6 +54,7 @@ func init() {
 	v.Set(LogFile, stringType)
 	v.Set(LogOverwrite, boolType)
 	v.Set(PollInterval, intType)
+	v.Set(SearchDelay, intType)
 	v.Set(SortAlbums, stringType)
 	v.Set(SortPlaylists, stringType)
 	v.Set(SortSearch, stringType)
@@ -102,6 +104,7 @@ set columns.playlists=name,tracks,owner,public,collaborative
 set columns.tracklists=artist,title,track,album,year,time,popularity
 set expandcolumns=logMessage,description,deviceName,name,artist,title,album
 set fullheadercolumns=logLevel,public,collaborative,deviceName,track,tracks,year,time,deviceType,active,restricted,volume
+set searchdelay=2000
 set limit=50
 set nocenter
 set pollinterval=10

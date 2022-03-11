@@ -22,6 +22,7 @@ import (
 	"github.com/ambientsound/visp/multibar"
 	"github.com/ambientsound/visp/options"
 	"github.com/ambientsound/visp/pkg/library"
+	"github.com/ambientsound/visp/pkg/search"
 	"github.com/ambientsound/visp/player"
 	"github.com/ambientsound/visp/spotify/library"
 	spotify_proxyclient "github.com/ambientsound/visp/spotify/proxyclient"
@@ -31,7 +32,6 @@ import (
 	"github.com/ambientsound/visp/tokencache"
 	"github.com/ambientsound/visp/widgets"
 	"github.com/gdamore/tcell/v2"
-	"github.com/google/uuid"
 	"github.com/zmb3/spotify"
 )
 
@@ -56,6 +56,7 @@ type Visp struct {
 	interpreter  *input.Interpreter
 	library      *spotify_library.List
 	list         list.List
+	callbacks    chan func() error
 	multibar     *multibar.Multibar
 	player       *player.State
 	quit         chan interface{}
@@ -72,6 +73,7 @@ func (v *Visp) Init() {
 		return tabcomplete.New(in, v)
 	}
 	v.clipboards = clipboard.New()
+	v.callbacks = make(chan func() error, 16)
 	v.commands = make(chan string, 1024)
 	v.db = db.New()
 	v.interpreter = input.NewCLI(v)
@@ -96,14 +98,19 @@ func (v *Visp) Init() {
 func (v *Visp) Main(ctx context.Context) error {
 	defer v.index.Close()
 
+	// searchCancel() is called any time a search query string arrives.
+	searchCtx, searchCancel := context.WithCancel(ctx)
+
 	for ctx.Err() == nil {
 		select {
 		case <-ctx.Done():
 			log.Errorf("Killed by signal.")
+			searchCancel()
 			return fmt.Errorf("killed by signal")
 
 		case <-v.quit:
 			log.Infof("Exiting.")
+			searchCancel()
 			return nil
 
 		case <-v.ticker.C:
@@ -123,6 +130,12 @@ func (v *Visp) Main(ctx context.Context) error {
 				log.Errorf("Refresh Spotify access token: %s", err)
 			}
 
+		case callback := <-v.callbacks:
+			err := callback()
+			if err != nil {
+				log.Errorf("%s", err)
+			}
+
 		// Send commands from the multibar into the main command queue.
 		case command := <-v.multibar.Commands():
 			v.commands <- command
@@ -133,29 +146,29 @@ func (v *Visp) Main(ctx context.Context) error {
 				break
 			}
 
-			lst, err := v.index.Query(query)
-			if err != nil {
-				log.Errorf(err.Error())
-				break
-			}
+			searchCancel()
+			searchCtx, searchCancel = context.WithCancel(ctx)
 
-			/*
-				client, err := v.Spotify()
-				if err != nil {
-					log.Errorf(err.Error())
-					break
-				}
-				lst, err = spotify_aggregator.Search(*client, query, options.GetInt(options.Limit))
-				if err != nil {
-					log.Errorf("spotify search: %s", err)
-					break
-				}
-			*/
+			delay := time.Millisecond * time.Duration(options.GetInt(options.SearchDelay))
+			client, _ := v.Spotify()
+
+			results := search.Multisearch(query, searchCtx, delay, client, v.index)
+			// listID := uuid.New().String()
+			listID := "search-results"
 			columns := options.GetString(options.ColumnsTracklists)
-			lst.SetID(uuid.New().String())
-			lst.SetName(fmt.Sprintf("Search for '%s'", query))
-			lst.SetVisibleColumns(strings.Split(columns, ","))
-			v.SetList(lst)
+
+			go func() {
+				i := 0
+				for result := range results {
+					i++
+					v.callbacks <- func() error {
+						result.SetID(listID)
+						result.SetVisibleColumns(strings.Split(columns, ","))
+						v.SetList(result)
+						return nil
+					}
+				}
+			}()
 
 		// Process the command queue.
 		case command := <-v.commands:
@@ -188,6 +201,8 @@ func (v *Visp) Main(ctx context.Context) error {
 		// Draw UI after processing any event.
 		v.Termui.Draw()
 	}
+
+	searchCancel()
 
 	return ctx.Err()
 }
