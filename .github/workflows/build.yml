@@ -21,13 +21,10 @@ jobs:
         with:
           go-version: ${{ env.go_version }}
       - name: run tests
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         run: |
           go mod download
-          make test-coverage
+          make test
           make
-          bash <(curl -s https://codecov.io/bash)
   authproxy:
     if: ${{ github.ref == 'refs/heads/master' }}
     needs:
