@@ -9,7 +9,6 @@ import (
 	"github.com/ambientsound/visp/multibar"
 	"github.com/ambientsound/visp/player"
 	"github.com/ambientsound/visp/spotify/library"
-	"github.com/ambientsound/visp/spotify/tracklist"
 	"github.com/ambientsound/visp/style"
 	"github.com/zmb3/spotify"
 	"golang.org/x/oauth2"
@@ -44,7 +43,7 @@ type API interface {
 	Exec(string) error
 
 	// History returns a list with all tracks played back during the current session.
-	History() *spotify_tracklist.List
+	History() list.List
 
 	// Return the global multibar instance.
 	Multibar() *multibar.Multibar
@@ -72,10 +71,6 @@ type API interface {
 
 	// Styles returns the current stylesheet.
 	Styles() style.Stylesheet
-
-	// Tracklist returns the visible track list, if any.
-	// Will be nil if the active widget shows a different kind of list.
-	Tracklist() *spotify_tracklist.List
 
 	// UI returns the global UI object.
 	UI() UI

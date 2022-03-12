@@ -90,7 +90,7 @@ func (cmd *Like) Parse() error {
 func (cmd *Like) Exec() error {
 	var err error
 
-	tracklist := cmd.api.Tracklist()
+	tracklist := cmd.api.List()
 
 	if !cmd.current && tracklist == nil {
 		return fmt.Errorf("liking tracks by cursor or selection needs an active tracklist")
@@ -105,14 +105,14 @@ func (cmd *Like) Exec() error {
 
 	switch {
 	case cmd.cursor:
-		track := tracklist.CursorTrack()
+		track := tracklist.CursorRow()
 		if track != nil {
-			ids = append(ids, track.ID)
+			ids = append(ids, spotify.ID(track.ID()))
 		}
 	case cmd.selection:
-		tracks := tracklist.SelectionAsTracklist().Tracks()
+		tracks := tracklist.Selection().All()
 		for _, track := range tracks {
-			ids = append(ids, track.ID)
+			ids = append(ids, spotify.ID(track.ID()))
 		}
 	case cmd.current:
 		id := cmd.api.PlayerStatus().TrackRow.ID()

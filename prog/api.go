@@ -146,7 +146,7 @@ func (v *Visp) Multibar() *multibar.Multibar {
 	return v.multibar
 }
 
-func (v *Visp) History() *spotify_tracklist.List {
+func (v *Visp) History() list.List {
 	if v.history == nil {
 		v.history = spotify_tracklist.NewHistory()
 	}
@@ -187,15 +187,6 @@ func (v *Visp) Spotify() (*spotify.Client, error) {
 
 func (v *Visp) Styles() style.Stylesheet {
 	return v.stylesheet
-}
-
-func (v *Visp) Tracklist() *spotify_tracklist.List {
-	switch v := v.List().(type) {
-	case *spotify_tracklist.List:
-		return v
-	default:
-		return nil
-	}
 }
 
 func (v *Visp) UI() api.UI {

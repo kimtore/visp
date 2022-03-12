@@ -56,11 +56,8 @@ func (cmd *Yank) Exec() error {
 		cmd.list.SetVisibleColumns(options.GetList(options.ColumnsTracklists))
 
 	default:
-		tracklist := cmd.api.Tracklist()
-		if tracklist == nil {
-			return fmt.Errorf("`yank` only works in tracklists")
-		}
-		cmd.list = tracklist.SelectionAsTracklist()
+		tracklist := cmd.api.List()
+		cmd.list = tracklist.Selection()
 
 		if cmd.list.Len() == 0 {
 			return fmt.Errorf("no tracks selected")

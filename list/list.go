@@ -52,6 +52,7 @@ type List interface {
 	Len() int
 	Lock()
 	NextOf([]string, int, int) int
+	RemoveIndices(indices []int) error
 	Row(int) Row
 	RowByID(string) Row
 	RowNum(string) (int, error)

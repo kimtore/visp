@@ -51,7 +51,7 @@ type Visp struct {
 	clipboards   *clipboard.List
 	commands     chan string
 	db           *db.List
-	history      *spotify_tracklist.List
+	history      list.List
 	index        library.Index
 	interpreter  *input.Interpreter
 	library      *spotify_library.List

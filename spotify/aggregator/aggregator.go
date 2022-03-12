@@ -1,6 +1,7 @@
 package spotify_aggregator
 
 import (
+	"github.com/ambientsound/visp/list"
 	"github.com/ambientsound/visp/options"
 	spotify_albums "github.com/ambientsound/visp/spotify/albums"
 	"github.com/ambientsound/visp/spotify/library"
@@ -9,7 +10,7 @@ import (
 	"github.com/zmb3/spotify"
 )
 
-func Search(client spotify.Client, query string, limit int) (*spotify_tracklist.List, error) {
+func Search(client spotify.Client, query string, limit int) (list.List, error) {
 	results, err := client.SearchOpt(query, spotify.SearchTypeTrack, &spotify.Options{
 		Limit: &limit,
 	})
@@ -52,7 +53,7 @@ func FeaturedPlaylists(client spotify.Client, limit int) (*spotify_playlists.Lis
 	return lst, nil
 }
 
-func ListWithID(client spotify.Client, id string, limit int) (*spotify_tracklist.List, error) {
+func ListWithID(client spotify.Client, id string, limit int) (list.List, error) {
 	sid := spotify.ID(id)
 
 	playlist, err := client.GetPlaylist(sid)
@@ -106,7 +107,7 @@ func MyPrivatePlaylists(client spotify.Client, limit int) (*spotify_playlists.Li
 	return lst, nil
 }
 
-func MyTracks(client spotify.Client, limit int) (*spotify_tracklist.List, error) {
+func MyTracks(client spotify.Client, limit int) (list.List, error) {
 	tracks, err := client.CurrentUsersTracksOpt(&spotify.Options{
 		Limit: &limit,
 	})
@@ -148,7 +149,7 @@ func MyAlbums(client spotify.Client) (*spotify_albums.List, error) {
 	return lst, nil
 }
 
-func TopTracks(client spotify.Client, limit int) (*spotify_tracklist.List, error) {
+func TopTracks(client spotify.Client, limit int) (list.List, error) {
 	tracks, err := client.CurrentUsersTopTracksOpt(&spotify.Options{
 		Limit: &limit,
 	})
@@ -172,7 +173,7 @@ func TopTracks(client spotify.Client, limit int) (*spotify_tracklist.List, error
 	return lst, nil
 }
 
-func NewReleases(client spotify.Client) (*spotify_tracklist.List, error) {
+func NewReleases(client spotify.Client) (list.List, error) {
 	albums, err := client.NewReleases()
 	if err != nil {
 		return nil, err

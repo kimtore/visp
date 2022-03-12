@@ -7,6 +7,7 @@ import (
 
 	"github.com/ambientsound/visp/api"
 	"github.com/ambientsound/visp/input/lexer"
+	"github.com/ambientsound/visp/list"
 	"github.com/ambientsound/visp/log"
 	"github.com/ambientsound/visp/options"
 	spotify_tracklist "github.com/ambientsound/visp/spotify/tracklist"
@@ -225,21 +226,15 @@ func (cmd *Recommend) setTrackAttribute(attributes *spotify.TrackAttributes, nam
 	return nil
 }
 
-func (cmd *Recommend) seeds(seedType string, tracks []spotify.FullTrack) (*spotify.Seeds, error) {
+func (cmd *Recommend) seeds(seedType string, tracks []list.Row) (*spotify.Seeds, error) {
 	switch seedType {
 	case SeedTypeArtist:
-		ids := make([]spotify.ID, len(tracks))
-		for i := range tracks {
-			ids[i] = tracks[i].Artists[0].ID
-		}
-		return &spotify.Seeds{
-			Artists: ids,
-		}, nil
+		return nil, fmt.Errorf("FIXME: seed type '%s' is unimplemented", seedType)
 
 	case SeedTypeTrack:
 		ids := make([]spotify.ID, len(tracks))
 		for i := range tracks {
-			ids[i] = tracks[i].ID
+			ids[i] = spotify.ID(tracks[i].ID())
 		}
 		return &spotify.Seeds{
 			Tracks: ids,
@@ -249,7 +244,7 @@ func (cmd *Recommend) seeds(seedType string, tracks []spotify.FullTrack) (*spoti
 	}
 }
 
-func (cmd *Recommend) name(seedType string, tracks []spotify.FullTrack) string {
+func (cmd *Recommend) name(seedType string, tracks []list.Row) string {
 	var name string
 
 	titles := make([]string, len(tracks))
@@ -257,12 +252,12 @@ func (cmd *Recommend) name(seedType string, tracks []spotify.FullTrack) string {
 	case SeedTypeArtist:
 		name = "Tracks similar to those from artist(s) "
 		for i := range tracks {
-			titles[i] = strconv.Quote(tracks[i].Artists[0].Name)
+			titles[i] = strconv.Quote(tracks[i].Get("artist"))
 		}
 	case SeedTypeTrack:
 		name = "Tracks similar to "
 		for i := range tracks {
-			titles[i] = strconv.Quote(tracks[i].Name)
+			titles[i] = strconv.Quote(tracks[i].Get("title"))
 		}
 	}
 	switch len(titles) {
@@ -281,19 +276,15 @@ func (cmd *Recommend) name(seedType string, tracks []spotify.FullTrack) string {
 
 // Exec implements Command.
 func (cmd *Recommend) Exec() error {
-	list := cmd.api.Tracklist()
-	if list == nil {
-		return fmt.Errorf("`recommend` only works in tracklists")
-	}
-
-	selection := list.SelectionAsTracklist()
+	list := cmd.api.List()
+	selection := list.Selection()
 
 	client, err := cmd.api.Spotify()
 	if err != nil {
 		return err
 	}
 
-	seedTracks := selection.Tracks()
+	seedTracks := selection.All()
 	list.CommitVisualSelection()
 	list.DisableVisualSelection()
 
@@ -312,16 +303,24 @@ func (cmd *Recommend) Exec() error {
 	}
 
 	fullTracks, err := spotify_tracklist.SimpleTracksToFullTracks(client, recommendations.Tracks)
+	if err != nil {
+		return err
+	}
+	fullTrackList := spotify_tracklist.NewFromTracks(fullTracks)
 
-	newList := spotify_tracklist.NewFromTracks(append(selection.Tracks(), fullTracks...))
-	newList.SetName(cmd.name(cmd.seedType, seedTracks))
-	newList.SetID(uuid.New().String())
-	newList.SetVisibleColumns(options.GetList(options.ColumnsTracklists))
+	err = selection.InsertList(fullTrackList, selection.Len())
+	if err != nil {
+		return err
+	}
 
-	cmd.api.SetList(newList)
+	selection.SetName(cmd.name(cmd.seedType, seedTracks))
+	selection.SetID(uuid.New().String())
+	selection.SetVisibleColumns(options.GetList(options.ColumnsTracklists))
+
+	cmd.api.SetList(selection)
 	list.ClearSelection()
 
-	log.Infof("Copied %d source tracks and %d recommendations into '%s'", selection.Len(), len(recommendations.Tracks), newList.Name())
+	log.Infof("Copied %d source tracks and %d recommendations into '%s'", selection.Len(), len(recommendations.Tracks), selection.Name())
 
 	return nil
 }

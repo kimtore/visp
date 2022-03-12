@@ -2,10 +2,11 @@ package commands
 
 import (
 	"fmt"
-	"github.com/ambientsound/visp/list"
 	"math/rand"
 	"strconv"
 	"time"
+
+	"github.com/ambientsound/visp/list"
 
 	"github.com/ambientsound/visp/api"
 	"github.com/ambientsound/visp/input/lexer"
@@ -115,10 +116,7 @@ func (cmd *Cursor) Exec() error {
 			return fmt.Errorf("no track is currently playing")
 		}
 
-		tl := cmd.api.Tracklist()
-		if tl == nil {
-			return fmt.Errorf("must be in a track list to locate current track")
-		}
+		tl := cmd.api.List()
 
 		err := tl.SetCursorByID(track.ID.String())
 		if err != nil {

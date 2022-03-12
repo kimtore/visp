@@ -4,15 +4,15 @@ import (
 	"fmt"
 
 	"github.com/ambientsound/visp/api"
+	"github.com/ambientsound/visp/list"
 	"github.com/ambientsound/visp/log"
-	spotify_tracklist "github.com/ambientsound/visp/spotify/tracklist"
 )
 
 // Cut removes songs from songlists.
 type Cut struct {
 	command
 	api  api.API
-	list *spotify_tracklist.List
+	list list.List
 }
 
 // NewCut returns Cut.
@@ -24,18 +24,14 @@ func NewCut(api api.API) Command {
 
 // Parse implements Command.
 func (cmd *Cut) Parse() error {
-	cmd.list = cmd.api.Tracklist()
-	if cmd.list == nil {
-		return fmt.Errorf("`cut` only works in tracklists")
-	}
-
+	cmd.list = cmd.api.List()
 	return cmd.ParseEnd()
 }
 
 // Exec implements Command.
 func (cmd *Cut) Exec() error {
 
-	selection := cmd.list.SelectionAsTracklist()
+	selection := cmd.list.Selection()
 	indices := cmd.list.SelectionIndices()
 	ln := len(indices)
 

@@ -16,7 +16,7 @@ func NewSyncStatus(a api.API, param string) Fragment {
 
 // Text implements Fragment.
 func (w *SyncStatus) Text() (string, string) {
-	tracklist := w.api.Tracklist()
+	tracklist := w.api.List()
 	if tracklist == nil || !tracklist.HasLocalChanges() {
 		return "", ""
 	}

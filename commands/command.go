@@ -16,7 +16,6 @@ import (
 	"github.com/ambientsound/visp/spotify/devices"
 	"github.com/ambientsound/visp/spotify/library"
 	"github.com/ambientsound/visp/spotify/playlists"
-	"github.com/ambientsound/visp/spotify/tracklist"
 	"github.com/ambientsound/visp/utils"
 )
 
@@ -133,8 +132,6 @@ func Contexts(a api.API) []string {
 		ctx = append(ctx, WindowsContext)
 	case *spotify_library.List:
 		ctx = append(ctx, LibraryContext)
-	case *spotify_tracklist.List:
-		ctx = append(ctx, TracklistContext)
 	case *spotify_playlists.List:
 		ctx = append(ctx, PlaylistsContext)
 	case *spotify_devices.List:

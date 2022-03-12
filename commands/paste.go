@@ -5,8 +5,8 @@ import (
 
 	"github.com/ambientsound/visp/api"
 	"github.com/ambientsound/visp/input/lexer"
+	"github.com/ambientsound/visp/list"
 	"github.com/ambientsound/visp/log"
-	spotify_tracklist "github.com/ambientsound/visp/spotify/tracklist"
 )
 
 // Paste inserts songs from the clipboard.
@@ -14,7 +14,7 @@ type Paste struct {
 	command
 	api      api.API
 	position int
-	list     *spotify_tracklist.List
+	list     list.List
 }
 
 // NewPaste returns Paste.
@@ -28,11 +28,7 @@ func NewPaste(api api.API) Command {
 func (cmd *Paste) Parse() error {
 	tok, lit := cmd.ScanIgnoreWhitespace()
 
-	cmd.list = cmd.api.Tracklist()
-	if cmd.list == nil {
-		return fmt.Errorf("`paste` only works in tracklists")
-	}
-
+	cmd.list = cmd.api.List()
 	cmd.setTabCompleteVerbs(lit)
 
 	// Expect either "before" or "after".
