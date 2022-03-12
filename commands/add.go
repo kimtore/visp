@@ -3,8 +3,8 @@ package commands
 import (
 	"fmt"
 
+	"github.com/ambientsound/visp/list"
 	"github.com/ambientsound/visp/log"
-	"github.com/ambientsound/visp/spotify/tracklist"
 	"github.com/zmb3/spotify"
 
 	"github.com/ambientsound/visp/api"
@@ -15,7 +15,7 @@ type Add struct {
 	command
 	api       api.API
 	client    *spotify.Client
-	tracklist *spotify_tracklist.List
+	tracklist list.List
 }
 
 // NewAdd returns Add.
@@ -27,6 +27,7 @@ func NewAdd(api api.API) Command {
 
 // Parse implements Command.
 func (cmd *Add) Parse() error {
+	cmd.tracklist = cmd.api.List()
 	return cmd.ParseEnd()
 }
 
@@ -34,18 +35,13 @@ func (cmd *Add) Parse() error {
 func (cmd *Add) Exec() error {
 	var err error
 
-	cmd.tracklist = cmd.api.Tracklist()
 	cmd.client, err = cmd.api.Spotify()
 
 	if err != nil {
 		return err
 	}
 
-	if cmd.tracklist == nil {
-		return fmt.Errorf("cannot add to queue: not in a track list")
-	}
-
-	selection := cmd.tracklist.SelectionAsTracklist()
+	selection := cmd.tracklist.Selection()
 	if selection.Len() == 0 {
 		return fmt.Errorf("cannot add to queue: no selection")
 	}
@@ -56,12 +52,18 @@ func (cmd *Add) Exec() error {
 	cmd.tracklist.CommitVisualSelection()
 	cmd.tracklist.DisableVisualSelection()
 
-	for i, track := range selection.Tracks() {
-		err := cmd.client.QueueSong(track.ID)
+	tracks := selection.All()
+	for i, track := range tracks {
+		err = ErrMsgDataType(track.Kind(), list.DataTypeTrack)
 		if err != nil {
 			return err
 		}
-		log.Infof("Added %s to queue.", track.String())
+
+		err = cmd.client.QueueSong(spotify.ID(track.ID()))
+		if err != nil {
+			return err
+		}
+		log.Infof("'%s - %s' added to queue.", track.Get("artist"), track.Get("title"))
 		cmd.tracklist.SetSelected(i, false)
 	}
 

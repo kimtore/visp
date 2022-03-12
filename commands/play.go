@@ -128,7 +128,7 @@ func (cmd *Play) playCursor() error {
 	row := cmd.tracklist.CursorRow()
 
 	if row.Kind() != list.DataTypeTrack {
-		return fmt.Errorf("cannot play: selected row is type '%s', need '%s'", row.Kind(), list.DataTypeTrack)
+		return fmt.Errorf("cannot play: %w", ErrMsgDataType(row.Kind(), list.DataTypeTrack))
 	}
 
 	// Get a device ID for playback.

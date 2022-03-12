@@ -45,6 +45,7 @@ type List interface {
 	All() []Row
 	Clear()
 	Copy() List
+	IDs() []string
 	InRange(int) bool
 	InsertList(source List, position int) error
 	Keys() []string
@@ -131,6 +132,14 @@ func (s *Base) Columns(names []string) []Column {
 		}
 	}
 	return cols
+}
+
+func (s *Base) IDs() []string {
+	ids := make([]string, len(s.rows))
+	for i := range s.rows {
+		ids[i] = s.rows[i].ID()
+	}
+	return ids
 }
 
 func (s *Base) Add(row Row) {
