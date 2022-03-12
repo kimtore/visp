@@ -8,7 +8,7 @@ on:
       - '.github/workflows/build.yml'
       - 'Dockerfile*'
 env:
-  go_version: '1.16'
+  go_version: '1.17'
   authproxy_image: ghcr.io/ambientsound/visp-authproxy
   website_image: ghcr.io/ambientsound/visp-website
 
