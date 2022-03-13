@@ -29,7 +29,6 @@ type Metadata interface {
 	Columns([]string) []Column
 	ID() string
 	Name() string
-	SetColumnNames([]string)
 	SetID(string)
 	SetName(string)
 	SetVisibleColumns([]string)
@@ -101,11 +100,6 @@ func (s *Base) ID() string {
 
 func (s *Base) SetID(id string) {
 	s.id = id
-}
-
-func (s *Base) SetColumnNames(names []string) {
-	s.columnNames = make([]string, len(names))
-	copy(s.columnNames, names)
 }
 
 func (s *Base) ColumnNames() []string {
