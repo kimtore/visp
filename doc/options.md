@@ -40,6 +40,13 @@ See the documentation on [setting options](commands.md#setting-global-options) f
   setting up your own authentication proxy server, as detailed in the
   [Spotify section](spotify.md).
 
+### Search as you type
+
+* `set searchdelay=200`  
+
+  Specify, in milliseconds, how long Visp should wait with sending search queries to Spotify
+  after the user's last keystroke.
+
 ### Database
 
 * `set database=memory`  

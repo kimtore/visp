@@ -53,6 +53,10 @@ func Multisearch(query string, ctx context.Context, delay time.Duration, client 
 			return
 		}
 
+		if ctx.Err() != nil {
+			return
+		}
+
 		// 4. append Spotify's search results
 		err = lst.InsertList(tracklist, lst.Len())
 		if err != nil {
