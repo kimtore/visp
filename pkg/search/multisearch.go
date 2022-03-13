@@ -29,8 +29,8 @@ func Multisearch(query string, ctx context.Context, delay time.Duration, client 
 		if err != nil {
 			log.Errorf("index query failed: %s", err)
 		} else {
-			lst.SetName(fmt.Sprintf("Search for '%s' [local]", query))
-			ch <- lst
+			// lst.SetName(fmt.Sprintf("Search for '%s'...", query))
+			// ch <- lst
 		}
 
 		// spotify client is strictly not needed, we can be content with the index query
@@ -53,20 +53,13 @@ func Multisearch(query string, ctx context.Context, delay time.Duration, client 
 			return
 		}
 
-		// 4. update the search index
-		err = index.Add(tracklist)
+		// 4. append Spotify's search results
+		err = lst.InsertList(tracklist, lst.Len())
 		if err != nil {
-			log.Errorf("failed to add search results to index: %s", err)
-			return
+			panic(err)
 		}
 
-		// 5. query the index again
-		lst, err = index.Query(query)
-		if err != nil {
-			log.Errorf("index query failed: %s", err)
-			return
-		}
-		lst.SetName(fmt.Sprintf("Search for '%s' [spotify]", query))
+		lst.SetName(fmt.Sprintf("Search for '%s' (%d results)", query, lst.Len()))
 		ch <- lst
 	}()
 
