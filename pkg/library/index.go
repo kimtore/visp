@@ -7,6 +7,7 @@ import (
 
 	"github.com/ambientsound/visp/list"
 	"github.com/ambientsound/visp/log"
+	`github.com/ambientsound/visp/options`
 	"github.com/ambientsound/visp/xdg"
 	"github.com/blevesearch/bleve/v2"
 	"github.com/blevesearch/bleve/v2/analysis/analyzer/custom"
@@ -185,6 +186,7 @@ func (idx *index) QueryID(id string) (list.Row, error) {
 
 func (idx *index) hitsAsList(res *bleve.SearchResult) (list.List, error) {
 	result := list.New()
+	result.SetVisibleColumns(options.GetList(options.ColumnsTracklists))
 
 	for _, hit := range res.Hits {
 		row, err := idx.hitAsRow(hit)

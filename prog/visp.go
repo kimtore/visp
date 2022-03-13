@@ -146,7 +146,7 @@ func (v *Visp) Main(ctx context.Context) error {
 			delay := time.Millisecond * time.Duration(options.GetInt(options.SearchDelay))
 			client, _ := v.Spotify()
 
-			results := search.Multisearch(query, searchCtx, delay, client, v.index)
+			results := search.Delayed(query, searchCtx, delay, client)
 			// listID := uuid.New().String()
 			listID := "search-results"
 			columns := options.GetString(options.ColumnsTracklists)
