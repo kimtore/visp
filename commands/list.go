@@ -52,6 +52,7 @@ func (cmd *List) Parse() error {
 		switch lit {
 		case "duplicate":
 			cmd.duplicate = true
+			cmd.name = cmd.api.List().Name()
 		case "close":
 			cmd.close = true
 		case "up", "prev", "previous":
@@ -220,10 +221,12 @@ func (cmd *List) Goto(id string) error {
 func (cmd *List) Duplicate() error {
 	tracklist := cmd.api.List().Copy()
 	tracklist.SetName(cmd.name)
+	tracklist.SetID(uuid.New().String())
+	tracklist.SetVisibleColumns(options.GetList(options.ColumnsTracklists))
 
 	cmd.api.SetList(tracklist)
 
-	log.Infof("Created '%s' with %d tracks", tracklist.Name(), tracklist.Len())
+	log.Infof("Created temporary playlist '%s' with %d tracks", tracklist.Name(), tracklist.Len())
 
 	return nil
 }
@@ -241,7 +244,7 @@ func (cmd *List) New() error {
 
 	cmd.api.SetList(tracklist)
 
-	log.Infof("Created new empty playlist '%s'", tracklist.Len())
+	log.Infof("Created temporary playlist '%s'", tracklist.Name())
 
 	return nil
 }
