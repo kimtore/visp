@@ -18,7 +18,6 @@ import (
 	"github.com/ambientsound/visp/spotify/proxyclient"
 	"github.com/ambientsound/visp/spotify/tracklist"
 	"github.com/ambientsound/visp/style"
-	"github.com/ambientsound/visp/topbar"
 	"github.com/zmb3/spotify"
 	"golang.org/x/oauth2"
 )
@@ -98,38 +97,6 @@ func (v *Visp) Changed(change api.ChangeType, data interface{}) {
 	}
 }
 
-func (v *Visp) optionChanged(key string) {
-	switch key {
-	case options.LogFile:
-		logFile := options.GetString(options.LogFile)
-		overwrite := options.GetBool(options.LogOverwrite)
-		if len(logFile) == 0 {
-			break
-		}
-		err := log.Configure(logFile, overwrite)
-		if err != nil {
-			log.Errorf("log configuration: %s", err)
-			break
-		}
-		log.Infof("Note: log file will be backfilled with existing log")
-		log.Infof("Writing debug log to %s", logFile)
-
-	case options.Topbar:
-		config := options.GetString(options.Topbar)
-		matrix, err := topbar.Parse(v, config)
-		if err == nil {
-			v.Termui.Widgets.Topbar.SetMatrix(matrix)
-			v.Termui.Resize()
-		} else {
-			log.Errorf("topbar configuration: %s", err)
-		}
-
-	case options.ExpandColumns:
-		// Re-render columns
-		v.UI().TableWidget().SetColumns(v.UI().TableWidget().ColumnNames())
-	}
-}
-
 func (v *Visp) PlayerStatus() player.State {
 	return *v.player
 }
@@ -156,11 +123,6 @@ func (v *Visp) History() list.List {
 func (v *Visp) SetList(lst list.List) {
 	if lst == nil {
 		return
-	}
-	// FIXME: should not be added here, as tracks added with SetList are potentially already seen
-	err := v.index.Add(lst)
-	if err != nil {
-		log.Debugf("Unable to add list '%v' to search index: %s", lst.Name(), err)
 	}
 	cur := v.db.Current()
 	if cur != nil && cur != lst && cur != v.db && cur != v.clipboards {

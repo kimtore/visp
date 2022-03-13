@@ -9,6 +9,7 @@ import (
 
 // Option names.
 const (
+	Database          = "database"
 	Center            = "center"
 	ColumnsAlbums     = "columns.albums"
 	ColumnsPlaylists  = "columns.playlists"
@@ -47,6 +48,7 @@ func init() {
 	v.Set(ColumnsAlbums, stringType)
 	v.Set(ColumnsPlaylists, stringType)
 	v.Set(ColumnsTracklists, stringType)
+	v.Set(Database, stringType)
 	v.Set(Device, stringType)
 	v.Set(ExpandColumns, stringType)
 	v.Set(FullHeaderColumns, stringType)
@@ -102,9 +104,10 @@ const Defaults string = `
 set columns.albums=artist,album,year,type
 set columns.playlists=name,tracks,owner,public,collaborative
 set columns.tracklists=artist,title,track,album,year,time,popularity
+set database=memory
 set expandcolumns=logMessage,description,deviceName,name,artist,title,album
 set fullheadercolumns=logLevel,public,collaborative,deviceName,track,tracks,year,time,deviceType,active,restricted,volume
-set searchdelay=2000
+set searchdelay=200
 set limit=50
 set nocenter
 set pollinterval=10

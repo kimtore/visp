@@ -86,12 +86,6 @@ func (v *Visp) Init() {
 	v.ticker = time.NewTicker(tickerInterval)
 	v.tokenRefresh = make(chan time.Time)
 
-	var err error
-	v.index, err = library.New()
-	if err != nil {
-		panic(err)
-	}
-
 	v.SetList(log.List(log.InfoLevel))
 }
 

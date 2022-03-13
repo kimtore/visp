@@ -40,6 +40,16 @@ See the documentation on [setting options](commands.md#setting-global-options) f
   setting up your own authentication proxy server, as detailed in the
   [Spotify section](spotify.md).
 
+### Database
+
+* `set database=memory`  
+  `set database=filesystem`
+  
+  Visp does some speed optimizations by caching some remote data.
+  This data can be stored on the file system so that it is persistant between restarts.
+  The `filesystem` option is not recommended. It is not possible to run two instances of Visp
+  with filesystem backed storage.
+
 
 ## Logging
 
