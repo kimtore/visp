@@ -2,7 +2,7 @@ package spotify_tracklist
 
 import (
 	"github.com/ambientsound/visp/list"
-	"github.com/zmb3/spotify"
+	"github.com/zmb3/spotify/v2"
 )
 
 type Row struct {

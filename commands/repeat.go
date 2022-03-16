@@ -1,14 +1,16 @@
 package commands
 
 import (
+	"context"
 	"fmt"
+
 	"github.com/ambientsound/visp/log"
 
 	"github.com/ambientsound/visp/api"
 	"github.com/ambientsound/visp/input/lexer"
 )
 
-// https://github.com/zmb3/spotify/issues/159
+// https://github.com/zmb3/spotify/v2/issues/159
 const (
 	RepeatOff     = "off"
 	RepeatContext = "context"
@@ -85,7 +87,7 @@ func (cmd *Repeat) Exec() error {
 
 	defer cmd.api.Changed(api.ChangePlayerStateInvalid, nil)
 
-	err = client.Repeat(cmd.action)
+	err = client.Repeat(context.TODO(), cmd.action)
 	if err != nil {
 		return err
 	}

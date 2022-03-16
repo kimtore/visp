@@ -1,12 +1,14 @@
 package commands
 
 import (
+	"context"
 	"fmt"
+
 	"github.com/ambientsound/visp/api"
 	"github.com/ambientsound/visp/input/lexer"
 	"github.com/ambientsound/visp/log"
 	"github.com/ambientsound/visp/spotify/devices"
-	"github.com/zmb3/spotify"
+	"github.com/zmb3/spotify/v2"
 )
 
 // Device seeks forwards or backwards in the currently playing track.
@@ -78,7 +80,7 @@ func (cmd *Device) Exec() error {
 
 	log.Infof("Transferring playback to %s...", cmd.deviceName)
 
-	return client.TransferPlayback(cmd.deviceID, cmd.api.PlayerStatus().Playing)
+	return client.TransferPlayback(context.TODO(), cmd.deviceID, cmd.api.PlayerStatus().Playing)
 }
 
 // setTabCompleteVerbs sets the tab complete list to the list of available sub-commands.

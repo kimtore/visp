@@ -14,7 +14,7 @@ import (
 	"github.com/ambientsound/visp/spotify/library"
 	spotify_tracklist "github.com/ambientsound/visp/spotify/tracklist"
 	"github.com/google/uuid"
-	"github.com/zmb3/spotify"
+	"github.com/zmb3/spotify/v2"
 
 	"github.com/ambientsound/visp/api"
 	"github.com/ambientsound/visp/input/lexer"

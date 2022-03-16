@@ -6,7 +6,7 @@ import (
 
 	"github.com/ambientsound/visp/list"
 	spotify_playlists "github.com/ambientsound/visp/spotify/playlists"
-	"github.com/zmb3/spotify"
+	"github.com/zmb3/spotify/v2"
 )
 
 type List struct {

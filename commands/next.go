@@ -1,6 +1,8 @@
 package commands
 
 import (
+	"context"
+
 	"github.com/ambientsound/visp/api"
 )
 
@@ -28,5 +30,5 @@ func (cmd *Next) Exec() error {
 
 	defer cmd.api.Changed(api.ChangePlayerStateInvalid, nil)
 
-	return client.Next()
+	return client.Next(context.TODO())
 }

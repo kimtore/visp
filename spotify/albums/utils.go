@@ -1,7 +1,7 @@
 package spotify_albums
 
 import (
-	"github.com/zmb3/spotify"
+	"github.com/zmb3/spotify/v2"
 )
 
 func artistNames(artists []spotify.SimpleArtist) []string {

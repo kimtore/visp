@@ -1,7 +1,7 @@
 package list
 
 import (
-	"github.com/zmb3/spotify"
+	"github.com/zmb3/spotify/v2"
 )
 
 type DataType string

@@ -1,6 +1,7 @@
 package spotify_tracklist
 
 import (
+	"context"
 	"fmt"
 	"strings"
 
@@ -8,7 +9,7 @@ import (
 	"github.com/ambientsound/visp/options"
 	spotify_albums "github.com/ambientsound/visp/spotify/albums"
 	"github.com/ambientsound/visp/utils"
-	"github.com/zmb3/spotify"
+	"github.com/zmb3/spotify/v2"
 )
 
 type List struct {
@@ -24,7 +25,7 @@ func NewFromFullTrackPage(client spotify.Client, source *spotify.FullTrackPage) 
 
 	for err == nil {
 		tracks = append(tracks, source.Tracks...)
-		err = client.NextPage(source)
+		err = client.NextPage(context.TODO(), source)
 	}
 
 	if err != spotify.ErrNoMorePages {
@@ -43,7 +44,7 @@ func NewFromSimpleTrackPageAndAlbum(client spotify.Client, source *spotify.Simpl
 		for _, track := range source.Tracks {
 			tracks = append(tracks, AlbumTrack(track, album))
 		}
-		err = client.NextPage(source)
+		err = client.NextPage(context.TODO(), source)
 	}
 
 	if err != spotify.ErrNoMorePages {
@@ -62,7 +63,7 @@ func NewFromSavedTrackPage(client spotify.Client, source *spotify.SavedTrackPage
 		for _, track := range source.Tracks {
 			tracks = append(tracks, track.FullTrack)
 		}
-		err = client.NextPage(source)
+		err = client.NextPage(context.TODO(), source)
 	}
 
 	if err != spotify.ErrNoMorePages {
@@ -81,7 +82,7 @@ func NewFromPlaylistTrackPage(client spotify.Client, source *spotify.PlaylistTra
 		for _, track := range source.Tracks {
 			tracks = append(tracks, track.Track)
 		}
-		err = client.NextPage(source)
+		err = client.NextPage(context.TODO(), source)
 	}
 
 	if err != spotify.ErrNoMorePages {
@@ -112,7 +113,7 @@ func NewFromSimpleAlbumPage(client spotify.Client, source *spotify.SimpleAlbumPa
 
 	for i := 0; i < albums.Len(); i++ {
 		album := albums.Album(i)
-		trackPage, err = client.GetAlbumTracks(album.ID)
+		trackPage, err = client.GetAlbumTracks(context.TODO(), album.ID)
 		if err != nil {
 			break
 		}

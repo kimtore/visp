@@ -18,7 +18,7 @@ import (
 	"github.com/ambientsound/visp/spotify/proxyclient"
 	"github.com/ambientsound/visp/spotify/tracklist"
 	"github.com/ambientsound/visp/style"
-	"github.com/zmb3/spotify"
+	"github.com/zmb3/spotify/v2"
 	"golang.org/x/oauth2"
 )
 
@@ -26,9 +26,7 @@ func (v *Visp) Authenticate(token *oauth2.Token) error {
 	log.Infof("Configured Spotify access token, expires at %s", token.Expiry.Format(time.RFC1123))
 
 	cli := oauth2.NewClient(context.Background(), oauth2.StaticTokenSource(token))
-	scli := spotify.NewClient(cli)
-
-	v.client = &scli
+	v.client = spotify.New(cli)
 
 	next := spotify_proxyclient.TokenTTL(token)
 

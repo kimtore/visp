@@ -1,13 +1,14 @@
 package commands
 
 import (
+	"context"
 	"fmt"
 	"strings"
 
 	"github.com/ambientsound/visp/list"
 	"github.com/ambientsound/visp/log"
 	"github.com/ambientsound/visp/options"
-	"github.com/zmb3/spotify"
+	"github.com/zmb3/spotify/v2"
 
 	"github.com/ambientsound/visp/api"
 	"github.com/ambientsound/visp/input/lexer"
@@ -85,7 +86,7 @@ func (cmd *Play) Exec() error {
 		return cmd.playSelection()
 	default:
 		// If a selection is not given, start playing with default parameters.
-		return cmd.client.Play()
+		return cmd.client.Play(context.TODO())
 	}
 }
 
@@ -101,7 +102,7 @@ func (cmd *Play) deviceID() (*spotify.ID, error) {
 		return nil, nil
 	}
 
-	devices, err := cmd.client.PlayerDevices()
+	devices, err := cmd.client.PlayerDevices(context.TODO())
 	if err != nil {
 		return nil, fmt.Errorf("unable to determine device ID for playback: %w", err)
 	}
@@ -174,7 +175,7 @@ func (cmd *Play) playCursor() error {
 
 	// Start playing with correct parameters.
 	trackuri := spotify.URI("spotify:track:" + row.ID())
-	return cmd.client.PlayOpt(&spotify.PlayOptions{
+	return cmd.client.PlayOpt(context.TODO(), &spotify.PlayOptions{
 		DeviceID:        deviceID,
 		URIs:            uris,
 		PlaybackContext: uri,
@@ -215,7 +216,7 @@ func (cmd *Play) playSelection() error {
 	defer cmd.api.Changed(api.ChangePlayerStateInvalid, nil)
 
 	// Start playing all the URIs
-	return cmd.client.PlayOpt(&spotify.PlayOptions{
+	return cmd.client.PlayOpt(context.TODO(), &spotify.PlayOptions{
 		URIs: uris,
 	})
 }

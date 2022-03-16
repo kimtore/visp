@@ -1,10 +1,11 @@
 package commands
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/ambientsound/visp/log"
-	"github.com/zmb3/spotify"
+	"github.com/zmb3/spotify/v2"
 
 	"github.com/ambientsound/visp/api"
 	"github.com/ambientsound/visp/input/lexer"
@@ -133,7 +134,7 @@ func (cmd *Like) Exec() error {
 	case cmd.remove:
 		removals = append(removals, ids...)
 	case cmd.toggle:
-		liked, err := client.UserHasTracks(ids...)
+		liked, err := client.UserHasTracks(context.TODO(), ids...)
 		if err != nil {
 			return err
 		}
@@ -147,7 +148,7 @@ func (cmd *Like) Exec() error {
 	}
 
 	if len(additions) > 0 {
-		err = client.AddTracksToLibrary(additions...)
+		err = client.AddTracksToLibrary(context.TODO(), additions...)
 		if err != nil {
 			return err
 		}
@@ -155,7 +156,7 @@ func (cmd *Like) Exec() error {
 	}
 
 	if len(removals) > 0 {
-		err = client.RemoveTracksFromLibrary(removals...)
+		err = client.RemoveTracksFromLibrary(context.TODO(), removals...)
 		if err != nil {
 			return err
 		}

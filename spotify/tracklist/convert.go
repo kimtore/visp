@@ -1,9 +1,10 @@
 package spotify_tracklist
 
 import (
+	"context"
 	"fmt"
 
-	"github.com/zmb3/spotify"
+	"github.com/zmb3/spotify/v2"
 )
 
 const maxFullTracks = 50
@@ -23,7 +24,7 @@ func SimpleTracksToFullTracks(client *spotify.Client, simpleTracks []spotify.Sim
 		if len(batch) > maxFullTracks {
 			batch = batch[:maxFullTracks]
 		}
-		tracks, err := client.GetTracks(batch...)
+		tracks, err := client.GetTracks(context.TODO(), batch)
 		if err != nil {
 			return nil, err
 		}

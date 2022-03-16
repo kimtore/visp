@@ -1,12 +1,13 @@
 package commands
 
 import (
+	"context"
 	"fmt"
 	"strconv"
 
 	"github.com/ambientsound/visp/log"
 	spotify_tracklist "github.com/ambientsound/visp/spotify/tracklist"
-	"github.com/zmb3/spotify"
+	"github.com/zmb3/spotify/v2"
 
 	"github.com/ambientsound/visp/api"
 )
@@ -14,10 +15,11 @@ import (
 // Write saves a local tracklist to Spotify.
 type Write struct {
 	command
-	api    api.API
-	name   string
-	new    bool
-	public bool
+	api           api.API
+	name          string
+	new           bool
+	public        bool
+	collaborative bool // TODO: implement this
 }
 
 // NewWrite returns Write.
@@ -63,7 +65,7 @@ func (cmd *Write) Exec() error {
 		return fmt.Errorf("internal error: tracklist not cached in database")
 	}
 
-	user, err := client.CurrentUser()
+	user, err := client.CurrentUser(context.TODO())
 	if err != nil {
 		return err
 	}
@@ -74,7 +76,7 @@ func (cmd *Write) Exec() error {
 	}
 
 	if !tracklist.HasRemote() {
-		remotelist, err := client.CreatePlaylistForUser(user.ID, tracklist.Name(), "", cmd.public)
+		remotelist, err := client.CreatePlaylistForUser(context.TODO(), user.ID, tracklist.Name(), "", cmd.public, cmd.collaborative)
 		if err != nil {
 			return fmt.Errorf("create remote playlist: %w", err)
 		}
@@ -99,7 +101,7 @@ func (cmd *Write) Exec() error {
 	} else {
 
 		id := spotify.ID(tracklist.ID())
-		err := client.ChangePlaylistName(id, tracklist.Name())
+		err := client.ChangePlaylistName(context.TODO(), id, tracklist.Name())
 		if err != nil {
 			return fmt.Errorf("change remote playlist name: %w", err)
 		}

@@ -1,6 +1,7 @@
 package commands
 
 import (
+	"context"
 	"fmt"
 	"strconv"
 	"strings"
@@ -12,7 +13,7 @@ import (
 	"github.com/ambientsound/visp/options"
 	spotify_tracklist "github.com/ambientsound/visp/spotify/tracklist"
 	"github.com/google/uuid"
-	"github.com/zmb3/spotify"
+	"github.com/zmb3/spotify/v2"
 )
 
 const (
@@ -294,9 +295,7 @@ func (cmd *Recommend) Exec() error {
 	}
 
 	limit := options.GetInt(options.Limit)
-	recommendations, err := client.GetRecommendations(*seeds, cmd.attributes, &spotify.Options{
-		Limit: &limit,
-	})
+	recommendations, err := client.GetRecommendations(context.TODO(), *seeds, cmd.attributes, spotify.Limit(limit))
 
 	if err != nil {
 		return err

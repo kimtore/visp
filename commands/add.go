@@ -1,11 +1,12 @@
 package commands
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/ambientsound/visp/list"
 	"github.com/ambientsound/visp/log"
-	"github.com/zmb3/spotify"
+	"github.com/zmb3/spotify/v2"
 
 	"github.com/ambientsound/visp/api"
 )
@@ -59,7 +60,7 @@ func (cmd *Add) Exec() error {
 			return err
 		}
 
-		err = cmd.client.QueueSong(spotify.ID(track.ID()))
+		err = cmd.client.QueueSong(context.TODO(), spotify.ID(track.ID()))
 		if err != nil {
 			return err
 		}

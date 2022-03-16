@@ -1,6 +1,8 @@
 package commands
 
 import (
+	"context"
+
 	"github.com/ambientsound/visp/api"
 	"github.com/ambientsound/visp/input/lexer"
 )
@@ -86,5 +88,5 @@ func (cmd *Volume) Exec() error {
 
 	defer cmd.api.Changed(api.ChangePlayerStateInvalid, nil)
 
-	return client.Volume(cmd.volume)
+	return client.Volume(context.TODO(), cmd.volume)
 }

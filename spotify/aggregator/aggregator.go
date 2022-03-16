@@ -1,19 +1,24 @@
 package spotify_aggregator
 
 import (
+	"context"
+
 	"github.com/ambientsound/visp/list"
 	"github.com/ambientsound/visp/options"
 	spotify_albums "github.com/ambientsound/visp/spotify/albums"
 	"github.com/ambientsound/visp/spotify/library"
 	"github.com/ambientsound/visp/spotify/playlists"
 	"github.com/ambientsound/visp/spotify/tracklist"
-	"github.com/zmb3/spotify"
+	"github.com/zmb3/spotify/v2"
 )
 
 func Search(client spotify.Client, query string, limit int) (list.List, error) {
-	results, err := client.SearchOpt(query, spotify.SearchTypeTrack, &spotify.Options{
-		Limit: &limit,
-	})
+	results, err := client.Search(
+		context.TODO(),
+		query,
+		spotify.SearchTypeTrack,
+		spotify.Limit(limit),
+	)
 	if err != nil {
 		return nil, err
 	}
@@ -30,11 +35,10 @@ func Search(client spotify.Client, query string, limit int) (list.List, error) {
 }
 
 func FeaturedPlaylists(client spotify.Client, limit int) (*spotify_playlists.List, error) {
-	message, playlists, err := client.FeaturedPlaylistsOpt(&spotify.PlaylistOptions{
-		Options: spotify.Options{
-			Limit: &limit,
-		},
-	})
+	message, playlists, err := client.FeaturedPlaylists(
+		context.TODO(),
+		spotify.Limit(limit),
+	)
 	if err != nil {
 		return nil, err
 	}
@@ -56,14 +60,12 @@ func FeaturedPlaylists(client spotify.Client, limit int) (*spotify_playlists.Lis
 func ListWithID(client spotify.Client, id string, limit int) (list.List, error) {
 	sid := spotify.ID(id)
 
-	playlist, err := client.GetPlaylist(sid)
+	playlist, err := client.GetPlaylist(context.TODO(), sid)
 	if err != nil {
 		return nil, err
 	}
 
-	tracks, err := client.GetPlaylistTracksOpt(sid, &spotify.Options{
-		Limit: &limit,
-	}, "")
+	tracks, err := client.GetPlaylistTracks(context.TODO(), sid, spotify.Limit(limit))
 	if err != nil {
 		return nil, err
 	}
@@ -86,9 +88,7 @@ func ListWithID(client spotify.Client, id string, limit int) (list.List, error) 
 }
 
 func MyPrivatePlaylists(client spotify.Client, limit int) (*spotify_playlists.List, error) {
-	playlists, err := client.CurrentUsersPlaylistsOpt(&spotify.Options{
-		Limit: &limit,
-	})
+	playlists, err := client.CurrentUsersPlaylists(context.TODO(), spotify.Limit(limit))
 	if err != nil {
 		return nil, err
 	}
@@ -108,9 +108,7 @@ func MyPrivatePlaylists(client spotify.Client, limit int) (*spotify_playlists.Li
 }
 
 func MyTracks(client spotify.Client, limit int) (list.List, error) {
-	tracks, err := client.CurrentUsersTracksOpt(&spotify.Options{
-		Limit: &limit,
-	})
+	tracks, err := client.CurrentUsersTracks(context.TODO(), spotify.Limit(limit))
 	if err != nil {
 		return nil, err
 	}
@@ -130,7 +128,7 @@ func MyTracks(client spotify.Client, limit int) (list.List, error) {
 }
 
 func MyAlbums(client spotify.Client) (*spotify_albums.List, error) {
-	albums, err := client.CurrentUsersAlbums()
+	albums, err := client.CurrentUsersAlbums(context.TODO())
 	if err != nil {
 		return nil, err
 	}
@@ -150,9 +148,7 @@ func MyAlbums(client spotify.Client) (*spotify_albums.List, error) {
 }
 
 func TopTracks(client spotify.Client, limit int) (list.List, error) {
-	tracks, err := client.CurrentUsersTopTracksOpt(&spotify.Options{
-		Limit: &limit,
-	})
+	tracks, err := client.CurrentUsersTopTracks(context.TODO(), spotify.Limit(limit))
 	if err != nil {
 		return nil, err
 	}
@@ -174,7 +170,7 @@ func TopTracks(client spotify.Client, limit int) (list.List, error) {
 }
 
 func NewReleases(client spotify.Client) (list.List, error) {
-	albums, err := client.NewReleases()
+	albums, err := client.NewReleases(context.TODO())
 	if err != nil {
 		return nil, err
 	}

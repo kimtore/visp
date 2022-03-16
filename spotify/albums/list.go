@@ -1,10 +1,11 @@
 package spotify_albums
 
 import (
+	"context"
 	"strings"
 
 	"github.com/ambientsound/visp/list"
-	"github.com/zmb3/spotify"
+	"github.com/zmb3/spotify/v2"
 )
 
 type List struct {
@@ -21,7 +22,7 @@ func NewFromSimpleAlbumPage(client spotify.Client, source *spotify.SimpleAlbumPa
 
 	for err == nil {
 		albums = append(albums, source.Albums...)
-		err = client.NextPage(source)
+		err = client.NextPage(context.TODO(), source)
 	}
 
 	if err != spotify.ErrNoMorePages {
@@ -40,7 +41,7 @@ func NewFromSavedAlbumPage(client spotify.Client, source *spotify.SavedAlbumPage
 		for _, album := range source.Albums {
 			albums = append(albums, album.SimpleAlbum)
 		}
-		err = client.NextPage(source)
+		err = client.NextPage(context.TODO(), source)
 	}
 
 	if err != spotify.ErrNoMorePages {

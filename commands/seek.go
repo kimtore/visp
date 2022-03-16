@@ -1,6 +1,8 @@
 package commands
 
 import (
+	"context"
+
 	"github.com/ambientsound/visp/player"
 
 	"github.com/ambientsound/visp/api"
@@ -49,5 +51,5 @@ func (cmd *Seek) Exec() error {
 
 	defer cmd.api.Changed(api.ChangePlayerStateInvalid, nil)
 
-	return client.Seek(cmd.absolute)
+	return client.Seek(context.TODO(), cmd.absolute)
 }

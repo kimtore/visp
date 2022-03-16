@@ -32,7 +32,7 @@ import (
 	"github.com/ambientsound/visp/tokencache"
 	"github.com/ambientsound/visp/widgets"
 	"github.com/gdamore/tcell/v2"
-	"github.com/zmb3/spotify"
+	"github.com/zmb3/spotify/v2"
 )
 
 const (
@@ -214,7 +214,7 @@ func (v *Visp) updateLiked() error {
 		return err
 	}
 
-	liked, err := client.UserHasTracks(v.player.Item.ID)
+	liked, err := client.UserHasTracks(context.TODO(), v.player.Item.ID)
 	if err != nil {
 		return err
 	}
@@ -248,7 +248,7 @@ func (v *Visp) updatePlayer() error {
 		return err
 	}
 
-	state, err := client.PlayerState()
+	state, err := client.PlayerState(context.TODO())
 	if err != nil {
 		return err
 	}

@@ -1,12 +1,13 @@
 package spotify_devices
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/ambientsound/visp/list"
 	"github.com/ambientsound/visp/log"
 	"github.com/ambientsound/visp/utils"
-	"github.com/zmb3/spotify"
+	"github.com/zmb3/spotify/v2"
 )
 
 type List struct {
@@ -19,7 +20,7 @@ var _ list.List = &List{}
 func New(client spotify.Client) (*List, error) {
 	var err error
 
-	devices, err := client.PlayerDevices()
+	devices, err := client.PlayerDevices(context.TODO())
 
 	if err != nil {
 		return nil, err

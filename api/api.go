@@ -10,7 +10,7 @@ import (
 	"github.com/ambientsound/visp/player"
 	"github.com/ambientsound/visp/spotify/library"
 	"github.com/ambientsound/visp/style"
-	"github.com/zmb3/spotify"
+	"github.com/zmb3/spotify/v2"
 	"golang.org/x/oauth2"
 )
 

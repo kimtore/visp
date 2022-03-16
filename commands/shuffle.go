@@ -1,7 +1,9 @@
 package commands
 
 import (
+	"context"
 	"fmt"
+
 	"github.com/ambientsound/visp/log"
 
 	"github.com/ambientsound/visp/api"
@@ -61,7 +63,7 @@ func (cmd *Shuffle) Exec() error {
 
 	defer cmd.api.Changed(api.ChangePlayerStateInvalid, nil)
 
-	err = client.Shuffle(cmd.action)
+	err = client.Shuffle(context.TODO(), cmd.action)
 	if err != nil {
 		return err
 	}

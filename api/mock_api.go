@@ -18,7 +18,7 @@ import (
 
 	player "github.com/ambientsound/visp/player"
 
-	spotify "github.com/zmb3/spotify"
+	spotify "github.com/zmb3/spotify/v2"
 
 	spotify_library "github.com/ambientsound/visp/spotify/library"
 

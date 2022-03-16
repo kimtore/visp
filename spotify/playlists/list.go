@@ -1,12 +1,13 @@
 package spotify_playlists
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/ambientsound/visp/list"
 	"github.com/ambientsound/visp/options"
 	"github.com/ambientsound/visp/utils"
-	"github.com/zmb3/spotify"
+	"github.com/zmb3/spotify/v2"
 )
 
 type List struct {
@@ -23,7 +24,7 @@ func New(client spotify.Client, source *spotify.SimplePlaylistPage) (*List, erro
 
 	for err == nil {
 		playlists = append(playlists, source.Playlists...)
-		err = client.NextPage(source)
+		err = client.NextPage(context.TODO(), source)
 	}
 
 	if err != spotify.ErrNoMorePages {
