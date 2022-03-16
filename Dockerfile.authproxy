@@ -1,6 +1,6 @@
 # vi: se ft=dockerfile:
 
-FROM golang:1.16-alpine as builder
+FROM golang:1.18-alpine as builder
 RUN apk add --no-cache git make
 ENV GOOS=linux
 ENV CGO_ENABLED=0
@@ -10,7 +10,7 @@ WORKDIR /src
 RUN go mod download
 RUN go build -o bin/visp-authproxy cmd/visp-authproxy/main.go
 
-FROM alpine:3.13
+FROM alpine:3.15
 EXPOSE 8080
 RUN apk add --no-cache ca-certificates git curl
 WORKDIR /app
