@@ -174,13 +174,12 @@ func (cmd *Play) playCursor() error {
 	defer cmd.api.Changed(api.ChangeDevice, nil)
 
 	// Start playing with correct parameters.
-	trackuri := spotify.URI("spotify:track:" + row.ID())
 	return cmd.client.PlayOpt(context.TODO(), &spotify.PlayOptions{
 		DeviceID:        deviceID,
 		URIs:            uris,
 		PlaybackContext: uri,
 		PlaybackOffset: &spotify.PlaybackOffset{
-			URI: trackuri,
+			Position: cmd.tracklist.Cursor(),
 		},
 	})
 }
