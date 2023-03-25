@@ -18,7 +18,7 @@ require (
 	github.com/zmb3/spotify/v2 v2.3.1 // indirect
 	golang.org/x/net v0.0.0-20220225172249-27dd8689420f // indirect
 	golang.org/x/oauth2 v0.0.0-20220223155221-ee480838109b
-	golang.org/x/sys v0.0.0-20220307203707-22a9840ba4d7 // indirect
+	golang.org/x/sys v0.6.0 // indirect
 	gopkg.in/ini.v1 v1.66.4 // indirect
 )
 
